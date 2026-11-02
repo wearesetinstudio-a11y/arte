@@ -1,0 +1,77 @@
+---
+import "../styles/global.css";
+import Preloader from "../components/Preloader.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "Arte — Languages & Dance",
+  description = "Arte — languages and dance. An artistic space for expression, movement, and connection.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="pl" class="is-loading">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+
+    <!-- Google Fonts: Figtree (sans) + Fraunces (display) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>{title}</title>
+
+    <script is:inline>
+      (function () {
+        try {
+          if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            document.documentElement.classList.remove("is-loading");
+            return;
+          }
+        } catch (_) {}
+
+        // Hard failsafe if the Lottie module fails to load
+        window.setTimeout(function () {
+          var root = document.documentElement;
+          var preloader = document.getElementById("preloader");
+          if (!root.classList.contains("is-loading")) return;
+          root.classList.remove("is-loading");
+          if (preloader) {
+            preloader.classList.add("is-done");
+            window.setTimeout(function () {
+              preloader.remove();
+            }, 700);
+          }
+        }, 6000);
+      })();
+    </script>
+  </head>
+  <body class="bg-void text-ivory antialiased">
+    <Preloader />
+    <slot />
+
+    <script is:inline>
+      (function () {
+        const originalTitle = document.title;
+        const awayTitle = "Wróć do nas! 👀";
+
+        document.addEventListener("visibilitychange", () => {
+          document.title =
+            document.visibilityState === "hidden" ? awayTitle : originalTitle;
+        });
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,40 @@
+---
+const links = [
+  { href: "#philosophy", label: "Philosophy" },
+  { href: "#languages", label: "Languages" },
+  { href: "#dance", label: "Dance" },
+  { href: "#contact", label: "Contact" },
+];
+---
+
+<header class="fixed inset-x-0 top-0 z-50 bg-white">
+  <nav
+    class="relative mx-auto flex h-20 max-w-6xl items-center justify-center px-6 md:h-24"
+    aria-label="Main"
+  >
+    <a href="#hero" class="shrink-0" aria-label="Arte — home">
+      <img
+        src="/arte-logo-black.svg"
+        alt="Arte"
+        class="h-12 w-auto md:h-16"
+        width="652"
+        height="367"
+      />
+    </a>
+
+    <ul class="absolute right-6 hidden items-center gap-8 md:flex">
+      {
+        links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="font-sans text-sm tracking-wide text-void transition-opacity hover:opacity-60"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</header>
