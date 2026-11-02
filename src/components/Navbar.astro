@@ -1,40 +1,112 @@
 ---
-const links = [
-  { href: "#philosophy", label: "Philosophy" },
-  { href: "#languages", label: "Languages" },
-  { href: "#dance", label: "Dance" },
-  { href: "#contact", label: "Contact" },
+const left = [
+  { href: "/taniec", label: "Taniec" },
+  { href: "/jezyki", label: "Języki" },
+];
+
+const right = [
+  { href: "/o-mnie", label: "O mnie" },
+  { href: "/kontakt", label: "Kontakt" },
 ];
 ---
 
-<header class="fixed inset-x-0 top-0 z-50 bg-white">
-  <nav
-    class="relative mx-auto flex h-20 max-w-6xl items-center justify-center px-6 md:h-24"
-    aria-label="Main"
-  >
-    <a href="#hero" class="shrink-0" aria-label="Arte — home">
+<header class="site-nav">
+  <nav class="site-nav__inner" aria-label="Main">
+    <ul class="site-nav__group site-nav__group--left">
+      {
+        left.map((link) => (
+          <li>
+            <a href={link.href}>{link.label}</a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <a href="/" class="site-nav__logo" aria-label="Arte — home">
       <img
         src="/arte-logo-black.svg"
         alt="Arte"
-        class="h-12 w-auto md:h-16"
-        width="652"
-        height="367"
+        width="658"
+        height="376"
       />
     </a>
 
-    <ul class="absolute right-6 hidden items-center gap-8 md:flex">
+    <ul class="site-nav__group site-nav__group--right">
       {
-        links.map((link) => (
+        right.map((link) => (
           <li>
-            <a
-              href={link.href}
-              class="font-sans text-sm tracking-wide text-void transition-opacity hover:opacity-60"
-            >
-              {link.label}
-            </a>
+            <a href={link.href}>{link.label}</a>
           </li>
         ))
       }
     </ul>
   </nav>
 </header>
+
+<style>
+  .site-nav {
+    background: #ffffff;
+  }
+
+  .site-nav__inner {
+    display: grid;
+    width: min(100%, 1100px);
+    margin-inline: auto;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    column-gap: clamp(2.5rem, 6vw, 5.5rem);
+    padding: 1.25rem clamp(1.25rem, 4vw, 3.5rem);
+  }
+
+  .site-nav__group {
+    display: flex;
+    align-items: center;
+    gap: clamp(2rem, 5vw, 4rem);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .site-nav__group--left {
+    justify-content: flex-end;
+  }
+
+  .site-nav__group--right {
+    justify-content: flex-start;
+  }
+
+  .site-nav__group a {
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+    color: #1e1e1e;
+    transition: opacity 0.25s ease;
+  }
+
+  .site-nav__group a:hover {
+    opacity: 0.55;
+  }
+
+  .site-nav__logo {
+    display: block;
+    justify-self: center;
+  }
+
+  .site-nav__logo img {
+    width: min(28vw, 140px);
+    height: auto;
+  }
+
+  @media (max-width: 720px) {
+    .site-nav__inner {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      row-gap: 0.75rem;
+    }
+
+    .site-nav__group--left,
+    .site-nav__group--right {
+      justify-content: center;
+    }
+  }
+</style>

@@ -1,22 +1,22 @@
 @import "tailwindcss";
 
 @theme {
-  /* Deep dark artistic palette */
-  --color-void: #050505;
-  --color-ink: #0a0a0a;
-  --color-charcoal: #141414;
-  --color-slate: #1c1c1c;
-  --color-stone: #2a2a2a;
+  /* Arte base palette — white ground, #1E1E1E ink */
+  --color-void: #ffffff;
+  --color-ink: #1e1e1e;
+  --color-charcoal: #f5f5f5;
+  --color-slate: #ececec;
+  --color-stone: #d8d8d8;
   --color-muted: #6b6b6b;
-  --color-fog: #a3a3a3;
-  --color-mist: #d4d0cb;
-  --color-ivory: #f2efe9;
+  --color-fog: #6b6b6b;
+  --color-mist: #4a4a4a;
+  --color-ivory: #1e1e1e;
   --color-accent: #c4a882;
   --color-accent-soft: #a89070;
 
   /* Typography */
-  --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: "Fira Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Koulen", ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
@@ -38,7 +38,7 @@
     margin: 0;
     min-height: 100vh;
     background-color: var(--color-void);
-    color: var(--color-ivory);
+    color: var(--color-ink);
     font-family: var(--font-sans);
   }
 
@@ -48,7 +48,8 @@
   h4 {
     font-family: var(--font-display);
     font-weight: 400;
-    letter-spacing: -0.02em;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
   }
 
   img,
