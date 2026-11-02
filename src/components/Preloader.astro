@@ -9,12 +9,76 @@
   aria-label="Ładowanie"
 >
   <div class="preloader__stage">
-    <canvas
-      id="preloader-canvas"
-      class="preloader__canvas"
-      width="719"
-      height="393"
-    ></canvas>
+    <svg
+      class="preloader__logo"
+      width="707"
+      height="410"
+      viewBox="0 0 707 410"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <g clip-path="url(#preloader-clip)">
+        <rect width="707" height="410" fill="white"></rect>
+        <path
+          transform="translate(43 46.5)"
+          d="M0 159.5H360C247 189.778 273 282.5 330 282.5C439 282.5 461 88.5 497.5 0C478.342 71.5 383.625 282.5 490.5 282.5C589.5 282.5 656.391 170.765 595.5 146.5C529 120 473.5 323.212 638.5 279"
+          stroke="#EEEEEE"
+          stroke-width="36"
+          stroke-linejoin="bevel"
+        ></path>
+        <path
+          transform="translate(44 42.7294)"
+          d="M0 353.271C0 353.271 138.5 0 221.5 0C336 0 167 301.771 167 301.771"
+          stroke="#EEEEEE"
+          stroke-width="36"
+        ></path>
+        <path
+          transform="translate(358 117)"
+          d="M0 0H307.5"
+          stroke="#EEEEEE"
+          stroke-width="33"
+        ></path>
+        <path
+          class="preloader__stroke preloader__stroke--main"
+          transform="translate(43 46.5)"
+          d="M0 159.5H360C247 189.778 273 282.5 330 282.5C439 282.5 461 88.5 497.5 0C478.342 71.5 383.625 282.5 490.5 282.5C589.5 282.5 656.391 170.765 595.5 146.5C529 120 473.5 323.212 638.5 279"
+          pathLength="1"
+          stroke="#1E1E1E"
+          stroke-width="36"
+          stroke-linejoin="bevel"
+          stroke-dasharray="1 1"
+        ></path>
+        <path
+          class="preloader__stroke preloader__stroke--a"
+          transform="translate(44 42.7295)"
+          d="M0 353.271C0 353.271 138.5 0 221.5 0C336 0 167 301.771 167 301.771"
+          pathLength="1"
+          stroke="#1E1E1E"
+          stroke-width="36"
+          stroke-dasharray="1 1"
+        ></path>
+        <path
+          class="preloader__stroke preloader__stroke--cross"
+          transform="translate(358 117)"
+          d="M0 0H307.5"
+          pathLength="1"
+          stroke="#1E1E1E"
+          stroke-width="33"
+          stroke-dasharray="1 1"
+        ></path>
+        <path
+          transform="translate(244.569 154.921) rotate(23.2665)"
+          d="M0 2.18887L29.3145 0C32.2761 32.9029 34.0489 51.3305 32 85.1889H0V2.18887Z"
+          fill="white"
+        ></path>
+      </g>
+      <defs>
+        <clipPath id="preloader-clip">
+          <rect width="707" height="410" fill="white"></rect>
+        </clipPath>
+      </defs>
+    </svg>
   </div>
 </div>
 
@@ -38,18 +102,86 @@
 
   .preloader__stage {
     width: min(72vw, 420px);
-    aspect-ratio: 719 / 393;
+    aspect-ratio: 707 / 410;
   }
 
-  .preloader__canvas {
+  .preloader__logo {
     display: block;
     width: 100%;
     height: 100%;
   }
 
-  :global(html.is-loading),
+  .preloader__stroke {
+    stroke-dashoffset: 0;
+    visibility: hidden;
+  }
+
+  .preloader.is-playing .preloader__stroke--main {
+    animation: preloader-draw-main 2s linear forwards;
+  }
+
+  .preloader.is-playing .preloader__stroke--a {
+    animation: preloader-draw-a 2s linear forwards;
+  }
+
+  .preloader.is-playing .preloader__stroke--cross {
+    animation: preloader-draw-cross 2s linear forwards;
+  }
+
+  @keyframes preloader-draw-main {
+    0% {
+      animation-timing-function: cubic-bezier(0.817, 0, 0.494, 1);
+      stroke-dasharray: 0 1;
+      visibility: hidden;
+    }
+    100% {
+      stroke-dasharray: 1 1;
+      visibility: visible;
+    }
+  }
+
+  @keyframes preloader-draw-a {
+    0% {
+      animation-timing-function: cubic-bezier(0.817, 0, 0.494, 1);
+      stroke-dasharray: 0 1;
+      visibility: hidden;
+    }
+    50.189% {
+      stroke-dasharray: 1 1;
+      visibility: visible;
+    }
+    100% {
+      stroke-dasharray: 1 1;
+      visibility: visible;
+    }
+  }
+
+  @keyframes preloader-draw-cross {
+    0% {
+      stroke-dasharray: 0 1;
+      visibility: hidden;
+    }
+    50.189% {
+      animation-timing-function: cubic-bezier(0.817, 0, 0.494, 1);
+      stroke-dasharray: 0 1;
+      visibility: hidden;
+    }
+    100% {
+      stroke-dasharray: 1 1;
+      visibility: visible;
+    }
+  }
+
+  /* Lock scroll on body only — keep html scrollbar lane so layout doesn't jump */
+  :global(html.is-loading) {
+    overscroll-behavior: none;
+  }
+
   :global(html.is-loading body) {
     overflow: hidden;
+    height: 100%;
+    overscroll-behavior: none;
+    touch-action: none;
   }
 
   :global(html.is-loading main) {
@@ -65,6 +197,12 @@
       transition-duration: 0.2s;
     }
 
+    .preloader.is-playing .preloader__stroke {
+      animation: none;
+      stroke-dasharray: 1 1;
+      visibility: visible;
+    }
+
     :global(main) {
       transition-duration: 0.2s;
     }
@@ -72,15 +210,11 @@
 </style>
 
 <script>
-  import { DotLottie } from "@lottiefiles/dotlottie-web";
-
   const EXIT_MS = 700;
+  const ANIM_MS = 2000;
   const FAILSAFE_MS = 5000;
 
   const preloader = document.getElementById("preloader");
-  const canvas = document.getElementById(
-    "preloader-canvas",
-  ) as HTMLCanvasElement | null;
 
   const finish = () => {
     if (!preloader || preloader.classList.contains("is-done")) return;
@@ -97,27 +231,16 @@
     "(prefers-reduced-motion: reduce)",
   ).matches;
 
-  if (!preloader || !canvas || reduceMotion) {
+  if (!preloader || reduceMotion) {
     finish();
   } else {
-    const player = new DotLottie({
-      canvas,
-      src: "/logo-intro-animation.lottie",
-      autoplay: true,
-      loop: false,
-      backgroundColor: "#ffffff",
-    });
+    preloader.classList.add("is-playing");
 
     const failsafe = window.setTimeout(finish, FAILSAFE_MS);
 
-    player.addEventListener("complete", () => {
+    window.setTimeout(() => {
       window.clearTimeout(failsafe);
       window.setTimeout(finish, 180);
-    });
-
-    player.addEventListener("loadError", () => {
-      window.clearTimeout(failsafe);
-      finish();
-    });
+    }, ANIM_MS);
   }
 </script>

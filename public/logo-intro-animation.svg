@@ -1,0 +1,73 @@
+<svg width="707" height="410" viewBox="0 0 707 410" fill="none" xmlns="http://www.w3.org/2000/svg">
+<style>
+@keyframes kf_Vector_13_path-trim_0 {
+  0% {
+    animation-timing-function: cubic-bezier(0.817, 0, 0.494, 1);
+    stroke-dasharray: 0 1;
+    visibility: hidden;
+  }
+  100% {
+    stroke-dasharray: 1 1;
+    visibility: visible;
+  }
+}
+#Vector_13 {
+  stroke-dashoffset: 0;
+  animation: kf_Vector_13_path-trim_0 2s linear infinite;
+}
+@keyframes kf_Vector_14_path-trim_0 {
+  0% {
+    animation-timing-function: cubic-bezier(0.817, 0, 0.494, 1);
+    stroke-dasharray: 0 1;
+    visibility: hidden;
+  }
+  50.189% {
+    stroke-dasharray: 1 1;
+    visibility: visible;
+  }
+  100% {
+    stroke-dasharray: 1 1;
+    visibility: visible;
+  }
+}
+#Vector_14 {
+  stroke-dashoffset: 0;
+  animation: kf_Vector_14_path-trim_0 2s linear infinite;
+}
+@keyframes kf_Vector_15_path-trim_0 {
+  0% {
+    stroke-dasharray: 0 1;
+    visibility: hidden;
+  }
+  50.189% {
+    animation-timing-function: cubic-bezier(0.817, 0, 0.494, 1);
+    stroke-dasharray: 0 1;
+    visibility: hidden;
+  }
+  100% {
+    stroke-dasharray: 1 1;
+    visibility: visible;
+  }
+}
+#Vector_15 {
+  stroke-dashoffset: 0;
+  animation: kf_Vector_15_path-trim_0 2s linear infinite;
+}
+</style>
+<g id="Frame_9" clip-path="url(#clip0_9_373)">
+<rect width="707" height="410" id="Frame_9_bg_0" fill="white">
+</rect>
+<path id="Vector_11" transform="translate(43 46.5)" d="M0 159.5H360C247 189.778 273 282.5 330 282.5C439 282.5 461 88.5 497.5 0C478.342 71.5 383.625 282.5 490.5 282.5C589.5 282.5 656.391 170.765 595.5 146.5C529 120 473.5 323.212 638.5 279" stroke="#EEEEEE" stroke-width="36" stroke-linejoin="bevel"/>
+<path id="Vector_4" transform="translate(44 42.7294)" d="M0 353.271C0 353.271 138.5 0 221.5 0C336 0 167 301.771 167 301.771" stroke="#EEEEEE" stroke-width="36"/>
+<path id="Vector_12" transform="translate(358 117)" d="M0 0H307.5" stroke="#EEEEEE" stroke-width="33"/>
+<path id="Vector_13" transform="translate(43 46.5)" d="M0 159.5H360C247 189.778 273 282.5 330 282.5C439 282.5 461 88.5 497.5 0C478.342 71.5 383.625 282.5 490.5 282.5C589.5 282.5 656.391 170.765 595.5 146.5C529 120 473.5 323.212 638.5 279" pathLength="1" stroke="#1E1E1E" stroke-width="36" stroke-linejoin="bevel" stroke-dasharray="1 1"/>
+<path id="Vector_14" transform="translate(44 42.7295)" d="M0 353.271C0 353.271 138.5 0 221.5 0C336 0 167 301.771 167 301.771" pathLength="1" stroke="#1E1E1E" stroke-width="36" stroke-dasharray="1 1"/>
+<path id="Vector_15" transform="translate(358 117)" d="M0 0H307.5" pathLength="1" stroke="#1E1E1E" stroke-width="33" stroke-dasharray="1 1"/>
+<path id="Rectangle_2" transform="translate(244.569 154.921) rotate(23.2665)" d="M0 2.18887L29.3145 0C32.2761 32.9029 34.0489 51.3305 32 85.1889H0V2.18887Z" fill="white"/>
+</g>
+<defs>
+<clipPath id="clip0_9_373">
+<rect width="707" height="410" fill="white"/>
+</clipPath>
+</defs>
+</svg>
