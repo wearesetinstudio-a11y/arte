@@ -1,0 +1,189 @@
+---
+const kicker = "Ruch, który wyraża więcej.";
+
+const lines = [
+  "Taniec to nie tylko układ kroków – to kontrola,",
+  "dynamika i autentyczna ekspresja.",
+  "W Arte de Baile skupiamy się na technice,",
+  "która daje wolność, oraz na motoryce,",
+  "która buduje silne, świadome ciało.",
+];
+---
+
+<section class="dance-value" data-value aria-labelledby="value-statement">
+  <div class="dance-value__pin">
+    <div class="dance-value__inner">
+      <p class="dance-value__kicker">{kicker}</p>
+      <h2 id="value-statement" class="dance-value__statement">
+        {
+          lines.map((line) => (
+            <span class="dance-value__line">
+              {line.split(/\s+/).map((word) => (
+                <span class="dance-value__word" data-word>
+                  {word}
+                </span>
+              ))}
+            </span>
+          ))
+        }
+      </h2>
+    </div>
+  </div>
+</section>
+
+<style>
+  .dance-value {
+    --value-ink: #1e1e1e;
+    --value-muted: #d4d4d4;
+
+    position: relative;
+    height: 280vh;
+    background: #ffffff;
+    color: var(--value-ink);
+  }
+
+  .dance-value__pin {
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    height: 100svh;
+    padding: clamp(4.5rem, 12vh, 7.5rem) clamp(1.5rem, 4vw, 3.25rem);
+  }
+
+  .dance-value__inner {
+    width: min(100%, 52rem);
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .dance-value__kicker {
+    margin: 0 0 1.35rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  .dance-value__statement {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 1.05rem + 1.55vw, 2.55rem);
+    font-weight: 500;
+    letter-spacing: -0.028em;
+    line-height: 1.18;
+  }
+
+  .dance-value__line {
+    display: block;
+    max-width: 100%;
+  }
+
+  .dance-value__word {
+    --ink: 0;
+    color: color-mix(
+      in srgb,
+      var(--value-ink) calc(var(--ink) * 100%),
+      var(--value-muted)
+    );
+  }
+
+  .dance-value__word + .dance-value__word::before {
+    content: " ";
+  }
+
+  @media (max-width: 720px) {
+    .dance-value {
+      height: 240vh;
+    }
+
+    .dance-value__inner {
+      width: 100%;
+    }
+
+    .dance-value__statement {
+      display: block;
+      font-size: clamp(1.55rem, 6.4vw, 2rem);
+      line-height: 1.22;
+      text-wrap: pretty;
+    }
+
+    .dance-value__line {
+      display: inline;
+    }
+
+    .dance-value__line:not(:last-child)::after {
+      content: " ";
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dance-value {
+      height: auto;
+    }
+
+    .dance-value__pin {
+      position: relative;
+      height: auto;
+      padding-block: clamp(5rem, 14vh, 8rem);
+    }
+
+    .dance-value__word {
+      --ink: 1;
+    }
+  }
+</style>
+
+<script>
+  const section = document.querySelector<HTMLElement>("[data-value]");
+
+  if (section) {
+    const words = [...section.querySelectorAll<HTMLElement>("[data-word]")];
+    const reduce = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    const clamp = (value: number, min: number, max: number) =>
+      Math.min(max, Math.max(min, value));
+
+    const paint = (amount: number) => {
+      const count = words.length;
+      const blend = 1.65;
+      const cursor = amount * (count - 1 + blend);
+
+      for (let i = 0; i < count; i++) {
+        const local = clamp((cursor - i) / blend, 0, 1);
+        const eased = local * local * (3 - 2 * local);
+        words[i].style.setProperty("--ink", eased.toFixed(3));
+      }
+    };
+
+    if (!reduce && words.length) {
+      let frame = 0;
+
+      const update = () => {
+        frame = 0;
+        const travel = section.offsetHeight - window.innerHeight;
+        const raw =
+          travel <= 0
+            ? 1
+            : clamp(-section.getBoundingClientRect().top / travel, 0, 1);
+        paint(clamp((raw - 0.08) / 0.78, 0, 1));
+      };
+
+      const requestUpdate = () => {
+        if (frame) return;
+        frame = requestAnimationFrame(update);
+      };
+
+      update();
+      window.addEventListener("scroll", requestUpdate, { passive: true });
+      window.addEventListener("resize", requestUpdate);
+    }
+  }
+</script>

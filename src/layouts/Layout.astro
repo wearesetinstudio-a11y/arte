@@ -36,11 +36,11 @@ const {
     />
     <link rel="icon" href="/favicon.ico" />
 
-    <!-- Google Fonts: Fira Sans (body) + Koulen (display) -->
+    <!-- Google Fonts: Geist (headlines + copy) + Geist Mono (buttons + labels) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Koulen&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&family=Geist:wght@100..900&display=swap"
       rel="stylesheet"
     />
 
@@ -71,7 +71,12 @@ const {
       })();
     </script>
   </head>
-  <body class="bg-void text-ink antialiased">
+  <body
+    class:list={[
+      "antialiased",
+      lockScroll ? "is-dark-surface" : "bg-void text-ink",
+    ]}
+  >
     <Preloader />
     <slot />
 
@@ -99,5 +104,10 @@ const {
   html.is-locked {
     overflow-y: hidden;
     scrollbar-gutter: auto;
+  }
+
+  body.is-dark-surface {
+    background: #0a0a0a;
+    color: #ffffff;
   }
 </style>

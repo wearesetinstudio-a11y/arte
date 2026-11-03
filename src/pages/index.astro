@@ -1,10 +1,19 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import HomeGate from "../components/HomeGate.astro";
+import DanceHero from "../components/DanceHero.astro";
+import DanceValue from "../components/DanceValue.astro";
+import DanceContact from "../components/DanceContact.astro";
+import DanceFooter from "../components/DanceFooter.astro";
 ---
 
-<Layout title="Arte — Viktoria Oskaldowicz" lockScroll>
+<Layout
+  title="Arte — Sztuka Ruchu"
+  description="Butikowe studio tańca w Poznaniu. Broadway Jazz, Jazz, High Heels, Performance i trening personalny."
+>
   <main>
-    <HomeGate />
+    <DanceHero />
+    <DanceValue />
+    <DanceContact />
   </main>
+  <DanceFooter />
 </Layout>

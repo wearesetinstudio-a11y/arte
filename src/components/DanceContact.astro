@@ -1,0 +1,285 @@
+---
+const copy =
+  "Nie publikujemy sztywnych grafików z szuflady – każdą współpracę i grupę formujemy wokół realnych celów uczestników. Napisz do nas, opowiedz o swoim doświadczeniu i potrzebach.";
+---
+
+<section class="dance-contact" id="kontakt" aria-labelledby="contact-heading">
+  <div class="dance-contact__grid">
+    <img
+      class="dance-contact__logo"
+      src="/arte-logo-white.svg"
+      alt="Arte"
+      width="658"
+      height="376"
+    />
+    <p class="dance-contact__copy">{copy}</p>
+
+    <form class="dance-contact__form" action="#" method="post">
+      <h2 id="contact-heading" class="dance-contact__title">Napisz do nas</h2>
+
+      <label class="dance-contact__field">
+        <input
+          class="dance-contact__input"
+          type="text"
+          name="name"
+          autocomplete="given-name"
+          placeholder=" "
+          required
+        />
+        <span class="dance-contact__label">Imię</span>
+      </label>
+
+      <label class="dance-contact__field">
+        <input
+          class="dance-contact__input"
+          type="email"
+          name="email"
+          autocomplete="email"
+          placeholder=" "
+          required
+        />
+        <span class="dance-contact__label">E-mail</span>
+      </label>
+
+      <label class="dance-contact__field">
+        <textarea
+          class="dance-contact__input dance-contact__input--area"
+          name="message"
+          rows="1"
+          placeholder=" "
+          required></textarea>
+        <span class="dance-contact__label">Opisz swoje cele i doświadczenie</span>
+      </label>
+
+      <button type="submit" class="dance-contact__submit">
+        <span class="dance-contact__btn-cover" aria-hidden="true"></span>
+        <span class="dance-contact__btn-label">Wyślij wiadomość</span>
+        <img src="/arrow.svg" alt="" width="26" height="26" />
+      </button>
+    </form>
+  </div>
+</section>
+
+<style>
+  .dance-contact {
+    display: flex;
+    align-items: center;
+    min-height: 100svh;
+    scroll-margin-top: 0;
+    background: #1e1e1e;
+    color: #ffffff;
+    padding: clamp(4.5rem, 12vh, 7.5rem) clamp(1.5rem, 4vw, 3.25rem);
+  }
+
+  .dance-contact__grid {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: clamp(1.75rem, 3.5vw, 3rem);
+    width: min(100%, 78rem);
+    margin-inline: auto;
+  }
+
+  .dance-contact__logo {
+    flex: 0 0 auto;
+    width: clamp(5.5rem, 12vw, 8.5rem);
+    height: auto;
+  }
+
+  .dance-contact__copy {
+    flex: 0 1 24rem;
+    margin: 0;
+    max-width: 24rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: 400;
+    line-height: 1.45;
+    color: rgb(255 255 255 / 0.92);
+  }
+
+  .dance-contact__form {
+    display: flex;
+    flex: 0 1 28rem;
+    flex-direction: column;
+    gap: 1.65rem;
+    width: 100%;
+    max-width: 28rem;
+  }
+
+  .dance-contact__title {
+    margin: 0 0 0.35rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    line-height: 1.3;
+    text-transform: uppercase;
+  }
+
+  .dance-contact__field {
+    position: relative;
+    display: block;
+  }
+
+  .dance-contact__label {
+    position: absolute;
+    left: 0;
+    top: 1.15rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: 400;
+    line-height: 1.4;
+    color: rgb(255 255 255 / 0.42);
+    pointer-events: none;
+    transform-origin: left top;
+    transition:
+      top 0.22s ease,
+      font-size 0.22s ease,
+      color 0.22s ease;
+  }
+
+  .dance-contact__input {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 1.15rem 0 0.7rem;
+    border: 0;
+    border-bottom: 1px solid rgb(255 255 255 / 0.28);
+    border-radius: 0;
+    background: transparent;
+    color: #ffffff;
+    caret-color: #ffffff;
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: 400;
+    line-height: 1.4;
+    outline: none;
+    appearance: none;
+    resize: none;
+    transition: border-color 0.22s ease;
+  }
+
+  .dance-contact__input--area {
+    min-height: calc(1.15rem + 1.4em + 0.7rem);
+    field-sizing: content;
+  }
+
+  .dance-contact__input::placeholder {
+    color: transparent;
+    opacity: 0;
+  }
+
+  .dance-contact__field:focus-within .dance-contact__input {
+    border-bottom-color: #ffffff;
+  }
+
+  .dance-contact__field:focus-within .dance-contact__label,
+  .dance-contact__field:has(input:not(:placeholder-shown)) .dance-contact__label,
+  .dance-contact__field:has(textarea:not(:placeholder-shown))
+    .dance-contact__label {
+    top: 0;
+    font-size: var(--text-label);
+    line-height: 1.3;
+    color: rgb(255 255 255 / 0.42);
+  }
+
+  .dance-contact__submit {
+    position: relative;
+    isolation: isolate;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    width: 100%;
+    margin-top: 0.55rem;
+    padding: 1rem 0.95rem;
+    overflow: hidden;
+    border: 0;
+    background: #ffffff;
+    color: #1e1e1e;
+    font-family: var(--font-mono);
+    font-size: var(--text-button);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.35s ease;
+  }
+
+  .dance-contact__btn-cover {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: #000000;
+    transform: scaleY(0);
+    transform-origin: bottom center;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .dance-contact__btn-label {
+    position: relative;
+  }
+
+  .dance-contact__submit img {
+    position: relative;
+    width: var(--size-arrow);
+    height: auto;
+    flex-shrink: 0;
+    transition: filter 0.35s ease;
+  }
+
+  .dance-contact__submit:active .dance-contact__btn-cover,
+  .dance-contact__submit:focus-visible .dance-contact__btn-cover {
+    transform: scaleY(1);
+  }
+
+  .dance-contact__submit:active,
+  .dance-contact__submit:focus-visible {
+    color: #ffffff;
+  }
+
+  .dance-contact__submit:active img,
+  .dance-contact__submit:focus-visible img {
+    filter: brightness(0) invert(1);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .dance-contact__submit:hover .dance-contact__btn-cover {
+      transform: scaleY(1);
+    }
+
+    .dance-contact__submit:hover {
+      color: #ffffff;
+    }
+
+    .dance-contact__submit:hover img {
+      filter: brightness(0) invert(1);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .dance-contact__grid {
+      flex-wrap: wrap;
+    }
+
+    .dance-contact__form {
+      flex: 1 1 100%;
+      max-width: none;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .dance-contact__grid {
+      flex-direction: column;
+    }
+
+    .dance-contact__logo {
+      width: min(7rem, 42vw);
+    }
+
+    .dance-contact__copy {
+      flex-basis: auto;
+      max-width: none;
+    }
+  }
+</style>

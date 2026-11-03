@@ -1,0 +1,630 @@
+---
+const styles = [
+  "Broadway Jazz",
+  "Jazz",
+  "High Heels",
+  "Performance",
+  "Trening personalny dla tancerzy",
+];
+
+const description =
+  "Jesteśmy butikowym studiem tańca w Poznaniu, stworzonym z myślą o dorosłych – od pasjonatów po profesjonalnych tancerzy. Łączymy precyzyjną technikę, motorykę i sceniczną ekspresję.";
+---
+
+<section class="dance-hero" aria-label="Sztuka Ruchu">
+  <div class="dance-hero__media" aria-hidden="true">
+    <img src="/dance.webp" alt="" width="1920" height="1080" />
+  </div>
+
+  <header class="dance-hero__nav">
+    <div class="dance-hero__brand">
+      <a href="/" class="dance-hero__logo" aria-label="Arte — strona główna">
+        <img
+          src="/arte-logo-white.svg"
+          alt="Arte"
+          width="658"
+          height="376"
+        />
+      </a>
+      <p class="dance-hero__tag">
+        <span>De baile</span>
+        <span class="dance-hero__tag-sep" aria-hidden="true">|</span>
+        <span>Poznań</span>
+      </p>
+    </div>
+  </header>
+
+  <div class="dance-hero__body">
+    <div class="dance-hero__compose">
+      <div class="dance-hero__col dance-hero__col--sztuka" data-lock-width>
+        <h1 class="dance-hero__word" data-word>
+          Sztuka
+          <span class="sr-only"> Ruchu</span>
+        </h1>
+        <p class="dance-hero__copy dance-hero__copy--desktop">{description}</p>
+      </div>
+
+      <div class="dance-hero__col dance-hero__col--ruchu" data-lock-width>
+        <p
+          class="dance-hero__word dance-hero__word--offset"
+          data-word
+          aria-hidden="true"
+        >
+          Ruchu
+        </p>
+        <a href="#kontakt" class="dance-hero__cta dance-hero__cta--desktop">
+          <span class="dance-hero__btn-cover" aria-hidden="true"></span>
+          <span class="dance-hero__btn-label">Umów się na zajęcia</span>
+          <img src="/arrow.svg" alt="" width="26" height="26" />
+        </a>
+      </div>
+    </div>
+
+    <p class="dance-hero__copy dance-hero__copy--mobile">{description}</p>
+  </div>
+
+  <div class="dance-hero__footer">
+    <a href="#kontakt" class="dance-hero__cta dance-hero__cta--mobile">
+      <span class="dance-hero__btn-cover" aria-hidden="true"></span>
+      <span class="dance-hero__btn-label">Umów się na zajęcia</span>
+      <img src="/arrow.svg" alt="" width="26" height="26" />
+    </a>
+
+    <div class="dance-hero__marquee">
+      <div class="dance-hero__marquee-track">
+        <ul class="dance-hero__styles">
+          {
+            styles.map((style) => (
+              <li>{style}</li>
+            ))
+          }
+        </ul>
+        <ul class="dance-hero__styles" aria-hidden="true">
+          {
+            styles.map((style) => (
+              <li>{style}</li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .dance-hero {
+    --text-button: clamp(0.82rem, 1.25vh + 0.2vw, 0.95rem);
+    --text-body: clamp(0.92rem, 1.45vh + 0.3vw, 1.15rem);
+    --text-label: clamp(0.75rem, 1.2vh + 0.2vw, 0.92rem);
+    --tracking-label: 0.08em;
+    --size-arrow: 0.9rem;
+
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    width: 100%;
+    height: 100svh;
+    max-height: 100svh;
+    flex-direction: column;
+    overflow: hidden;
+    color: #ffffff;
+    background: #0a0a0a;
+  }
+
+  .dance-hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .dance-hero__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
+  }
+
+  .dance-hero__nav,
+  .dance-hero__body,
+  .dance-hero__footer {
+    position: relative;
+    z-index: 1;
+  }
+
+  .dance-hero__media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        180deg,
+        rgb(0 0 0 / 0.5) 0%,
+        rgb(0 0 0 / 0.18) 42%,
+        rgb(0 0 0 / 0.55) 100%
+      );
+  }
+
+  .dance-hero__nav {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(1.25rem, 3vh, 2rem) clamp(1.5rem, 4vw, 3.25rem) clamp(0.5rem, 1.5vh, 1rem);
+  }
+
+  .dance-hero__brand {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: clamp(0.85rem, 2vw, 1.35rem);
+    min-width: 0;
+  }
+
+  .dance-hero__logo {
+    display: block;
+    flex-shrink: 0;
+  }
+
+  .dance-hero__logo img {
+    width: min(18vw, 112px);
+    height: auto;
+  }
+
+  .dance-hero__tag {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .dance-hero__tag-sep {
+    opacity: 0.7;
+  }
+
+  .dance-hero__cta {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: #ffffff;
+    color: #1e1e1e;
+    font-family: var(--font-mono);
+    font-size: var(--text-button);
+    font-weight: 500;
+    text-transform: uppercase;
+    transition: color 0.35s ease;
+  }
+
+  .dance-hero__btn-cover {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: #000000;
+    transform: scaleY(0);
+    transform-origin: bottom center;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .dance-hero__cta:active .dance-hero__btn-cover,
+  .dance-hero__cta:focus-visible .dance-hero__btn-cover {
+    transform: scaleY(1);
+  }
+
+  .dance-hero__cta:active,
+  .dance-hero__cta:focus-visible {
+    color: #ffffff;
+  }
+
+  .dance-hero__cta:active img,
+  .dance-hero__cta:focus-visible img {
+    filter: brightness(0) invert(1);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .dance-hero__cta:hover .dance-hero__btn-cover {
+      transform: scaleY(1);
+    }
+
+    .dance-hero__cta:hover {
+      color: #ffffff;
+    }
+
+    .dance-hero__cta:hover img {
+      filter: brightness(0) invert(1);
+    }
+  }
+
+  .dance-hero__btn-label {
+    position: relative;
+  }
+
+  .dance-hero__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+    padding: 0 clamp(1.5rem, 4vw, 3.25rem);
+  }
+
+  .dance-hero__compose {
+    display: grid;
+    width: max-content;
+    max-width: 100%;
+    margin-inline: auto;
+    grid-template-columns: max-content max-content;
+    align-items: start;
+    justify-content: center;
+    column-gap: 40px;
+  }
+
+  .dance-hero__col {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .dance-hero__word {
+    display: inline-block;
+    width: max-content;
+    max-width: none;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(3.2rem, 11vw, 8rem);
+    font-weight: 400;
+    line-height: 0.82;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .dance-hero__word--offset {
+    transform: translateY(20px);
+  }
+
+  .dance-hero__copy {
+    box-sizing: border-box;
+    margin: 1.15rem 0 0;
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: 400;
+    line-height: 1.45;
+    color: rgb(255 255 255 / 0.9);
+  }
+
+  .dance-hero__copy--desktop {
+    width: 100%;
+  }
+
+  .dance-hero__copy--mobile {
+    display: none;
+  }
+
+  .dance-hero__cta {
+    display: inline-flex;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 1rem 0.85rem;
+    letter-spacing: var(--tracking-label);
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .dance-hero__cta--desktop {
+    margin-top: calc(1.15rem + 20px);
+  }
+
+  .dance-hero__cta--mobile {
+    display: none;
+  }
+
+  .dance-hero__cta .dance-hero__btn-label {
+    overflow: hidden;
+    min-width: 0;
+    text-overflow: ellipsis;
+  }
+
+  .dance-hero__cta img {
+    position: relative;
+    width: var(--size-arrow);
+    height: auto;
+    margin-left: auto;
+    flex-shrink: 0;
+    transition: filter 0.35s ease;
+  }
+
+  .dance-hero__footer {
+    flex-shrink: 0;
+    padding: 0 clamp(1.5rem, 4vw, 3.25rem);
+  }
+
+  .dance-hero__marquee {
+    width: 100%;
+    margin: 0 0 20px;
+  }
+
+  .dance-hero__marquee-track {
+    display: flex;
+    width: 100%;
+  }
+
+  .dance-hero__styles {
+    display: flex;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: 400;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .dance-hero__marquee-track > .dance-hero__styles[aria-hidden="true"] {
+    display: none;
+  }
+
+  @media (max-width: 720px) {
+    .dance-hero {
+      --text-body: clamp(0.95rem, 3.6vw, 1.1rem);
+      --text-button: clamp(0.85rem, 3.2vw, 1rem);
+    }
+
+    .dance-hero__media img {
+      object-position: center 25%;
+    }
+
+    .dance-hero__nav {
+      padding: 1.5rem 1.25rem 0.35rem;
+    }
+
+    .dance-hero__brand {
+      flex-direction: column;
+      align-items: center;
+      gap: 0.65rem;
+      text-align: center;
+    }
+
+    .dance-hero__logo img {
+      width: min(34vw, 118px);
+    }
+
+    .dance-hero__tag {
+      font-size: clamp(0.72rem, 2.8vw, 0.85rem);
+      letter-spacing: 0.16em;
+    }
+
+    .dance-hero__body {
+      justify-content: center;
+      gap: 1.75rem;
+      padding: 0.75rem 1.5rem 0;
+    }
+
+    .dance-hero__compose {
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .dance-hero__col {
+      width: auto !important;
+    }
+
+    .dance-hero__col--sztuka {
+      align-self: flex-start;
+      margin-left: clamp(0.25rem, 2vw, 0.75rem);
+    }
+
+    .dance-hero__col--ruchu {
+      align-self: flex-end;
+      margin-top: -0.35rem;
+      margin-right: clamp(0.25rem, 2vw, 0.75rem);
+    }
+
+    .dance-hero__word {
+      font-size: clamp(4rem, 20vw, 5.75rem);
+    }
+
+    .dance-hero__word--offset {
+      transform: translateY(6px);
+    }
+
+    .dance-hero__copy--desktop,
+    .dance-hero__cta--desktop {
+      display: none;
+    }
+
+    .dance-hero__copy--mobile {
+      display: block;
+      width: min(100%, 21.5rem);
+      margin: 0;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .dance-hero__footer {
+      display: flex;
+      flex-direction: column;
+      gap: 1.15rem;
+      margin-top: auto;
+      padding: 0 0 max(1.1rem, env(safe-area-inset-bottom));
+    }
+
+    .dance-hero__cta--mobile {
+      display: inline-flex;
+      width: calc(100% - 2.5rem);
+      margin-inline: 1.25rem;
+      padding: 1.05rem 1rem;
+    }
+
+    .dance-hero__marquee {
+      overflow: hidden;
+      width: 100%;
+      margin: 0;
+      mask-image: linear-gradient(
+        90deg,
+        transparent 0%,
+        #000 6%,
+        #000 94%,
+        transparent 100%
+      );
+      -webkit-mask-image: linear-gradient(
+        90deg,
+        transparent 0%,
+        #000 6%,
+        #000 94%,
+        transparent 100%
+      );
+    }
+
+    .dance-hero__marquee-track {
+      width: max-content;
+      animation: dance-styles-marquee 28s linear infinite;
+    }
+
+    .dance-hero__marquee-track > .dance-hero__styles[aria-hidden="true"] {
+      display: flex;
+    }
+
+    .dance-hero__styles {
+      flex: 0 0 auto;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      gap: 0;
+      width: max-content;
+    }
+
+    .dance-hero__styles li {
+      flex-shrink: 0;
+      padding-inline: 1.35rem;
+      white-space: nowrap;
+    }
+
+    .dance-hero__styles li + li {
+      border-left: 1px solid rgb(255 255 255 / 0.35);
+    }
+  }
+
+  @keyframes dance-styles-marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (max-width: 720px) and (prefers-reduced-motion: reduce) {
+    .dance-hero__marquee-track {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  const MOBILE_MQ = window.matchMedia("(max-width: 720px)");
+
+  const lockColumnWidths = () => {
+    const cols = document.querySelectorAll<HTMLElement>("[data-lock-width]");
+
+    if (MOBILE_MQ.matches) {
+      for (const col of cols) {
+        col.style.width = "";
+        const copy = col.querySelector<HTMLElement>(".dance-hero__copy");
+        const cta = col.querySelector<HTMLElement>(".dance-hero__cta");
+        if (copy) {
+          copy.style.width = "";
+          copy.style.maxWidth = "";
+        }
+        if (cta) {
+          cta.style.width = "";
+          cta.style.maxWidth = "";
+        }
+      }
+      return;
+    }
+
+    for (const col of cols) {
+      const word = col.querySelector<HTMLElement>("[data-word]");
+      if (!word) continue;
+
+      col.style.width = "";
+      word.style.width = "max-content";
+
+      const width = Math.ceil(word.getBoundingClientRect().width);
+      if (!width) continue;
+
+      col.style.width = `${width}px`;
+
+      const copy = col.querySelector<HTMLElement>(".dance-hero__copy");
+      const cta = col.querySelector<HTMLElement>(".dance-hero__cta");
+      if (copy) {
+        copy.style.width = `${width}px`;
+        copy.style.maxWidth = `${width}px`;
+      }
+      if (cta) {
+        cta.style.width = `${width}px`;
+        cta.style.maxWidth = `${width}px`;
+      }
+    }
+  };
+
+  const run = () => {
+    requestAnimationFrame(() => {
+      lockColumnWidths();
+      document.fonts?.ready?.then(() => {
+        lockColumnWidths();
+        requestAnimationFrame(lockColumnWidths);
+      });
+    });
+  };
+
+  run();
+  window.addEventListener("resize", lockColumnWidths);
+  MOBILE_MQ.addEventListener("change", lockColumnWidths);
+
+  const scrollToContact = (event: Event) => {
+    const target = document.querySelector<HTMLElement>("#kontakt");
+    if (!target) return;
+
+    event.preventDefault();
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+    history.pushState(null, "", "#kontakt");
+  };
+
+  for (const link of document.querySelectorAll<HTMLAnchorElement>(
+    'a[href="#kontakt"]',
+  )) {
+    link.addEventListener("click", scrollToContact);
+  }
+</script>
