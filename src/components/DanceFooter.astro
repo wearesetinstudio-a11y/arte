@@ -1,12 +1,21 @@
 ---
+interface Props {
+  email?: string;
+  logoHref?: string;
+}
+
+const {
+  email = "artedebaile@gmail.com",
+  logoHref = "/",
+} = Astro.props;
+
 const nav = [
-  { href: "/jezyki", label: "Języki" },
+  { href: "/lengua", label: "Języki" },
   { href: "/", label: "Taniec" },
 ];
 
 const phone = "+48 606 797 737";
 const phoneHref = "tel:+48606797737";
-const email = "artedebaile@gmail.com";
 const whatsappHref = "https://wa.me/48606797737";
 
 const contacts = [
@@ -19,7 +28,7 @@ const contacts = [
 <footer class="dance-footer">
   <div class="dance-footer__inner">
     <div class="dance-footer__brand">
-      <a href="/" class="dance-footer__logo" aria-label="Arte — strona główna">
+      <a href={logoHref} class="dance-footer__logo" aria-label="Arte — odśwież stronę">
         <img
           src="/arte-logo-white.svg"
           alt="Arte"

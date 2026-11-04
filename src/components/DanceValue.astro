@@ -1,13 +1,19 @@
 ---
-const kicker = "Ruch, który wyraża więcej.";
+interface Props {
+  kicker?: string;
+  lines?: string[];
+}
 
-const lines = [
-  "Taniec to nie tylko układ kroków – to kontrola,",
-  "dynamika i autentyczna ekspresja.",
-  "W Arte de Baile skupiamy się na technice,",
-  "która daje wolność, oraz na motoryce,",
-  "która buduje silne, świadome ciało.",
-];
+const {
+  kicker = "Ruch, który wyraża więcej.",
+  lines = [
+    "Taniec to nie tylko układ kroków – to kontrola,",
+    "dynamika i autentyczna ekspresja.",
+    "W Arte de Baile skupiamy się na technice,",
+    "która daje wolność, oraz na motoryce,",
+    "która buduje silne, świadome ciało.",
+  ],
+} = Astro.props;
 ---
 
 <section class="dance-value" data-value aria-labelledby="value-statement">
@@ -82,6 +88,7 @@ const lines = [
   .dance-value__line {
     display: block;
     max-width: 100%;
+    white-space: nowrap;
   }
 
   .dance-value__word {
@@ -115,6 +122,7 @@ const lines = [
 
     .dance-value__line {
       display: inline;
+      white-space: normal;
     }
 
     .dance-value__line:not(:last-child)::after {

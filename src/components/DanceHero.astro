@@ -27,7 +27,7 @@ const description =
         />
       </a>
       <p class="dance-hero__tag">
-        <span>De baile</span>
+        <a href="/lengua">De baile</a>
         <span class="dance-hero__tag-sep" aria-hidden="true">|</span>
         <span>Poznań</span>
       </p>
@@ -183,6 +183,16 @@ const description =
     white-space: nowrap;
   }
 
+  .dance-hero__tag a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .dance-hero__tag a:hover,
+  .dance-hero__tag a:focus-visible {
+    opacity: 0.7;
+  }
+
   .dance-hero__tag-sep {
     opacity: 0.7;
   }
@@ -296,10 +306,29 @@ const description =
     letter-spacing: -0.03em;
     text-transform: uppercase;
     white-space: nowrap;
+    opacity: 0;
+    filter: blur(22px);
+    transition:
+      opacity 1.05s cubic-bezier(0.22, 1, 0.36, 1) 0.12s,
+      filter 1.05s cubic-bezier(0.22, 1, 0.36, 1) 0.12s;
   }
 
   .dance-hero__word--offset {
     transform: translateY(20px);
+    transition-delay: 0.28s, 0.28s;
+  }
+
+  :global(html:not(.is-loading)) .dance-hero__word {
+    opacity: 1;
+    filter: blur(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dance-hero__word {
+      opacity: 1;
+      filter: none;
+      transition: none;
+    }
   }
 
   .dance-hero__copy {
@@ -528,9 +557,6 @@ const description =
       flex-shrink: 0;
       padding-inline: 1.35rem;
       white-space: nowrap;
-    }
-
-    .dance-hero__styles li + li {
       border-left: 1px solid rgb(255 255 255 / 0.35);
     }
   }

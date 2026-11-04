@@ -1,0 +1,29 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import LenguaHero from "../../components/LenguaHero.astro";
+import DanceValue from "../../components/DanceValue.astro";
+import DanceContact from "../../components/DanceContact.astro";
+import DanceFooter from "../../components/DanceFooter.astro";
+---
+
+<Layout
+  title="Arte de Lengua — Język bez barier"
+  description="Butikowa szkoła językowa dla dorosłych, studentów i firm. Hiszpański i angielski — lekcje indywidualne, grupowe i programy dla biznesu."
+>
+  <main>
+    <LenguaHero />
+    <DanceValue
+      kicker="Słowo, które tworzy możliwości."
+      lines={[
+        "Język to narzędzie, które otwiera drzwi –",
+        "w pracy, w podróży i w codziennym życiu.",
+        "W Arte de Lenguas skupiamy się na celach,",
+        "które są dla Ciebie ważne,",
+        "oraz na elastycznym programie,",
+        "który dopasowuje się do Twojego rytmu.",
+      ]}
+    />
+    <DanceContact />
+  </main>
+  <DanceFooter email="artedelengua@gmail.com" logoHref="/lengua" />
+</Layout>

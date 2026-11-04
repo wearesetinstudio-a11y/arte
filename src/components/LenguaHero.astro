@@ -1,0 +1,551 @@
+---
+const languages = ["Hiszpański", "Angielski"];
+
+const description =
+  "Butikowa szkoła językowa dla dorosłych, studentów i firm. Oferujemy lekcje indywidualne, grupowe oraz dedykowane programy dla biznesu.";
+---
+
+<section class="lengua-hero" aria-label="Język bez barier">
+  <header class="lengua-hero__nav">
+    <div class="lengua-hero__brand">
+      <a href="/lengua" class="lengua-hero__logo" aria-label="Arte de Lengua — odśwież stronę">
+        <img
+          src="/arte-logo-white.svg"
+          alt="Arte"
+          width="658"
+          height="376"
+        />
+      </a>
+      <p class="lengua-hero__tag">
+        <a href="/">De Lengua</a>
+        <span class="lengua-hero__tag-sep" aria-hidden="true">|</span>
+        <span>Poznań</span>
+        <span class="lengua-hero__tag-sep" aria-hidden="true">|</span>
+        <span>On-line</span>
+      </p>
+    </div>
+  </header>
+
+  <div class="lengua-hero__body">
+    <div class="lengua-hero__compose">
+      <div class="lengua-hero__col lengua-hero__col--jezyk" data-lock-width>
+        <h1 class="lengua-hero__word" data-word>
+          Język
+          <span class="sr-only"> bez barier</span>
+        </h1>
+        <p class="lengua-hero__copy lengua-hero__copy--desktop">{description}</p>
+      </div>
+
+      <ul class="lengua-hero__langs" aria-label="Języki">
+        {
+          languages.map((language) => (
+            <li>{language}</li>
+          ))
+        }
+      </ul>
+
+      <div class="lengua-hero__col lengua-hero__col--barier" data-lock-width>
+        <p
+          class="lengua-hero__word lengua-hero__word--offset"
+          data-word
+          aria-hidden="true"
+        >
+          Bez Barier
+        </p>
+        <a href="#kontakt" class="lengua-hero__cta lengua-hero__cta--desktop">
+          <span class="lengua-hero__btn-cover" aria-hidden="true"></span>
+          <span class="lengua-hero__btn-label">Umów się na zajęcia</span>
+          <img src="/arrow.svg" alt="" width="26" height="26" />
+        </a>
+      </div>
+    </div>
+
+    <p class="lengua-hero__copy lengua-hero__copy--mobile">{description}</p>
+  </div>
+
+  <div class="lengua-hero__footer">
+    <a href="#kontakt" class="lengua-hero__cta lengua-hero__cta--mobile">
+      <span class="lengua-hero__btn-cover" aria-hidden="true"></span>
+      <span class="lengua-hero__btn-label">Umów się na zajęcia</span>
+      <img src="/arrow.svg" alt="" width="26" height="26" />
+    </a>
+  </div>
+</section>
+
+<style>
+  .lengua-hero {
+    --text-button: clamp(0.82rem, 1.25vh + 0.2vw, 0.95rem);
+    --text-body: clamp(0.92rem, 1.45vh + 0.3vw, 1.15rem);
+    --text-label: clamp(0.75rem, 1.2vh + 0.2vw, 0.92rem);
+    --tracking-label: 0.08em;
+    --size-arrow: 0.9rem;
+    --hero-orange: #b06126;
+
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    width: 100%;
+    height: 100svh;
+    max-height: 100svh;
+    flex-direction: column;
+    overflow: hidden;
+    color: #ffffff;
+    background: var(--hero-orange);
+  }
+
+  .lengua-hero__nav,
+  .lengua-hero__body,
+  .lengua-hero__footer {
+    position: relative;
+    z-index: 1;
+  }
+
+  .lengua-hero__nav {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(1.25rem, 3vh, 2rem) clamp(1.5rem, 4vw, 3.25rem)
+      clamp(0.5rem, 1.5vh, 1rem);
+  }
+
+  .lengua-hero__brand {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: clamp(0.85rem, 2vw, 1.35rem);
+    min-width: 0;
+  }
+
+  .lengua-hero__logo {
+    display: block;
+    flex-shrink: 0;
+  }
+
+  .lengua-hero__logo img {
+    width: min(18vw, 112px);
+    height: auto;
+  }
+
+  .lengua-hero__tag {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .lengua-hero__tag a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .lengua-hero__tag a:hover,
+  .lengua-hero__tag a:focus-visible {
+    opacity: 0.7;
+  }
+
+  .lengua-hero__tag-sep {
+    opacity: 0.7;
+  }
+
+  .lengua-hero__cta {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: #ffffff;
+    color: #1e1e1e;
+    font-family: var(--font-mono);
+    font-size: var(--text-button);
+    font-weight: 500;
+    text-transform: uppercase;
+    transition: color 0.35s ease;
+  }
+
+  .lengua-hero__btn-cover {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: #000000;
+    transform: scaleY(0);
+    transform-origin: bottom center;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .lengua-hero__cta:active .lengua-hero__btn-cover,
+  .lengua-hero__cta:focus-visible .lengua-hero__btn-cover {
+    transform: scaleY(1);
+  }
+
+  .lengua-hero__cta:active,
+  .lengua-hero__cta:focus-visible {
+    color: #ffffff;
+  }
+
+  .lengua-hero__cta:active img,
+  .lengua-hero__cta:focus-visible img {
+    filter: brightness(0) invert(1);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .lengua-hero__cta:hover .lengua-hero__btn-cover {
+      transform: scaleY(1);
+    }
+
+    .lengua-hero__cta:hover {
+      color: #ffffff;
+    }
+
+    .lengua-hero__cta:hover img {
+      filter: brightness(0) invert(1);
+    }
+  }
+
+  .lengua-hero__btn-label {
+    position: relative;
+  }
+
+  .lengua-hero__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+    padding: 0 clamp(1.5rem, 4vw, 3.25rem);
+  }
+
+  .lengua-hero__compose {
+    display: grid;
+    width: max-content;
+    max-width: 100%;
+    margin-inline: auto;
+    grid-template-columns: max-content auto max-content;
+    align-items: start;
+    justify-content: center;
+    column-gap: clamp(1.25rem, 3vw, 2.5rem);
+  }
+
+  .lengua-hero__col {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    min-width: 0;
+    max-width: 100%;
+    overflow: visible;
+  }
+
+  .lengua-hero__col--jezyk {
+    position: relative;
+    z-index: 1;
+  }
+
+  .lengua-hero__langs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin: 0.35em 0 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    line-height: 1.2;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .lengua-hero__word {
+    display: inline-block;
+    width: max-content;
+    max-width: none;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 8.5vw, 6.75rem);
+    font-weight: 400;
+    line-height: 0.82;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    opacity: 0;
+    filter: blur(22px);
+    transition:
+      opacity 1.05s cubic-bezier(0.22, 1, 0.36, 1) 0.12s,
+      filter 1.05s cubic-bezier(0.22, 1, 0.36, 1) 0.12s;
+  }
+
+  .lengua-hero__word--offset {
+    transform: translateY(20px);
+    transition-delay: 0.28s, 0.28s;
+  }
+
+  :global(html:not(.is-loading)) .lengua-hero__word {
+    opacity: 1;
+    filter: blur(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lengua-hero__word {
+      opacity: 1;
+      filter: none;
+      transition: none;
+    }
+  }
+
+  .lengua-hero__copy {
+    box-sizing: border-box;
+    margin: 1.15rem 0 0;
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: 400;
+    line-height: 1.45;
+    color: rgb(255 255 255 / 0.9);
+  }
+
+  .lengua-hero__copy--desktop {
+    width: 22rem;
+    max-width: min(22rem, 36vw);
+  }
+
+  .lengua-hero__copy--mobile {
+    display: none;
+  }
+
+  .lengua-hero__cta {
+    display: inline-flex;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 1rem 0.85rem;
+    letter-spacing: var(--tracking-label);
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .lengua-hero__cta--desktop {
+    margin-top: calc(1.15rem + 20px);
+  }
+
+  .lengua-hero__cta--mobile {
+    display: none;
+  }
+
+  .lengua-hero__cta .lengua-hero__btn-label {
+    overflow: hidden;
+    min-width: 0;
+    text-overflow: ellipsis;
+  }
+
+  .lengua-hero__cta img {
+    position: relative;
+    width: var(--size-arrow);
+    height: auto;
+    margin-left: auto;
+    flex-shrink: 0;
+    transition: filter 0.35s ease;
+  }
+
+  .lengua-hero__footer {
+    flex-shrink: 0;
+    padding: 0 clamp(1.5rem, 4vw, 3.25rem) max(1.25rem, env(safe-area-inset-bottom));
+  }
+
+  @media (max-width: 720px) {
+    .lengua-hero {
+      --text-body: clamp(0.95rem, 3.6vw, 1.1rem);
+      --text-button: clamp(0.85rem, 3.2vw, 1rem);
+    }
+
+    .lengua-hero__nav {
+      padding: 1.5rem 1.25rem 0.35rem;
+    }
+
+    .lengua-hero__brand {
+      flex-direction: column;
+      align-items: center;
+      gap: 0.65rem;
+      text-align: center;
+    }
+
+    .lengua-hero__logo img {
+      width: min(34vw, 118px);
+    }
+
+    .lengua-hero__tag {
+      flex-wrap: wrap;
+      justify-content: center;
+      font-size: clamp(0.72rem, 2.8vw, 0.85rem);
+      letter-spacing: 0.16em;
+    }
+
+    .lengua-hero__body {
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 0.75rem 1.5rem 0;
+    }
+
+    .lengua-hero__compose {
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.85rem;
+    }
+
+    .lengua-hero__col {
+      width: auto !important;
+    }
+
+    .lengua-hero__col--jezyk {
+      align-self: flex-start;
+      margin-left: clamp(0.25rem, 2vw, 0.75rem);
+    }
+
+    .lengua-hero__langs {
+      align-self: center;
+      margin: 0;
+      text-align: center;
+    }
+
+    .lengua-hero__col--barier {
+      align-self: flex-end;
+      margin-right: clamp(0.25rem, 2vw, 0.75rem);
+    }
+
+    .lengua-hero__word {
+      font-size: clamp(3.4rem, 16vw, 5.25rem);
+    }
+
+    .lengua-hero__word--offset {
+      transform: translateY(6px);
+    }
+
+    .lengua-hero__copy--desktop,
+    .lengua-hero__cta--desktop {
+      display: none;
+    }
+
+    .lengua-hero__copy--mobile {
+      display: block;
+      width: min(100%, 21.5rem);
+      margin: 0;
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .lengua-hero__footer {
+      display: flex;
+      flex-direction: column;
+      margin-top: auto;
+      padding: 0 0 max(1.1rem, env(safe-area-inset-bottom));
+    }
+
+    .lengua-hero__cta--mobile {
+      display: inline-flex;
+      width: calc(100% - 2.5rem);
+      margin-inline: 1.25rem;
+      padding: 1.05rem 1rem;
+    }
+  }
+</style>
+
+<script>
+  const MOBILE_MQ = window.matchMedia("(max-width: 720px)");
+
+  const lockColumnWidths = () => {
+    const cols = document.querySelectorAll<HTMLElement>(
+      ".lengua-hero [data-lock-width]",
+    );
+
+    if (MOBILE_MQ.matches) {
+      for (const col of cols) {
+        col.style.width = "";
+        const copy = col.querySelector<HTMLElement>(".lengua-hero__copy");
+        const cta = col.querySelector<HTMLElement>(".lengua-hero__cta");
+        if (copy) {
+          copy.style.width = "";
+          copy.style.maxWidth = "";
+        }
+        if (cta) {
+          cta.style.width = "";
+          cta.style.maxWidth = "";
+        }
+      }
+      return;
+    }
+
+    for (const col of cols) {
+      const word = col.querySelector<HTMLElement>("[data-word]");
+      if (!word) continue;
+
+      col.style.width = "";
+      word.style.width = "max-content";
+
+      const width = Math.ceil(word.getBoundingClientRect().width);
+      if (!width) continue;
+
+      col.style.width = `${width}px`;
+
+      const copy = col.querySelector<HTMLElement>(".lengua-hero__copy");
+      const cta = col.querySelector<HTMLElement>(".lengua-hero__cta");
+      if (copy) {
+        copy.style.width = "";
+        copy.style.maxWidth = "";
+      }
+      if (cta) {
+        cta.style.width = `${width}px`;
+        cta.style.maxWidth = `${width}px`;
+      }
+    }
+  };
+
+  const run = () => {
+    requestAnimationFrame(() => {
+      lockColumnWidths();
+      document.fonts?.ready?.then(() => {
+        lockColumnWidths();
+        requestAnimationFrame(lockColumnWidths);
+      });
+    });
+  };
+
+  run();
+  window.addEventListener("resize", lockColumnWidths);
+  MOBILE_MQ.addEventListener("change", lockColumnWidths);
+
+  const scrollToContact = (event: Event) => {
+    const target = document.querySelector<HTMLElement>("#kontakt");
+    if (!target) return;
+
+    event.preventDefault();
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+    history.pushState(null, "", "#kontakt");
+  };
+
+  for (const link of document.querySelectorAll<HTMLAnchorElement>(
+    '.lengua-hero a[href="#kontakt"]',
+  )) {
+    link.addEventListener("click", scrollToContact);
+  }
+</script>
