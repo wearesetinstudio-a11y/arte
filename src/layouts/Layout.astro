@@ -15,6 +15,9 @@ const {
 } = Astro.props;
 
 const gaId = import.meta.env.PUBLIC_GA_ID;
+const siteOrigin = Astro.site ?? Astro.url;
+const canonicalUrl = new URL(Astro.url.pathname, siteOrigin).href;
+const ogImageUrl = new URL("/og.jpg", siteOrigin).href;
 ---
 
 <!doctype html>
@@ -24,6 +27,7 @@ const gaId = import.meta.env.PUBLIC_GA_ID;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
+    <link rel="canonical" href={canonicalUrl} />
     <link
       rel="icon"
       type="image/svg+xml"
@@ -37,6 +41,24 @@ const gaId = import.meta.env.PUBLIC_GA_ID;
       media="(prefers-color-scheme: dark)"
     />
     <link rel="icon" href="/favicon.ico" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pl_PL" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
 
     <!-- Google Fonts: Geist (headlines + copy) + Geist Mono (buttons + labels) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
