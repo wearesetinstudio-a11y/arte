@@ -472,10 +472,17 @@ const {
       const horizontal = getComputedStyle(list).flexDirection === "row";
       if (!horizontal) return;
 
-      item.scrollIntoView({
+      // Scroll only the tab list — never the page (avoids jumping to #kursy on boot)
+      const listRect = list.getBoundingClientRect();
+      const itemRect = item.getBoundingClientRect();
+      const nextLeft =
+        list.scrollLeft +
+        (itemRect.left - listRect.left) -
+        (listRect.width - itemRect.width) / 2;
+
+      list.scrollTo({
+        left: Math.max(0, nextLeft),
         behavior: reduce ? "auto" : "smooth",
-        inline: "nearest",
-        block: "nearest",
       });
     };
 
@@ -616,12 +623,22 @@ const {
       applyHash(location.hash, true);
     });
 
-    // Apply tab from hash without scrolling while preloader locks the page
-    applyHash(location.hash, false);
+    const bootHash =
+      (window as Window & { __arteBootHash?: string }).__arteBootHash ||
+      location.hash;
+
+    // Restore tab from deep-link without scrolling the page away from hero
+    applyHash(bootHash, false);
 
     const afterPreloader = () => {
-      if (location.hash) applyHash(location.hash, true);
-      if (!location.hash || indexFromHash(location.hash) < 0) {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      // Put deep-link hash back without scrolling away from hero
+      if (bootHash && indexFromHash(bootHash) >= 0) {
+        history.replaceState(null, "", bootHash);
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      }
+      delete (window as Window & { __arteBootHash?: string }).__arteBootHash;
+      if (!bootHash || indexFromHash(bootHash) < 0) {
         scheduleIdle();
       }
     };

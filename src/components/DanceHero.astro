@@ -891,14 +891,20 @@ const socials = [
   }
 
   @media (max-width: 960px) {
+    .dance-hero {
+      height: auto;
+      max-height: none;
+      min-height: 100svh;
+      overflow: visible;
+    }
+
     .dance-hero__body {
       grid-template-columns: 1fr;
       justify-items: center;
-      align-content: center;
+      align-content: start;
       gap: 2rem;
       padding-block: 0.5rem;
-      overflow-x: hidden;
-      overflow-y: auto;
+      overflow: visible;
     }
 
     .dance-hero__headline {

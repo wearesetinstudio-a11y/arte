@@ -52,6 +52,15 @@ const {
           if ("scrollRestoration" in history) {
             history.scrollRestoration = "manual";
           }
+          // Strip hash before paint so the browser can't jump to #kursy-*
+          if (location.hash) {
+            window.__arteBootHash = location.hash;
+            history.replaceState(
+              null,
+              "",
+              location.pathname + location.search,
+            );
+          }
           window.scrollTo(0, 0);
         } catch (_) {}
 
