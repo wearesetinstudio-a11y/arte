@@ -1,34 +1,79 @@
 ---
 interface Props {
   kicker?: string;
+  statement?: string;
   lines?: string[];
 }
 
 const {
   kicker = "Ruch, który wyraża więcej.",
-  lines = [
-    "Taniec to nie tylko układ kroków – to kontrola,",
-    "dynamika i autentyczna ekspresja.",
-    "W Arte de Baile skupiamy się na technice,",
-    "która daje wolność, oraz na motoryce,",
-    "która buduje silne, świadome ciało.",
-  ],
+  statement = "Taniec to nie powtarzalność układu lecz mechanika i świadomość ciała. W Arte de Baile pracujemy u podstaw ponieważ technika daje precyzję i swobodę ruchu a motoryka przygotowuje ciało na pełną kontrolę",
+  lines,
 } = Astro.props;
+
+const copy = lines?.length ? lines.join(" ") : statement;
+const words = copy.split(/\s+/).filter(Boolean);
+
+const rails = [
+  {
+    id: "left",
+    from: -60,
+    to: 75,
+    images: [
+      { src: "/value/01.png", shape: "tall" },
+      { src: "/value/02.png", shape: "square" },
+    ],
+  },
+  {
+    id: "right",
+    from: -45,
+    to: 85,
+    images: [
+      { src: "/value/03.png", shape: "square" },
+      { src: "/value/05.png", shape: "tall" },
+    ],
+  },
+];
 ---
 
 <section class="dance-value" data-value aria-labelledby="value-statement">
   <div class="dance-value__pin">
+    <div class="dance-value__frames" aria-hidden="true">
+      {
+        rails.map((rail) => (
+          <div
+            class={`dance-value__rail dance-value__rail--${rail.id}`}
+            data-rail
+            data-from={rail.from}
+            data-to={rail.to}
+          >
+            {rail.images.map((image) => (
+              <figure
+                class={`dance-value__frame dance-value__frame--${image.shape}`}
+              >
+                <img
+                  src={image.src}
+                  alt=""
+                  width="800"
+                  height="800"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </figure>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+
     <div class="dance-value__inner">
       <p class="dance-value__kicker">{kicker}</p>
       <h2 id="value-statement" class="dance-value__statement">
         {
-          lines.map((line) => (
-            <span class="dance-value__line">
-              {line.split(/\s+/).map((word) => (
-                <span class="dance-value__word" data-word>
-                  {word}
-                </span>
-              ))}
+          words.map((word, index) => (
+            <span class="dance-value__word" data-word>
+              {word}
+              {index < words.length - 1 ? " " : ""}
             </span>
           ))
         }
@@ -41,9 +86,10 @@ const {
   .dance-value {
     --value-ink: #1e1e1e;
     --value-muted: #d4d4d4;
+    --rail-gap: clamp(1.5rem, 3vw, 2.75rem);
 
     position: relative;
-    height: 280vh;
+    height: 320vh;
     background: #ffffff;
     color: var(--value-ink);
   }
@@ -53,12 +99,85 @@ const {
     top: 0;
     display: flex;
     align-items: center;
+    justify-content: center;
     height: 100svh;
+    overflow: hidden;
     padding: clamp(4.5rem, 12vh, 7.5rem) clamp(1.5rem, 4vw, 3.25rem);
   }
 
+  .dance-value__frames {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .dance-value__rail {
+    --shift: 0vh;
+
+    position: absolute;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--rail-gap);
+    width: clamp(6.5rem, 12vw, 10.5rem);
+    will-change: transform;
+    transform: translate3d(0, var(--shift), 0);
+  }
+
+  .dance-value__rail--left {
+    left: max(0.75rem, calc(50% - 21rem - 13rem));
+  }
+
+  .dance-value__rail--left .dance-value__frame:first-child {
+    margin-top: -80px;
+    margin-left: 50px;
+  }
+
+  .dance-value__rail--right {
+    right: max(0.75rem, calc(50% - 21rem - 13rem));
+    align-items: flex-end;
+  }
+
+  .dance-value__rail--right .dance-value__frame:last-child {
+    margin-top: 80px;
+    margin-right: 130px;
+  }
+
+  .dance-value__frame {
+    margin: 0;
+    overflow: hidden;
+    background: #cfcfcf;
+    width: 100%;
+  }
+
+  .dance-value__frame--tall {
+    aspect-ratio: 3 / 4;
+  }
+
+  .dance-value__frame--square {
+    aspect-ratio: 1;
+  }
+
+  .dance-value__rail--right .dance-value__frame--tall {
+    width: 90%;
+  }
+
+  .dance-value__rail--right .dance-value__frame--square {
+    width: 100%;
+  }
+
+  .dance-value__frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
   .dance-value__inner {
-    width: min(100%, 52rem);
+    position: relative;
+    z-index: 2;
+    width: min(100%, 42rem);
     margin-inline: auto;
     text-align: center;
   }
@@ -74,21 +193,13 @@ const {
   }
 
   .dance-value__statement {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     margin: 0;
     font-family: var(--font-display);
-    font-size: clamp(1.75rem, 1.05rem + 1.55vw, 2.55rem);
+    font-size: clamp(1.55rem, 1rem + 1.2vw, 2.15rem);
     font-weight: 500;
     letter-spacing: -0.028em;
-    line-height: 1.18;
-  }
-
-  .dance-value__line {
-    display: block;
-    max-width: 100%;
-    white-space: nowrap;
+    line-height: 1.22;
+    text-wrap: pretty;
   }
 
   .dance-value__word {
@@ -100,13 +211,9 @@ const {
     );
   }
 
-  .dance-value__word + .dance-value__word::before {
-    content: " ";
-  }
-
   @media (max-width: 720px) {
     .dance-value {
-      height: 240vh;
+      height: 280vh;
     }
 
     .dance-value__inner {
@@ -114,19 +221,25 @@ const {
     }
 
     .dance-value__statement {
-      display: block;
-      font-size: clamp(1.55rem, 6.4vw, 2rem);
-      line-height: 1.22;
-      text-wrap: pretty;
+      font-size: clamp(1.35rem, 5.8vw, 1.75rem);
+      line-height: 1.28;
     }
 
-    .dance-value__line {
-      display: inline;
-      white-space: normal;
+    .dance-value__rail {
+      width: 26vw;
     }
 
-    .dance-value__line:not(:last-child)::after {
-      content: " ";
+    .dance-value__rail--left {
+      left: -8%;
+    }
+
+    .dance-value__rail--right {
+      right: 20px;
+    }
+
+    .dance-value__rail--right .dance-value__frame:last-child {
+      margin-right: 0;
+      width: 100%;
     }
   }
 
@@ -138,7 +251,12 @@ const {
     .dance-value__pin {
       position: relative;
       height: auto;
+      overflow: visible;
       padding-block: clamp(5rem, 14vh, 8rem);
+    }
+
+    .dance-value__frames {
+      display: none;
     }
 
     .dance-value__word {
@@ -152,6 +270,7 @@ const {
 
   if (section) {
     const words = [...section.querySelectorAll<HTMLElement>("[data-word]")];
+    const rails = [...section.querySelectorAll<HTMLElement>("[data-rail]")];
     const reduce = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
@@ -159,8 +278,10 @@ const {
     const clamp = (value: number, min: number, max: number) =>
       Math.min(max, Math.max(min, value));
 
-    const paint = (amount: number) => {
+    const paintWords = (amount: number) => {
       const count = words.length;
+      if (!count) return;
+
       const blend = 1.65;
       const cursor = amount * (count - 1 + blend);
 
@@ -171,7 +292,16 @@ const {
       }
     };
 
-    if (!reduce && words.length) {
+    const flowRails = (progress: number) => {
+      for (const rail of rails) {
+        const from = Number(rail.dataset.from ?? -40);
+        const to = Number(rail.dataset.to ?? 60);
+        const shift = from + (to - from) * progress;
+        rail.style.setProperty("--shift", `${shift.toFixed(2)}vh`);
+      }
+    };
+
+    if (!reduce) {
       let frame = 0;
 
       const update = () => {
@@ -181,7 +311,9 @@ const {
           travel <= 0
             ? 1
             : clamp(-section.getBoundingClientRect().top / travel, 0, 1);
-        paint(clamp((raw - 0.08) / 0.78, 0, 1));
+
+        paintWords(clamp((raw - 0.08) / 0.78, 0, 1));
+        flowRails(raw);
       };
 
       const requestUpdate = () => {

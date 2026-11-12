@@ -1,0 +1,654 @@
+---
+interface Dance {
+  slug: string;
+  title: string;
+  description: string;
+  image: string;
+}
+
+interface Props {
+  label?: string;
+  dances?: Dance[];
+}
+
+const {
+  label = "Kursy",
+  dances = [
+    {
+      slug: "broadway-jazz",
+      title: "Broadway Jazz",
+      description:
+        "Dynamiczna technika i ekspresja teatralna. Skupiamy się na czystości ruchu izolacjach oraz prezencji scenicznej która buduje pewność w każdej choreografii.",
+      image: "/value/01.png",
+    },
+    {
+      slug: "jazz",
+      title: "Jazz",
+      description:
+        "Fundament nowoczesnego tańca. Praca nad płynnością siłą mięśniową oraz precyzyjną motoryką która daje całkowitą swobodę interpretacji muzyki.",
+      image: "/value/02.png",
+    },
+    {
+      slug: "high-heels",
+      title: "High Heels",
+      description:
+        "Stabilizacja równowaga i bezkompromisowy styl. Trening uczy kontroli ciała na obcasach łącząc elegancję z motoryczną siłą i świadomą postawą.",
+      image: "/value/03.png",
+    },
+    {
+      slug: "performance",
+      title: "Performance",
+      description:
+        "Praca nad scenicznym wyrazem i opowiadaniem historii ruchem. Format dla osób które chcą przenieść techniczną bazę na wyższy poziom artystycznej ekspresji.",
+      image: "/value/04.png",
+    },
+    {
+      slug: "trening-personalny",
+      title: "Trening personalny",
+      description:
+        "Indywidualny program dopasowany do Twoich celów. Skupiamy się na korekcie techniki budowaniu siły oraz motorycznym rozwoju pod okiem praktyków.",
+      image: "/value/05.png",
+    },
+  ],
+} = Astro.props;
+---
+
+<section
+  class="dance-kursy"
+  id="kursy"
+  data-kursy
+  aria-labelledby="kursy-heading"
+>
+  <div class="dance-kursy__inner">
+    <h2 id="kursy-heading" class="dance-kursy__label">{label}</h2>
+
+    <div class="dance-kursy__layout">
+      <ul class="dance-kursy__list" role="tablist" aria-label="Style tańca">
+        {
+          dances.map((dance, index) => {
+            const num = String(index + 1).padStart(2, "0");
+            const panelId = `kursy-panel-${dance.slug}`;
+            const tabId = `kursy-tab-${dance.slug}`;
+            const active = index === 0;
+
+            return (
+              <li class="dance-kursy__item" id={`kursy-${dance.slug}`}>
+                <button
+                  type="button"
+                  class:list={["dance-kursy__tab", active && "is-active"]}
+                  id={tabId}
+                  role="tab"
+                  aria-selected={active ? "true" : "false"}
+                  aria-controls={panelId}
+                  tabindex={active ? 0 : -1}
+                  data-kursy-tab
+                  data-index={index}
+                  data-slug={dance.slug}
+                >
+                  <span class="dance-kursy__num" aria-hidden="true">
+                    {num}
+                  </span>
+                  <span class="dance-kursy__title-wrap">
+                    <span class="dance-kursy__title">{dance.title}</span>
+                    <span class="dance-kursy__line" aria-hidden="true">
+                      <span class="dance-kursy__line-fill" data-kursy-fill></span>
+                    </span>
+                  </span>
+                </button>
+              </li>
+            );
+          })
+        }
+      </ul>
+
+      <div class="dance-kursy__panel">
+        {
+          dances.map((dance, index) => {
+            const active = index === 0;
+            return (
+              <div
+                class:list={["dance-kursy__content", active && "is-active"]}
+                id={`kursy-panel-${dance.slug}`}
+                role="tabpanel"
+                aria-labelledby={`kursy-tab-${dance.slug}`}
+                data-kursy-panel
+                data-slug={dance.slug}
+                {...(active ? {} : { hidden: true })}
+              >
+                <p class="dance-kursy__desc">{dance.description}</p>
+                <figure class="dance-kursy__media">
+                  <img
+                    src={dance.image}
+                    alt=""
+                    width="1200"
+                    height="800"
+                    loading={index === 0 ? "eager" : "lazy"}
+                    decoding="async"
+                  />
+                </figure>
+              </div>
+            );
+          })
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .dance-kursy {
+    --kursy-pad-x: clamp(1.5rem, 4vw, 3.25rem);
+    --kursy-ink: #f2f2f2;
+    --kursy-line-w: min(100%, 13.5rem);
+    --kursy-line: rgb(255 255 255 / 0.08);
+    --kursy-line-active: rgb(255 255 255 / 0.2);
+    --kursy-line-fill: rgb(255 255 255 / 0.55);
+    --kursy-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --kursy-idle: 3s;
+    --kursy-progress: 2.4s;
+
+    background: #141414;
+    color: var(--kursy-ink);
+    padding: clamp(8rem, 20vh, 14rem) var(--kursy-pad-x);
+    scroll-margin-top: 1.5rem;
+  }
+
+  @media (min-width: 721px) {
+    .dance-kursy {
+      --kursy-pad-x: clamp(2.5rem, 12vw, 10rem);
+    }
+  }
+
+  .dance-kursy__inner {
+    width: min(100%, 78rem);
+    margin-inline: auto;
+  }
+
+  .dance-kursy__label {
+    margin: 0 0 clamp(2.75rem, 7vh, 4.5rem);
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  .dance-kursy__layout {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: start;
+  }
+
+  @media (min-width: 900px) {
+    .dance-kursy__layout {
+      grid-template-columns: minmax(14rem, 22rem) minmax(0, 1fr);
+      gap: clamp(3rem, 8vw, 7rem);
+    }
+  }
+
+  .dance-kursy__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.65rem, 4vh, 2.5rem);
+  }
+
+  @media (max-width: 899px) {
+    .dance-kursy__list {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: clamp(1.75rem, 6vw, 2.75rem);
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x proximity;
+      scrollbar-width: none;
+      margin-inline: calc(-1 * var(--kursy-pad-x));
+      padding-inline: var(--kursy-pad-x);
+      padding-block: 0.15rem 0.35rem;
+    }
+
+    .dance-kursy__list::-webkit-scrollbar {
+      display: none;
+    }
+
+    .dance-kursy__item {
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+      scroll-margin-inline: var(--kursy-pad-x);
+    }
+
+    .dance-kursy__tab {
+      width: auto;
+    }
+
+    .dance-kursy__title {
+      white-space: nowrap;
+    }
+  }
+
+  .dance-kursy__item {
+    margin: 0;
+    scroll-margin-top: 2rem;
+  }
+
+  .dance-kursy__tab {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.35rem;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .dance-kursy__tab:focus-visible {
+    outline: 2px solid var(--kursy-ink);
+    outline-offset: 6px;
+  }
+
+  .dance-kursy__num {
+    font-family: var(--font-mono);
+    font-size: clamp(0.7rem, 0.65rem + 0.2vw, 0.8rem);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    opacity: 0.45;
+    transition: opacity 0.35s var(--kursy-ease);
+  }
+
+  .dance-kursy__title-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.45rem;
+    width: var(--kursy-line-w);
+  }
+
+  .dance-kursy__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.05rem, 0.95rem + 0.45vw, 1.35rem);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    opacity: 0.45;
+    transition: opacity 0.35s var(--kursy-ease);
+  }
+
+  .dance-kursy__tab.is-active .dance-kursy__title {
+    opacity: 1;
+  }
+
+  .dance-kursy__line {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 1px;
+    overflow: hidden;
+    background: var(--kursy-line);
+    transition: background-color 0.35s var(--kursy-ease);
+  }
+
+  .dance-kursy__line-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: left center;
+    background: var(--kursy-line-fill);
+    pointer-events: none;
+  }
+
+  .dance-kursy__tab.is-active .dance-kursy__num {
+    opacity: 0.85;
+  }
+
+  .dance-kursy__tab.is-active .dance-kursy__line {
+    background: var(--kursy-line-active);
+  }
+
+  .dance-kursy__tab.is-loading .dance-kursy__line-fill {
+    animation: kursy-progress var(--kursy-progress) linear forwards;
+  }
+
+  .dance-kursy__panel {
+    position: relative;
+    min-height: 0;
+  }
+
+  .dance-kursy__content {
+    display: grid;
+    gap: clamp(1.5rem, 4vh, 2.5rem);
+  }
+
+  .dance-kursy__content[hidden] {
+    display: none;
+  }
+
+  .dance-kursy__content.is-active {
+    animation: kursy-in 0.45s var(--kursy-ease) both;
+  }
+
+  .dance-kursy__desc {
+    margin: 0;
+    max-width: 36rem;
+    font-family: var(--font-mono);
+    font-size: clamp(0.88rem, 0.82rem + 0.25vw, 1.02rem);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.55;
+    text-wrap: pretty;
+  }
+
+  .dance-kursy__media {
+    margin: 0;
+    overflow: hidden;
+    border-radius: 0;
+    border: 1px solid rgb(255 255 255 / 0.08);
+    background: #2a2a2a;
+    aspect-ratio: 16 / 10;
+  }
+
+  .dance-kursy__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 0;
+  }
+
+  .dance-kursy__content.is-active .dance-kursy__media img {
+    animation: kursy-media 0.7s var(--kursy-ease) both;
+  }
+
+  @keyframes kursy-progress {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes kursy-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.6rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes kursy-media {
+    from {
+      transform: scale(1.04);
+      opacity: 0.7;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dance-kursy__line,
+    .dance-kursy__num {
+      transition: none;
+    }
+
+    .dance-kursy__tab.is-loading .dance-kursy__line-fill,
+    .dance-kursy__content.is-active,
+    .dance-kursy__content.is-active .dance-kursy__media img {
+      animation: none;
+    }
+
+    .dance-kursy__tab.is-loading .dance-kursy__line-fill {
+      transform: scaleX(1);
+    }
+  }
+</style>
+
+<script>
+  const section = document.querySelector<HTMLElement>("[data-kursy]");
+
+  if (section) {
+    const tabs = [
+      ...section.querySelectorAll<HTMLButtonElement>("[data-kursy-tab]"),
+    ];
+    const panels = [
+      ...section.querySelectorAll<HTMLElement>("[data-kursy-panel]"),
+    ];
+    const reduce = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    const IDLE_MS = 3000;
+    const PROGRESS_MS = reduce ? 0 : 2400;
+
+    let activeIndex = 0;
+    let idleTimer = 0;
+    let progressTimer = 0;
+    let fillEl: HTMLElement | null = null;
+
+    const clearProgress = () => {
+      window.clearTimeout(progressTimer);
+      progressTimer = 0;
+      tabs.forEach((tab) => tab.classList.remove("is-loading"));
+      if (fillEl) {
+        fillEl.style.animation = "none";
+        void fillEl.offsetWidth;
+        fillEl.style.animation = "";
+        fillEl = null;
+      }
+    };
+
+    const clearIdle = () => {
+      window.clearTimeout(idleTimer);
+      idleTimer = 0;
+    };
+
+    const stopAutoplay = () => {
+      clearIdle();
+      clearProgress();
+    };
+
+    const list = section.querySelector<HTMLElement>(".dance-kursy__list");
+
+    const scrollActiveIntoView = (index: number) => {
+      const tab = tabs[index];
+      const item = tab?.closest<HTMLElement>(".dance-kursy__item");
+      if (!item || !list) return;
+
+      const horizontal = getComputedStyle(list).flexDirection === "row";
+      if (!horizontal) return;
+
+      item.scrollIntoView({
+        behavior: reduce ? "auto" : "smooth",
+        inline: "nearest",
+        block: "nearest",
+      });
+    };
+
+    const activate = (next: number, options: { syncHash?: boolean } = {}) => {
+      const index = ((next % tabs.length) + tabs.length) % tabs.length;
+      activeIndex = index;
+      clearProgress();
+
+      tabs.forEach((tab, i) => {
+        const on = i === index;
+        tab.classList.toggle("is-active", on);
+        tab.setAttribute("aria-selected", on ? "true" : "false");
+        tab.tabIndex = on ? 0 : -1;
+      });
+
+      panels.forEach((panel, i) => {
+        const on = i === index;
+        panel.classList.toggle("is-active", on);
+        panel.toggleAttribute("hidden", !on);
+
+        if (on && !reduce) {
+          panel.classList.remove("is-active");
+          void panel.offsetWidth;
+          panel.classList.add("is-active");
+        }
+      });
+
+      scrollActiveIntoView(index);
+
+      if (options.syncHash !== false) {
+        const slug = tabs[index]?.dataset.slug;
+        if (slug) {
+          const nextHash = `#kursy-${slug}`;
+          if (location.hash !== nextHash) {
+            history.replaceState(null, "", nextHash);
+          }
+        }
+      }
+    };
+
+    const startProgress = () => {
+      clearProgress();
+      const tab = tabs[activeIndex];
+      if (!tab) return;
+
+      tab.classList.add("is-loading");
+      fillEl = tab.querySelector<HTMLElement>("[data-kursy-fill]");
+
+      const advance = () => {
+        clearProgress();
+        activate((activeIndex + 1) % tabs.length, { syncHash: false });
+        scheduleIdle();
+      };
+
+      if (PROGRESS_MS <= 0) {
+        advance();
+        return;
+      }
+
+      progressTimer = window.setTimeout(advance, PROGRESS_MS);
+    };
+
+    const scheduleIdle = () => {
+      stopAutoplay();
+      idleTimer = window.setTimeout(startProgress, IDLE_MS);
+    };
+
+    const noteInteraction = () => {
+      stopAutoplay();
+      scheduleIdle();
+    };
+
+    const indexFromHash = (hash: string) => {
+      const value = hash.replace(/^#/, "");
+      if (!value || value === "kursy") return 0;
+
+      const slug = value.startsWith("kursy-")
+        ? value.slice("kursy-".length)
+        : value;
+
+      const bySlug = tabs.findIndex((tab) => tab.dataset.slug === slug);
+      if (bySlug >= 0) return bySlug;
+
+      const byId = tabs.findIndex((tab) => {
+        const item = tab.closest<HTMLElement>(".dance-kursy__item");
+        return item?.id === value;
+      });
+      return byId >= 0 ? byId : -1;
+    };
+
+    const applyHash = (hash = location.hash, scroll = false) => {
+      const index = indexFromHash(hash);
+      if (index < 0) return false;
+
+      activate(index, { syncHash: false });
+      noteInteraction();
+
+      if (scroll) {
+        section.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
+      }
+
+      return true;
+    };
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const index = Number(tab.dataset.index ?? 0);
+        if (!tab.classList.contains("is-active")) {
+          activate(index);
+        }
+        noteInteraction();
+      });
+
+      tab.addEventListener("keydown", (event) => {
+        const current = Number(tab.dataset.index ?? 0);
+        let next = current;
+
+        if (event.key === "ArrowDown" || event.key === "ArrowRight") {
+          next = (current + 1) % tabs.length;
+        } else if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
+          next = (current - 1 + tabs.length) % tabs.length;
+        } else if (event.key === "Home") {
+          next = 0;
+        } else if (event.key === "End") {
+          next = tabs.length - 1;
+        } else {
+          return;
+        }
+
+        event.preventDefault();
+        activate(next);
+        tabs[next]?.focus();
+        noteInteraction();
+      });
+    });
+
+    window.addEventListener("hashchange", () => {
+      applyHash(location.hash, true);
+    });
+
+    // Hero / external deep-links arrive as #kursy-<slug>
+    applyHash(location.hash, Boolean(location.hash));
+    if (!location.hash || indexFromHash(location.hash) < 0) {
+      scheduleIdle();
+    }
+
+    document.addEventListener(
+      "pointerdown",
+      (event) => {
+        if (!(event.target instanceof Node)) return;
+        if (!section.contains(event.target)) return;
+        noteInteraction();
+      },
+      { passive: true },
+    );
+
+    // Pause autoplay while section is off-screen
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry) return;
+        if (entry.isIntersecting) {
+          scheduleIdle();
+        } else {
+          stopAutoplay();
+        }
+      },
+      { threshold: 0.35 },
+    );
+    io.observe(section);
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) stopAutoplay();
+      else scheduleIdle();
+    });
+  }
+</script>

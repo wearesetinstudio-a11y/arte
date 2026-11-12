@@ -173,7 +173,6 @@ const copy =
     border-bottom-color: #ffffff;
   }
 
-  .dance-contact__field:focus-within .dance-contact__label,
   .dance-contact__field:has(input:not(:placeholder-shown)) .dance-contact__label,
   .dance-contact__field:has(textarea:not(:placeholder-shown))
     .dance-contact__label {
@@ -181,6 +180,19 @@ const copy =
     font-size: var(--text-label);
     line-height: 1.3;
     color: rgb(255 255 255 / 0.42);
+  }
+
+  .dance-contact__field:focus-within .dance-contact__label {
+    top: 0;
+    font-size: var(--text-label);
+    line-height: 1.3;
+    color: rgb(255 255 255 / 0.72);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .dance-contact__field:hover .dance-contact__label {
+      color: rgb(255 255 255 / 0.72);
+    }
   }
 
   .dance-contact__submit {

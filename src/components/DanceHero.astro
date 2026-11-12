@@ -1,14 +1,26 @@
 ---
 const styles = [
-  "Broadway Jazz",
-  "Jazz",
-  "High Heels",
-  "Performance",
-  "Trening personalny dla tancerzy",
+  { label: "Broadway Jazz", href: "#kursy-broadway-jazz" },
+  { label: "Jazz", href: "#kursy-jazz" },
+  { label: "High Heels", href: "#kursy-high-heels" },
+  { label: "Performance", href: "#kursy-performance" },
+  {
+    label: "Trening personalny dla tancerzy",
+    href: "#kursy-trening-personalny",
+  },
 ];
 
-const description =
-  "Jesteśmy butikowym studiem tańca w Poznaniu, stworzonym z myślą o dorosłych – od pasjonatów po profesjonalnych tancerzy. Łączymy precyzyjną technikę, motorykę i sceniczną ekspresję.";
+const navLinks = [
+  { href: "#faq", label: "FAQ" },
+  { href: "#kursy", label: "Kursy" },
+  { href: "#kontakt", label: "Kontakt" },
+];
+
+const socials = [
+  { label: "G-mail", href: "mailto:hello@arte.pl" },
+  { label: "WhatsApp", href: "#" },
+  { label: "Instagram", href: "#" },
+];
 ---
 
 <section class="dance-hero" aria-label="Sztuka Ruchu">
@@ -26,78 +38,148 @@ const description =
           height="376"
         />
       </a>
-      <p class="dance-hero__tag">
-        <a href="/lengua">De baile</a>
-        <span class="dance-hero__tag-sep" aria-hidden="true">|</span>
-        <span>Poznań</span>
-      </p>
+      <p class="dance-hero__byline">By Viktoria Oskaldowicz</p>
     </div>
+
+    <nav class="dance-hero__links dance-hero__links--desktop" aria-label="Główne">
+      {
+        navLinks.map((link) => (
+          <a href={link.href} class="dance-hero__link">
+            <span class="dance-hero__link-track">
+              <span>{link.label}</span>
+              <span aria-hidden="true">{link.label}</span>
+            </span>
+          </a>
+        ))
+      }
+    </nav>
+
+    <button
+      type="button"
+      class="dance-hero__menu-toggle"
+      aria-expanded="false"
+      aria-controls="dance-hero-menu"
+      aria-label="Otwórz menu"
+    >
+      <span class="dance-hero__menu-toggle-text">Menu</span>
+    </button>
   </header>
 
+  <div
+    id="dance-hero-menu"
+    class="dance-hero__menu"
+    hidden
+  >
+    <nav class="dance-hero__menu-panel" aria-label="Menu mobilne">
+      <ul class="dance-hero__menu-list">
+        {
+          navLinks.map((link) => (
+            <li>
+              <a href={link.href} class="dance-hero__menu-item">
+                <span class="dance-hero__menu-item-label">{link.label}</span>
+                <img
+                  class="dance-hero__menu-item-arrow"
+                  src="/arrow.svg"
+                  alt=""
+                  width="26"
+                  height="26"
+                />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+
   <div class="dance-hero__body">
-    <div class="dance-hero__compose">
-      <div class="dance-hero__col dance-hero__col--sztuka" data-lock-width>
-        <h1 class="dance-hero__word" data-word>
-          Sztuka
-          <span class="sr-only"> Ruchu</span>
-        </h1>
-        <p class="dance-hero__copy dance-hero__copy--desktop">{description}</p>
-      </div>
-
-      <div class="dance-hero__col dance-hero__col--ruchu" data-lock-width>
-        <p
-          class="dance-hero__word dance-hero__word--offset"
-          data-word
-          aria-hidden="true"
-        >
-          Ruchu
-        </p>
-        <a href="#kontakt" class="dance-hero__cta dance-hero__cta--desktop">
-          <span class="dance-hero__btn-cover" aria-hidden="true"></span>
-          <span class="dance-hero__btn-label">Umów się na zajęcia</span>
-          <img src="/arrow.svg" alt="" width="26" height="26" />
-        </a>
-      </div>
+    <div class="dance-hero__headline">
+      <h1 class="dance-hero__word" data-word>
+        Sztuka
+        <span class="sr-only"> Ruchu</span>
+      </h1>
+      <p
+        class="dance-hero__word dance-hero__word--offset"
+        data-word
+        aria-hidden="true"
+      >
+        Ruchu
+      </p>
+      <span
+        class="dance-hero__badge dance-hero__badge--poznan"
+        data-badge
+        data-base-rotate="-7"
+      >
+        #Poznań
+      </span>
+      <span
+        class="dance-hero__badge dance-hero__badge--taniec"
+        data-badge
+        data-base-rotate="7"
+      >
+        #Taniec
+      </span>
     </div>
 
-    <p class="dance-hero__copy dance-hero__copy--mobile">{description}</p>
+    <aside class="dance-hero__aside">
+      <ul class="dance-hero__styles" aria-label="Style tańca">
+        {
+          styles.map((style) => (
+            <li>
+              <a href={style.href} class="dance-hero__style-link">
+                <span class="dance-hero__style-name">{style.label}</span>
+                <img
+                  class="dance-hero__style-arrow"
+                  src="/arrow.svg"
+                  alt=""
+                  width="26"
+                  height="26"
+                />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <a href="#kontakt" class="dance-hero__cta">
+        <span class="dance-hero__btn-cover" aria-hidden="true"></span>
+        <span class="dance-hero__btn-label">Umów się na zajęcia</span>
+        <img src="/arrow.svg" alt="" width="26" height="26" />
+      </a>
+    </aside>
   </div>
 
-  <div class="dance-hero__footer">
-    <a href="#kontakt" class="dance-hero__cta dance-hero__cta--mobile">
-      <span class="dance-hero__btn-cover" aria-hidden="true"></span>
-      <span class="dance-hero__btn-label">Umów się na zajęcia</span>
-      <img src="/arrow.svg" alt="" width="26" height="26" />
-    </a>
+  <footer class="dance-hero__meta">
+    <p class="dance-hero__clock">
+      <span>Poznań</span>
+      <span aria-hidden="true">|</span>
+      <time datetime="" data-poznan-clock>00:00:00</time>
+    </p>
 
-    <div class="dance-hero__marquee">
-      <div class="dance-hero__marquee-track">
-        <ul class="dance-hero__styles">
-          {
-            styles.map((style) => (
-              <li>{style}</li>
-            ))
-          }
-        </ul>
-        <ul class="dance-hero__styles" aria-hidden="true">
-          {
-            styles.map((style) => (
-              <li>{style}</li>
-            ))
-          }
-        </ul>
-      </div>
-    </div>
-  </div>
+    <ul class="dance-hero__social">
+      {
+        socials.map((item) => (
+          <li>
+            <a href={item.href} class="dance-hero__link">
+              <span class="dance-hero__link-track">
+                <span>{item.label}</span>
+                <span aria-hidden="true">{item.label}</span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </footer>
 </section>
 
 <style>
   .dance-hero {
     --text-button: clamp(0.82rem, 1.25vh + 0.2vw, 0.95rem);
-    --text-body: clamp(0.92rem, 1.45vh + 0.3vw, 1.15rem);
-    --text-label: clamp(0.75rem, 1.2vh + 0.2vw, 0.92rem);
+    --text-label: clamp(0.82rem, 1.2vh + 0.25vw, 1rem);
     --tracking-label: 0.08em;
-    --size-arrow: 0.9rem;
+    --pad-x: clamp(1.5rem, 4vw, 3.25rem);
+    --size-arrow: 0.85rem;
 
     position: relative;
     isolation: isolate;
@@ -124,13 +206,6 @@ const description =
     object-position: center 20%;
   }
 
-  .dance-hero__nav,
-  .dance-hero__body,
-  .dance-hero__footer {
-    position: relative;
-    z-index: 1;
-  }
-
   .dance-hero__media::after {
     content: "";
     position: absolute;
@@ -138,25 +213,33 @@ const description =
     background:
       linear-gradient(
         180deg,
-        rgb(0 0 0 / 0.5) 0%,
-        rgb(0 0 0 / 0.18) 42%,
-        rgb(0 0 0 / 0.55) 100%
+        rgb(0 0 0 / 0.55) 0%,
+        rgb(0 0 0 / 0.22) 40%,
+        rgb(0 0 0 / 0.58) 100%
       );
+  }
+
+  .dance-hero__nav,
+  .dance-hero__body,
+  .dance-hero__meta,
+  .dance-hero__menu {
+    position: relative;
+    z-index: 1;
   }
 
   .dance-hero__nav {
     display: flex;
     flex-shrink: 0;
     align-items: center;
-    justify-content: center;
-    padding: clamp(1.25rem, 3vh, 2rem) clamp(1.5rem, 4vw, 3.25rem) clamp(0.5rem, 1.5vh, 1rem);
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: clamp(1.15rem, 2.8vh, 1.85rem) var(--pad-x);
   }
 
   .dance-hero__brand {
     display: flex;
-    flex-direction: row;
     align-items: center;
-    gap: clamp(0.85rem, 2vw, 1.35rem);
+    gap: clamp(0.75rem, 1.8vw, 1.25rem);
     min-width: 0;
   }
 
@@ -166,120 +249,269 @@ const description =
   }
 
   .dance-hero__logo img {
-    width: min(18vw, 112px);
+    width: min(16vw, 96px);
     height: auto;
   }
 
-  .dance-hero__tag {
-    display: flex;
-    align-items: center;
-    gap: 0.55rem;
+  .dance-hero__byline {
     margin: 0;
     font-family: var(--font-mono);
     font-size: var(--text-label);
     font-weight: 400;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     white-space: nowrap;
   }
 
-  .dance-hero__tag a {
+  .dance-hero__links {
+    display: flex;
+    align-items: center;
+    gap: clamp(2rem, 4vw, 3.5rem);
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: 400;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .dance-hero__link {
+    --link-line: 1.2em;
+
+    position: relative;
+    display: inline-flex;
+    height: var(--link-line);
+    overflow: hidden;
     color: inherit;
     text-decoration: none;
+    vertical-align: top;
+    line-height: var(--link-line);
   }
 
-  .dance-hero__tag a:hover,
-  .dance-hero__tag a:focus-visible {
-    opacity: 0.7;
+  .dance-hero__link-track {
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .dance-hero__tag-sep {
-    opacity: 0.7;
+  .dance-hero__link-track span {
+    display: block;
+    height: var(--link-line);
+    line-height: var(--link-line);
   }
 
-  .dance-hero__cta {
-    position: relative;
-    isolation: isolate;
-    overflow: hidden;
-    background: #ffffff;
-    color: #1e1e1e;
+  .dance-hero__link:hover .dance-hero__link-track,
+  .dance-hero__link:focus-visible .dance-hero__link-track {
+    transform: translateY(calc(var(--link-line) * -1));
+  }
+
+  .dance-hero__menu-toggle {
+    display: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
     font-family: var(--font-mono);
-    font-size: var(--text-button);
-    font-weight: 500;
+    font-size: var(--text-label);
+    font-weight: 400;
+    letter-spacing: var(--tracking-label);
     text-transform: uppercase;
-    transition: color 0.35s ease;
+    cursor: pointer;
   }
 
-  .dance-hero__btn-cover {
+  .dance-hero__menu {
     position: absolute;
     inset: 0;
-    z-index: -1;
-    background: #000000;
-    transform: scaleY(0);
-    transform-origin: bottom center;
-    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 5;
+    display: grid;
+    place-items: center;
+    background: #ffffff;
+    color: #1e1e1e;
+    clip-path: inset(0 0 100% 0);
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      clip-path 0.55s ease-in-out,
+      visibility 0s linear 0.55s;
   }
 
-  .dance-hero__cta:active .dance-hero__btn-cover,
-  .dance-hero__cta:focus-visible .dance-hero__btn-cover {
-    transform: scaleY(1);
+  .dance-hero__menu.is-open {
+    clip-path: inset(0);
+    visibility: visible;
+    pointer-events: auto;
+    transition:
+      clip-path 0.55s ease-in-out,
+      visibility 0s linear 0s;
   }
 
-  .dance-hero__cta:active,
-  .dance-hero__cta:focus-visible {
-    color: #ffffff;
+  .dance-hero__menu.is-closing {
+    clip-path: inset(100% 0 0 0);
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      clip-path 0.55s ease-in-out,
+      visibility 0s linear 0.55s;
   }
 
-  .dance-hero__cta:active img,
-  .dance-hero__cta:focus-visible img {
-    filter: brightness(0) invert(1);
+  .dance-hero__menu[hidden] {
+    display: none;
   }
 
-  @media (hover: hover) and (pointer: fine) {
-    .dance-hero__cta:hover .dance-hero__btn-cover {
-      transform: scaleY(1);
-    }
-
-    .dance-hero__cta:hover {
-      color: #ffffff;
-    }
-
-    .dance-hero__cta:hover img {
-      filter: brightness(0) invert(1);
-    }
+  .dance-hero__menu-panel {
+    width: min(100%, 22rem);
+    padding-inline: 1.5rem;
+    opacity: 0;
+    transform: translateY(-0.75rem);
+    transition:
+      opacity 0.35s ease-in-out 0.12s,
+      transform 0.4s ease-in-out 0.12s;
   }
 
-  .dance-hero__btn-label {
+  .dance-hero__menu.is-open .dance-hero__menu-panel {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .dance-hero__menu.is-closing .dance-hero__menu-panel {
+    opacity: 0;
+    transform: translateY(0.35rem);
+    transition:
+      opacity 0.25s ease-in-out 0s,
+      transform 0.3s ease-in-out 0s;
+  }
+
+  .dance-hero__menu-list {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid rgb(30 30 30 / 0.1);
+    transition: border-color 0.25s ease;
+  }
+
+  .dance-hero__menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    padding: 1.15rem 0;
+    border-bottom: 1px solid rgb(30 30 30 / 0.1);
+    color: inherit;
+    font-family: var(--font-mono);
+    font-size: clamp(0.95rem, 4vw, 1.15rem);
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition:
+      border-color 0.3s ease,
+      padding 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .dance-hero__menu-item:hover,
+  .dance-hero__menu-item:focus-visible {
+    padding-block: 1.55rem;
+  }
+
+  .dance-hero__menu-list li:has(.dance-hero__menu-item:hover),
+  .dance-hero__menu-list li:has(.dance-hero__menu-item:focus-visible),
+  .dance-hero__menu-list
+    li:has(+ li .dance-hero__menu-item:hover)
+    .dance-hero__menu-item,
+  .dance-hero__menu-list
+    li:has(+ li .dance-hero__menu-item:focus-visible)
+    .dance-hero__menu-item {
+    border-bottom-color: rgb(30 30 30 / 0.3);
+  }
+
+  .dance-hero__menu-list:has(li:first-child .dance-hero__menu-item:hover),
+  .dance-hero__menu-list:has(
+    li:first-child .dance-hero__menu-item:focus-visible
+  ) {
+    border-top-color: rgb(30 30 30 / 0.3);
+  }
+
+  .dance-hero__menu-item-label {
+    min-width: 0;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .dance-hero__menu-item-arrow {
+    width: var(--size-arrow);
+    height: auto;
+    flex-shrink: 0;
+    transform-origin: center;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .dance-hero__menu-item:hover .dance-hero__menu-item-label,
+  .dance-hero__menu-item:focus-visible .dance-hero__menu-item-label {
+    transform: translateX(10px);
+  }
+
+  .dance-hero__menu-item:hover .dance-hero__menu-item-arrow,
+  .dance-hero__menu-item:focus-visible .dance-hero__menu-item-arrow {
+    transform: translateX(-10px) rotate(45deg);
+  }
+
+  .dance-hero.is-menu-open .dance-hero__nav {
     position: relative;
+    z-index: 6;
+  }
+
+  .dance-hero.is-menu-open .dance-hero__logo img {
+    filter: invert(1);
+  }
+
+  .dance-hero.is-menu-open .dance-hero__byline,
+  .dance-hero.is-menu-open .dance-hero__menu-toggle {
+    color: #1e1e1e;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dance-hero__menu,
+    .dance-hero__menu.is-open,
+    .dance-hero__menu.is-closing,
+    .dance-hero__menu-panel,
+    .dance-hero__menu.is-open .dance-hero__menu-panel,
+    .dance-hero__menu.is-closing .dance-hero__menu-panel {
+      transition: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dance-hero__link-track {
+      transition: none;
+    }
+
+    .dance-hero__link:hover .dance-hero__link-track,
+    .dance-hero__link:focus-visible .dance-hero__link-track {
+      transform: none;
+    }
   }
 
   .dance-hero__body {
-    display: flex;
+    display: grid;
     flex: 1;
-    flex-direction: column;
+    grid-template-columns: minmax(0, 1fr) minmax(17rem, 24rem);
     align-items: center;
-    justify-content: center;
+    gap: clamp(3.5rem, 10vw, 8.5rem);
     min-height: 0;
-    padding: 0 clamp(1.5rem, 4vw, 3.25rem);
+    padding: 0 var(--pad-x);
   }
 
-  .dance-hero__compose {
-    display: grid;
+  .dance-hero__headline {
+    position: relative;
+    display: flex;
     width: max-content;
     max-width: 100%;
-    margin-inline: auto;
-    grid-template-columns: max-content max-content;
-    align-items: start;
-    justify-content: center;
-    column-gap: 40px;
-  }
-
-  .dance-hero__col {
-    display: flex;
     flex-direction: column;
-    align-items: stretch;
+    align-items: flex-start;
     min-width: 0;
-    max-width: 100%;
+    perspective: 900px;
+    perspective-origin: 50% 45%;
   }
 
   .sr-only {
@@ -295,15 +527,13 @@ const description =
   }
 
   .dance-hero__word {
-    display: inline-block;
-    width: max-content;
-    max-width: none;
+    display: block;
     margin: 0;
     font-family: var(--font-display);
-    font-size: clamp(3.2rem, 11vw, 8rem);
+    font-size: clamp(4.75rem, 13.5vw, 11rem);
     font-weight: 400;
-    line-height: 0.82;
-    letter-spacing: -0.03em;
+    line-height: 0.8;
+    letter-spacing: -0.045em;
     text-transform: uppercase;
     white-space: nowrap;
     opacity: 0;
@@ -314,7 +544,9 @@ const description =
   }
 
   .dance-hero__word--offset {
-    transform: translateY(20px);
+    margin-top: 0;
+    /* Align start of RUCHU with the end of Z in SZTUKA */
+    margin-left: 1.22em;
     transition-delay: 0.28s, 0.28s;
   }
 
@@ -323,321 +555,435 @@ const description =
     filter: blur(0);
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .dance-hero__word {
-      opacity: 1;
-      filter: none;
-      transition: none;
-    }
+  .dance-hero__badge {
+    --badge-rx: 0deg;
+    --badge-ry: 0deg;
+    --badge-tx: 0px;
+    --badge-ty: 0px;
+    --badge-rz: 0deg;
+
+    position: absolute;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.62rem 1.2rem;
+    background: #ffffff;
+    color: #1e1e1e;
+    font-family: var(--font-mono);
+    font-size: clamp(0.92rem, 1.35vw, 1.2rem);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    opacity: 0;
+    filter: blur(12px);
+    transform-style: preserve-3d;
+    will-change: transform;
+    transform:
+      translate3d(var(--badge-tx), var(--badge-ty), 0)
+      rotateX(var(--badge-rx))
+      rotateY(var(--badge-ry))
+      rotateZ(var(--badge-rz));
+    transition:
+      opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.4s,
+      filter 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.4s;
   }
 
-  .dance-hero__copy {
-    box-sizing: border-box;
-    margin: 1.15rem 0 0;
-    font-family: var(--font-sans);
-    font-size: var(--text-body);
-    font-weight: 400;
-    line-height: 1.45;
-    color: rgb(255 255 255 / 0.9);
+  .dance-hero__badge--poznan {
+    top: calc(38% + 10px);
+    left: 14%;
+    --badge-rz: -7deg;
   }
 
-  .dance-hero__copy--desktop {
+  .dance-hero__badge--taniec {
+    top: calc(46% - 20px);
+    right: 4%;
+    --badge-rz: 7deg;
+    transition-delay: 0.55s, 0.55s;
+  }
+
+  :global(html:not(.is-loading)) .dance-hero__badge {
+    opacity: 1;
+    filter: blur(0);
+  }
+
+  .dance-hero__aside {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.35rem;
     width: 100%;
+    max-width: 24rem;
+    justify-self: end;
   }
 
-  .dance-hero__copy--mobile {
-    display: none;
+  .dance-hero__styles {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid rgb(255 255 255 / 0.1);
+    transition: border-color 0.25s ease;
+  }
+
+  .dance-hero__styles li {
+    border-bottom: 1px solid rgb(255 255 255 / 0.1);
+    transition: border-color 0.3s ease;
+  }
+
+  .dance-hero__style-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    width: 100%;
+    padding: 1.15rem 0;
+    font-family: var(--font-mono);
+    font-size: clamp(0.78rem, 1.15vw, 0.92rem);
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: inherit;
+    transition: padding 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .dance-hero__style-link:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 4px;
+  }
+
+  .dance-hero__styles li:hover .dance-hero__style-link,
+  .dance-hero__styles li:focus-within .dance-hero__style-link {
+    padding-block: 1.55rem;
+  }
+
+  .dance-hero__styles li:hover,
+  .dance-hero__styles li:focus-within,
+  .dance-hero__styles li:has(+ li:hover),
+  .dance-hero__styles li:has(+ li:focus-within) {
+    border-bottom-color: rgb(255 255 255 / 0.3);
+  }
+
+  .dance-hero__styles:has(li:first-child:hover),
+  .dance-hero__styles:has(li:first-child:focus-within) {
+    border-top-color: rgb(255 255 255 / 0.3);
+  }
+
+  .dance-hero__style-name {
+    min-width: 0;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .dance-hero__style-arrow {
+    width: var(--size-arrow);
+    height: auto;
+    flex-shrink: 0;
+    filter: brightness(0) invert(1);
+    transform-origin: center;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .dance-hero__styles li:hover .dance-hero__style-name,
+  .dance-hero__styles li:focus-within .dance-hero__style-name {
+    transform: translateX(10px);
+  }
+
+  .dance-hero__styles li:hover .dance-hero__style-arrow,
+  .dance-hero__styles li:focus-within .dance-hero__style-arrow {
+    transform: translateX(-10px) rotate(45deg);
   }
 
   .dance-hero__cta {
+    position: relative;
+    isolation: isolate;
     display: inline-flex;
     box-sizing: border-box;
     width: 100%;
-    max-width: 100%;
     align-items: center;
     justify-content: space-between;
     gap: 0.75rem;
-    padding: 1rem 0.85rem;
+    overflow: hidden;
+    background: #ffffff;
+    color: #1e1e1e;
+    padding: 1.05rem 1rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-button);
+    font-weight: 500;
     letter-spacing: var(--tracking-label);
     text-align: left;
-    white-space: nowrap;
+    text-transform: uppercase;
+    transition: color 0.35s ease;
   }
 
-  .dance-hero__cta--desktop {
-    margin-top: calc(1.15rem + 20px);
+  .dance-hero__btn-cover {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: #000000;
+    transform: scaleY(0);
+    transform-origin: bottom center;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .dance-hero__cta--mobile {
-    display: none;
-  }
-
-  .dance-hero__cta .dance-hero__btn-label {
-    overflow: hidden;
+  .dance-hero__btn-label {
+    position: relative;
     min-width: 0;
-    text-overflow: ellipsis;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .dance-hero__cta img {
     position: relative;
     width: var(--size-arrow);
     height: auto;
-    margin-left: auto;
     flex-shrink: 0;
-    transition: filter 0.35s ease;
+    transform-origin: center;
+    transition:
+      filter 0.35s ease,
+      transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .dance-hero__footer {
+  .dance-hero__cta:active .dance-hero__btn-cover,
+  .dance-hero__cta:focus-visible .dance-hero__btn-cover {
+    transform: scaleY(1);
+  }
+
+  .dance-hero__cta:active,
+  .dance-hero__cta:focus-visible {
+    color: #ffffff;
+  }
+
+  .dance-hero__cta:active .dance-hero__btn-label,
+  .dance-hero__cta:focus-visible .dance-hero__btn-label {
+    transform: translateX(10px);
+  }
+
+  .dance-hero__cta:active img,
+  .dance-hero__cta:focus-visible img {
+    filter: brightness(0) invert(1);
+    transform: translateX(-10px) rotate(45deg);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .dance-hero__cta:hover .dance-hero__btn-cover {
+      transform: scaleY(1);
+    }
+
+    .dance-hero__cta:hover {
+      color: #ffffff;
+    }
+
+    .dance-hero__cta:hover .dance-hero__btn-label {
+      transform: translateX(10px);
+    }
+
+    .dance-hero__cta:hover img {
+      filter: brightness(0) invert(1);
+      transform: translateX(-10px) rotate(45deg);
+    }
+  }
+
+  .dance-hero__meta {
+    display: flex;
     flex-shrink: 0;
-    padding: 0 clamp(1.5rem, 4vw, 3.25rem);
-  }
-
-  .dance-hero__marquee {
-    width: 100%;
-    margin: 0 0 20px;
-  }
-
-  .dance-hero__marquee-track {
-    display: flex;
-    width: 100%;
-  }
-
-  .dance-hero__styles {
-    display: flex;
-    flex: 1 1 auto;
-    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 0.75rem 1.25rem;
+    gap: 1.5rem;
+    padding: 0 var(--pad-x) clamp(2.75rem, 6vh, 4rem);
+  }
+
+  .dance-hero__clock {
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .dance-hero__social {
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 2vw, 1.75rem);
     margin: 0;
     padding: 0;
     list-style: none;
     font-family: var(--font-mono);
     font-size: var(--text-label);
     font-weight: 400;
-    letter-spacing: var(--tracking-label);
+    letter-spacing: 0.1em;
     text-transform: uppercase;
   }
 
-  .dance-hero__marquee-track > .dance-hero__styles[aria-hidden="true"] {
-    display: none;
+  .dance-hero__social .dance-hero__link {
+    opacity: 0.92;
   }
 
-  @media (max-width: 720px) {
-    .dance-hero {
-      --text-body: clamp(0.95rem, 3.6vw, 1.1rem);
-      --text-button: clamp(0.85rem, 3.2vw, 1rem);
+  @media (prefers-reduced-motion: reduce) {
+    .dance-hero__word,
+    .dance-hero__badge {
+      opacity: 1;
+      filter: none;
+      transition: none;
     }
+  }
 
-    .dance-hero__media img {
-      object-position: center 25%;
-    }
-
-    .dance-hero__nav {
-      padding: 1.5rem 1.25rem 0.35rem;
-    }
-
-    .dance-hero__brand {
-      flex-direction: column;
-      align-items: center;
-      gap: 0.65rem;
-      text-align: center;
-    }
-
-    .dance-hero__logo img {
-      width: min(34vw, 118px);
-    }
-
-    .dance-hero__tag {
-      font-size: clamp(0.72rem, 2.8vw, 0.85rem);
-      letter-spacing: 0.16em;
-    }
-
+  @media (max-width: 960px) {
     .dance-hero__body {
-      justify-content: center;
-      gap: 1.75rem;
-      padding: 0.75rem 1.5rem 0;
+      grid-template-columns: 1fr;
+      justify-items: center;
+      align-content: center;
+      gap: 2rem;
+      padding-block: 0.5rem;
+      overflow-x: hidden;
+      overflow-y: auto;
     }
 
-    .dance-hero__compose {
-      display: flex;
-      width: 100%;
-      flex-direction: column;
-      align-items: stretch;
-    }
-
-    .dance-hero__col {
-      width: auto !important;
-    }
-
-    .dance-hero__col--sztuka {
-      align-self: flex-start;
-      margin-left: clamp(0.25rem, 2vw, 0.75rem);
-    }
-
-    .dance-hero__col--ruchu {
-      align-self: flex-end;
-      margin-top: -0.35rem;
-      margin-right: clamp(0.25rem, 2vw, 0.75rem);
+    .dance-hero__headline {
+      align-items: flex-start;
+      justify-self: center;
+      margin-inline: auto;
     }
 
     .dance-hero__word {
-      font-size: clamp(4rem, 20vw, 5.75rem);
+      font-size: clamp(4.25rem, 16vw, 6.5rem);
     }
 
     .dance-hero__word--offset {
-      transform: translateY(6px);
+      margin-left: 1.22em;
     }
 
-    .dance-hero__copy--desktop,
-    .dance-hero__cta--desktop {
+    .dance-hero__aside {
+      max-width: none;
+      width: 100%;
+      justify-self: stretch;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .dance-hero__nav {
+      padding: 1.15rem 1.25rem 0.4rem;
+    }
+
+    .dance-hero__brand {
+      gap: 0.55rem;
+    }
+
+    .dance-hero__logo img {
+      width: min(30vw, 88px);
+    }
+
+    .dance-hero__byline {
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      max-width: 7.5rem;
+      white-space: normal;
+      line-height: 1.25;
+    }
+
+    .dance-hero__links--desktop {
       display: none;
     }
 
-    .dance-hero__copy--mobile {
-      display: block;
-      width: min(100%, 21.5rem);
-      margin: 0;
-      text-align: center;
-      line-height: 1.5;
-    }
-
-    .dance-hero__footer {
-      display: flex;
-      flex-direction: column;
-      gap: 1.15rem;
-      margin-top: auto;
-      padding: 0 0 max(1.1rem, env(safe-area-inset-bottom));
-    }
-
-    .dance-hero__cta--mobile {
+    .dance-hero__menu-toggle {
       display: inline-flex;
-      width: calc(100% - 2.5rem);
-      margin-inline: 1.25rem;
-      padding: 1.05rem 1rem;
+      align-items: center;
     }
 
-    .dance-hero__marquee {
-      overflow: hidden;
-      width: 100%;
-      margin: 0;
-      mask-image: linear-gradient(
-        90deg,
-        transparent 0%,
-        #000 6%,
-        #000 94%,
-        transparent 100%
-      );
-      -webkit-mask-image: linear-gradient(
-        90deg,
-        transparent 0%,
-        #000 6%,
-        #000 94%,
-        transparent 100%
-      );
+    .dance-hero__body {
+      gap: 1.5rem;
+      padding: 0.35rem 1rem 0;
+      justify-items: center;
     }
 
-    .dance-hero__marquee-track {
+    .dance-hero__headline {
       width: max-content;
-      animation: dance-styles-marquee 28s linear infinite;
+      max-width: calc(100vw - 1.5rem);
+      margin-inline: auto;
+      justify-self: center;
     }
 
-    .dance-hero__marquee-track > .dance-hero__styles[aria-hidden="true"] {
-      display: flex;
+    .dance-hero__word {
+      font-size: clamp(4.5rem, 18vw, 7rem);
     }
 
-    .dance-hero__styles {
-      flex: 0 0 auto;
-      flex-wrap: nowrap;
-      justify-content: flex-start;
-      gap: 0;
-      width: max-content;
+    .dance-hero__badge {
+      padding: 0.34rem 0.65rem;
+      font-size: clamp(0.68rem, 2.8vw, 0.82rem);
     }
 
-    .dance-hero__styles li {
-      flex-shrink: 0;
-      padding-inline: 1.35rem;
-      white-space: nowrap;
-      border-left: 1px solid rgb(255 255 255 / 0.35);
+    .dance-hero__badge--poznan {
+      top: calc(36% + 10px);
+      left: 10%;
     }
-  }
 
-  @keyframes dance-styles-marquee {
-    from {
-      transform: translateX(0);
+    .dance-hero__badge--taniec {
+      top: calc(48% - 20px);
+      right: 0;
     }
-    to {
-      transform: translateX(-50%);
-    }
-  }
 
-  @media (max-width: 720px) and (prefers-reduced-motion: reduce) {
-    .dance-hero__marquee-track {
-      animation: none;
+    .dance-hero__word--offset {
+      margin-left: 1.22em;
+    }
+
+    .dance-hero__style-link {
+      padding: 1rem 0;
+      font-size: 0.75rem;
+    }
+
+    .dance-hero__cta {
+      padding: 0.95rem 0.9rem;
+    }
+
+    .dance-hero__meta {
+      margin-top: auto;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.85rem;
+      padding: 1rem 1.25rem max(2.5rem, env(safe-area-inset-bottom));
+      text-align: center;
+    }
+
+    .dance-hero__clock,
+    .dance-hero__social {
+      font-size: 0.68rem;
+    }
+
+    .dance-hero__social {
+      justify-content: center;
+      gap: 0.9rem;
     }
   }
 </style>
 
 <script>
-  const MOBILE_MQ = window.matchMedia("(max-width: 720px)");
+  const clockEl = document.querySelector<HTMLTimeElement>("[data-poznan-clock]");
 
-  const lockColumnWidths = () => {
-    const cols = document.querySelectorAll<HTMLElement>("[data-lock-width]");
+  const formatPoznanTime = (date: Date) =>
+    new Intl.DateTimeFormat("pl-PL", {
+      timeZone: "Europe/Warsaw",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    }).format(date);
 
-    if (MOBILE_MQ.matches) {
-      for (const col of cols) {
-        col.style.width = "";
-        const copy = col.querySelector<HTMLElement>(".dance-hero__copy");
-        const cta = col.querySelector<HTMLElement>(".dance-hero__cta");
-        if (copy) {
-          copy.style.width = "";
-          copy.style.maxWidth = "";
-        }
-        if (cta) {
-          cta.style.width = "";
-          cta.style.maxWidth = "";
-        }
-      }
-      return;
-    }
-
-    for (const col of cols) {
-      const word = col.querySelector<HTMLElement>("[data-word]");
-      if (!word) continue;
-
-      col.style.width = "";
-      word.style.width = "max-content";
-
-      const width = Math.ceil(word.getBoundingClientRect().width);
-      if (!width) continue;
-
-      col.style.width = `${width}px`;
-
-      const copy = col.querySelector<HTMLElement>(".dance-hero__copy");
-      const cta = col.querySelector<HTMLElement>(".dance-hero__cta");
-      if (copy) {
-        copy.style.width = `${width}px`;
-        copy.style.maxWidth = `${width}px`;
-      }
-      if (cta) {
-        cta.style.width = `${width}px`;
-        cta.style.maxWidth = `${width}px`;
-      }
-    }
+  const tickClock = () => {
+    if (!clockEl) return;
+    const now = new Date();
+    const label = formatPoznanTime(now);
+    clockEl.textContent = label;
+    clockEl.dateTime = now.toISOString();
   };
 
-  const run = () => {
-    requestAnimationFrame(() => {
-      lockColumnWidths();
-      document.fonts?.ready?.then(() => {
-        lockColumnWidths();
-        requestAnimationFrame(lockColumnWidths);
-      });
-    });
-  };
-
-  run();
-  window.addEventListener("resize", lockColumnWidths);
-  MOBILE_MQ.addEventListener("change", lockColumnWidths);
+  tickClock();
+  window.setInterval(tickClock, 1000);
 
   const scrollToContact = (event: Event) => {
     const target = document.querySelector<HTMLElement>("#kontakt");
@@ -649,8 +995,180 @@ const description =
   };
 
   for (const link of document.querySelectorAll<HTMLAnchorElement>(
-    'a[href="#kontakt"]',
+    '.dance-hero a[href="#kontakt"]',
   )) {
     link.addEventListener("click", scrollToContact);
+  }
+
+  const heroEl = document.querySelector<HTMLElement>(".dance-hero");
+  const menuToggle = document.querySelector<HTMLButtonElement>(
+    ".dance-hero__menu-toggle",
+  );
+  const menu = document.querySelector<HTMLElement>("#dance-hero-menu");
+  const menuToggleText = menuToggle?.querySelector<HTMLElement>(
+    ".dance-hero__menu-toggle-text",
+  );
+
+  if (heroEl && menuToggle && menu && menuToggleText) {
+    const MENU_MS = 550;
+    let menuBusy = false;
+    let menuTimer = 0;
+
+    const setMenuOpen = (open: boolean) => {
+      if (menuBusy && open) return;
+      const isOpen = menuToggle.getAttribute("aria-expanded") === "true";
+      if (open === isOpen) return;
+
+      window.clearTimeout(menuTimer);
+      menuBusy = true;
+
+      menuToggle.setAttribute("aria-expanded", String(open));
+      menuToggle.setAttribute(
+        "aria-label",
+        open ? "Zamknij menu" : "Otwórz menu",
+      );
+      menuToggleText.textContent = open ? "Zamknij" : "Menu";
+      heroEl.classList.toggle("is-menu-open", open);
+
+      if (open) {
+        menu.hidden = false;
+        menu.classList.remove("is-closing", "is-open");
+        void menu.offsetWidth;
+        menu.classList.add("is-open");
+        menuTimer = window.setTimeout(() => {
+          menuBusy = false;
+        }, MENU_MS);
+        return;
+      }
+
+      menu.classList.remove("is-open");
+      menu.classList.add("is-closing");
+      menuTimer = window.setTimeout(() => {
+        menu.classList.remove("is-closing");
+        menu.hidden = true;
+        menuBusy = false;
+      }, MENU_MS);
+    };
+
+    menuToggle.addEventListener("click", () => {
+      const open = menuToggle.getAttribute("aria-expanded") !== "true";
+      setMenuOpen(open);
+    });
+
+    menu.addEventListener("click", (event) => {
+      const target = event.target as HTMLElement | null;
+      if (target?.closest("a") || target === menu) {
+        setMenuOpen(false);
+      }
+    });
+
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    });
+  }
+
+  const hero = document.querySelector<HTMLElement>(".dance-hero");
+  const badges = [
+    ...document.querySelectorAll<HTMLElement>("[data-badge]"),
+  ];
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+  const finePointer = window.matchMedia("(pointer: fine)").matches;
+
+  if (hero && badges.length && !reduceMotion && finePointer) {
+    const MAX_TILT = 18;
+    const MAX_PULL = 14;
+    const RANGE = 320;
+    const EASE = 0.14;
+
+    type Tilt = { rx: number; ry: number; tx: number; ty: number };
+
+    const state = badges.map((el) => ({
+      el,
+      current: { rx: 0, ry: 0, tx: 0, ty: 0 } as Tilt,
+      target: { rx: 0, ry: 0, tx: 0, ty: 0 } as Tilt,
+    }));
+
+    let frame = 0;
+    let active = false;
+
+    const apply = (el: HTMLElement, tilt: Tilt) => {
+      el.style.setProperty("--badge-rx", `${tilt.rx.toFixed(2)}deg`);
+      el.style.setProperty("--badge-ry", `${tilt.ry.toFixed(2)}deg`);
+      el.style.setProperty("--badge-tx", `${tilt.tx.toFixed(2)}px`);
+      el.style.setProperty("--badge-ty", `${tilt.ty.toFixed(2)}px`);
+    };
+
+    const render = () => {
+      frame = 0;
+      let moving = false;
+
+      for (const item of state) {
+        item.current.rx += (item.target.rx - item.current.rx) * EASE;
+        item.current.ry += (item.target.ry - item.current.ry) * EASE;
+        item.current.tx += (item.target.tx - item.current.tx) * EASE;
+        item.current.ty += (item.target.ty - item.current.ty) * EASE;
+        apply(item.el, item.current);
+
+        if (
+          Math.abs(item.target.rx - item.current.rx) > 0.05 ||
+          Math.abs(item.target.ry - item.current.ry) > 0.05 ||
+          Math.abs(item.target.tx - item.current.tx) > 0.05 ||
+          Math.abs(item.target.ty - item.current.ty) > 0.05
+        ) {
+          moving = true;
+        }
+      }
+
+      if (moving || active) {
+        frame = window.requestAnimationFrame(render);
+      }
+    };
+
+    const requestRender = () => {
+      if (!frame) frame = window.requestAnimationFrame(render);
+    };
+
+    const setTargetsFromPoint = (x: number, y: number) => {
+      for (const item of state) {
+        const rect = item.el.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const nx = Math.max(-1, Math.min(1, (x - cx) / RANGE));
+        const ny = Math.max(-1, Math.min(1, (y - cy) / RANGE));
+
+        item.target.rx = -ny * MAX_TILT;
+        item.target.ry = nx * MAX_TILT;
+        item.target.tx = nx * MAX_PULL;
+        item.target.ty = ny * MAX_PULL;
+      }
+    };
+
+    hero.addEventListener(
+      "pointermove",
+      (event) => {
+        if (event.pointerType === "touch") return;
+        active = true;
+        setTargetsFromPoint(event.clientX, event.clientY);
+        requestRender();
+      },
+      { passive: true },
+    );
+
+    hero.addEventListener(
+      "pointerleave",
+      () => {
+        active = false;
+        for (const item of state) {
+          item.target.rx = 0;
+          item.target.ry = 0;
+          item.target.tx = 0;
+          item.target.ty = 0;
+        }
+        requestRender();
+      },
+      { passive: true },
+    );
   }
 </script>

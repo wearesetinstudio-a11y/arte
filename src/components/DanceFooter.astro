@@ -1,181 +1,349 @@
 ---
 interface Props {
   email?: string;
+  instagram?: string;
   logoHref?: string;
 }
 
 const {
   email = "artedebaile@gmail.com",
+  instagram = "artedebaile_pz",
   logoHref = "/",
 } = Astro.props;
 
-const nav = [
-  { href: "/lengua", label: "Języki" },
-  { href: "/", label: "Taniec" },
-];
-
+const year = new Date().getFullYear();
 const phone = "+48 606 797 737";
 const phoneHref = "tel:+48606797737";
-const whatsappHref = "https://wa.me/48606797737";
 
 const contacts = [
-  { label: "Whatsapp", value: phone, href: whatsappHref },
-  { label: "E-mail", value: email, href: `mailto:${email}` },
-  { label: "Numer telefonu", value: phone, href: phoneHref },
+  {
+    label: "Whatsapp",
+    value: phone,
+    href: "https://wa.me/48606797737",
+    newTab: true,
+  },
+  {
+    label: "Instagram",
+    value: instagram,
+    href: `https://instagram.com/${instagram}`,
+    newTab: true,
+  },
+  {
+    label: "E-mail",
+    value: email,
+    href: `mailto:${email}`,
+    newTab: false,
+  },
+  {
+    label: "Numer telefonu",
+    value: phone,
+    href: phoneHref,
+    newTab: false,
+  },
 ];
 ---
 
 <footer class="dance-footer">
-  <div class="dance-footer__inner">
-    <div class="dance-footer__brand">
-      <a href={logoHref} class="dance-footer__logo" aria-label="Arte — odśwież stronę">
-        <img
-          src="/arte-logo-white.svg"
-          alt="Arte"
-          width="658"
-          height="376"
-        />
-      </a>
+  <div class="dance-footer__main">
+    <div class="dance-footer__company">
+      <div class="dance-footer__block">
+        <p class="dance-footer__label">Nazwa firmy</p>
+        <p class="dance-footer__value">ARTE Viktoria Oskaldowicz</p>
+      </div>
 
-      <nav class="dance-footer__nav" aria-label="Stopka">
-        {
-          nav.map((item) => (
-            <a href={item.href}>{item.label}</a>
-          ))
-        }
-      </nav>
+      <div class="dance-footer__ids">
+        <div class="dance-footer__block">
+          <p class="dance-footer__label">NIP</p>
+          <p class="dance-footer__value">7822972980</p>
+        </div>
+        <div class="dance-footer__block">
+          <p class="dance-footer__label">REGON</p>
+          <p class="dance-footer__value">545431130</p>
+        </div>
+      </div>
+
+      <div class="dance-footer__block">
+        <p class="dance-footer__label">Adres</p>
+        <p class="dance-footer__value">
+          os. Piastowskie 62 lok. 85,<br />
+          61-156 Poznań
+        </p>
+      </div>
     </div>
+
+    <a href={logoHref} class="dance-footer__logo" aria-label="Arte">
+      <img src="/arte-logo-white.svg" alt="" width="658" height="376" />
+    </a>
 
     <ul class="dance-footer__contacts">
       {
         contacts.map((item) => (
-          <li class="dance-footer__contact">
-            <span class="dance-footer__contact-label">{item.label}</span>
-            <a class="dance-footer__contact-value" href={item.href}>
-              {item.value}
+          <li class="dance-footer__block">
+            <p class="dance-footer__label">{item.label}</p>
+            <a
+              class="dance-footer__value dance-footer__link"
+              href={item.href}
+              {...(item.newTab
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : {})}
+            >
+              <span class="dance-footer__link-text">{item.value}</span>
+              <img
+                class="dance-footer__external"
+                src="/arrow.svg"
+                alt=""
+                width="26"
+                height="26"
+              />
             </a>
           </li>
         ))
       }
     </ul>
   </div>
+
+  <div class="dance-footer__rule"></div>
+
+  <div class="dance-footer__bar">
+    <div class="dance-footer__legal">
+      <p>©{year} Arte Viktoria Oskaldowicz</p>
+      <p>All Rights Reserved</p>
+      <a href="#terms">Terms & Privacy</a>
+    </div>
+    <p class="dance-footer__credit">
+      <span class="dance-footer__credit-text">Danced by</span>
+      <a
+        class="dance-footer__setin"
+        href="https://www.wearesetin.com/"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Setin Studio"
+      >
+        <img
+          src="/setin-studio.svg"
+          alt="Setin Studio"
+          width="89"
+          height="14"
+        />
+      </a>
+    </p>
+  </div>
 </footer>
 
 <style>
   .dance-footer {
+    /* Match DanceHero local type tokens */
+    --text-label: clamp(0.82rem, 1.2vh + 0.25vw, 1rem);
+    --tracking-label: 0.08em;
+
     background: #171717;
     color: #ffffff;
-    padding: clamp(1.75rem, 4vh, 2.75rem) clamp(1.5rem, 4vw, 3.25rem);
+    padding: clamp(4.5rem, 8vw, 7rem) clamp(1.25rem, 3.2vw, 3.25rem)
+      clamp(2.25rem, 4.5vw, 3.5rem);
   }
 
-  .dance-footer__inner {
-    display: flex;
+  .dance-footer p {
+    margin: 0;
+  }
+
+  .dance-footer__main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
     align-items: center;
-    justify-content: space-between;
-    gap: clamp(1.5rem, 4vw, 3rem);
-    width: min(100%, 78rem);
-    margin-inline: auto;
+    column-gap: clamp(1.5rem, 3vw, 3rem);
   }
 
-  .dance-footer__brand {
+  .dance-footer__company,
+  .dance-footer__contacts {
     display: flex;
-    align-items: center;
-    gap: clamp(1.5rem, 3vw, 2.75rem);
-    min-width: 0;
+    flex-direction: column;
+    gap: 1.55rem;
   }
 
-  .dance-footer__logo {
-    display: block;
-    flex-shrink: 0;
-  }
-
-  .dance-footer__logo img {
-    width: clamp(4.5rem, 9vw, 6.5rem);
-    height: auto;
-  }
-
-  .dance-footer__nav {
-    display: flex;
-    align-items: center;
-    gap: clamp(1.25rem, 2.5vw, 2rem);
-  }
-
-  .dance-footer__nav a {
-    font-family: var(--font-sans);
-    font-size: var(--text-body);
-    font-weight: 400;
-    line-height: 1.3;
-    color: #ffffff;
-    transition: opacity 0.25s ease;
-  }
-
-  .dance-footer__nav a:hover,
-  .dance-footer__nav a:focus-visible {
-    opacity: 0.7;
+  .dance-footer__company {
+    justify-self: start;
   }
 
   .dance-footer__contacts {
-    display: flex;
-    align-items: start;
-    justify-content: flex-end;
-    flex-wrap: wrap;
-    gap: clamp(1.5rem, 3.5vw, 3.25rem);
+    justify-self: end;
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
-  .dance-footer__contact {
+  .dance-footer__block {
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
-    min-width: 0;
+    gap: 0.42rem;
   }
 
-  .dance-footer__contact-label {
-    font-family: var(--font-sans);
+  .dance-footer__ids {
+    display: flex;
+    gap: 2.15rem;
+  }
+
+  .dance-footer__label {
+    font-family: var(--font-mono);
     font-size: var(--text-label);
     font-weight: 400;
+    letter-spacing: var(--tracking-label);
     line-height: 1.3;
+    text-transform: uppercase;
     color: rgb(255 255 255 / 0.42);
   }
 
-  .dance-footer__contact-value {
+  .dance-footer__value {
     font-family: var(--font-sans);
     font-size: var(--text-body);
-    font-weight: 500;
-    line-height: 1.3;
+    font-weight: 400;
+    line-height: 1.35;
     color: #ffffff;
-    transition: opacity 0.25s ease;
   }
 
-  .dance-footer__contact-value:hover,
-  .dance-footer__contact-value:focus-visible {
+  .dance-footer__logo {
+    display: block;
+    justify-self: center;
+  }
+
+  .dance-footer__logo img {
+    width: clamp(15rem, 42vw, 34rem);
+    height: auto;
+  }
+
+  .dance-footer__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    width: fit-content;
+  }
+
+  .dance-footer__link-text {
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .dance-footer__legal a:hover,
+  .dance-footer__legal a:focus-visible {
     opacity: 0.7;
   }
 
-  @media (max-width: 900px) {
-    .dance-footer__inner {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 2rem;
+  .dance-footer__external {
+    width: var(--size-arrow);
+    height: auto;
+    flex: 0 0 auto;
+    filter: brightness(0) invert(1);
+    transform-origin: center;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .dance-footer__link:hover .dance-footer__link-text,
+  .dance-footer__link:focus-visible .dance-footer__link-text {
+    transform: translateX(4px);
+  }
+
+  .dance-footer__link:hover .dance-footer__external,
+  .dance-footer__link:focus-visible .dance-footer__external {
+    transform: rotate(45deg);
+  }
+
+  .dance-footer__rule {
+    height: 1px;
+    margin: clamp(2.75rem, 6.5vw, 4.5rem) 0 clamp(1.35rem, 4vw, 2.15rem);
+    background: rgb(255 255 255 / 0.08);
+  }
+
+  .dance-footer__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem 2rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    line-height: 1.4;
+    text-transform: uppercase;
+    color: rgb(255 255 255 / 0.42);
+  }
+
+  .dance-footer__legal {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.45rem 1.85rem;
+  }
+
+  .dance-footer__credit {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    line-height: 1;
+  }
+
+  .dance-footer__credit-text {
+    display: block;
+    line-height: 1;
+  }
+
+  .dance-footer__setin {
+    display: inline-flex;
+    align-items: center;
+    line-height: 0;
+    opacity: 0.5;
+    transition: opacity 0.25s ease;
+  }
+
+  .dance-footer__setin:hover,
+  .dance-footer__setin:focus-visible {
+    opacity: 1;
+  }
+
+  .dance-footer__setin img {
+    display: block;
+    width: auto;
+    height: 1.25em;
+  }
+
+  @media (max-width: 860px) {
+    .dance-footer__main {
+      grid-template-columns: 1fr;
+      justify-items: start;
+      row-gap: 2.75rem;
+    }
+
+    .dance-footer__logo {
+      order: -1;
+      justify-self: center;
+    }
+
+    .dance-footer__logo img {
+      width: min(18rem, 78vw);
     }
 
     .dance-footer__contacts {
-      justify-content: flex-start;
+      justify-self: start;
+    }
+
+    .dance-footer__bar {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.85rem;
+    }
+
+    .dance-footer__legal {
+      justify-content: center;
+      text-align: center;
+    }
+
+    .dance-footer__credit {
+      justify-content: center;
     }
   }
 
-  @media (max-width: 560px) {
-    .dance-footer__brand {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 1.15rem;
-    }
-
-    .dance-footer__contacts {
-      flex-direction: column;
-      gap: 1.25rem;
+  @media (max-width: 720px) {
+    .dance-footer__label,
+    .dance-footer__bar {
+      font-size: 0.68rem;
     }
   }
 </style>
