@@ -17,20 +17,20 @@ const words = copy.split(/\s+/).filter(Boolean);
 const rails = [
   {
     id: "left",
-    from: -60,
-    to: 75,
+    from: -56,
+    speed: 1.05,
     images: [
-      { src: "/value/01.png", shape: "tall" },
-      { src: "/value/02.png", shape: "square" },
+      { src: "/value/01.png", shape: "tall", drift: -0.18 },
+      { src: "/value/02.png", shape: "square", drift: 0.22 },
     ],
   },
   {
     id: "right",
-    from: -45,
-    to: 85,
+    from: -42,
+    speed: 1.25,
     images: [
-      { src: "/value/03.png", shape: "square" },
-      { src: "/value/05.png", shape: "tall" },
+      { src: "/value/03.png", shape: "square", drift: -0.28 },
+      { src: "/value/05.png", shape: "tall", drift: 0.35 },
     ],
   },
 ];
@@ -45,11 +45,13 @@ const rails = [
             class={`dance-value__rail dance-value__rail--${rail.id}`}
             data-rail
             data-from={rail.from}
-            data-to={rail.to}
+            data-speed={rail.speed}
           >
             {rail.images.map((image) => (
               <figure
                 class={`dance-value__frame dance-value__frame--${image.shape}`}
+                data-frame
+                data-drift={image.drift}
               >
                 <img
                   src={image.src}
@@ -145,10 +147,14 @@ const rails = [
   }
 
   .dance-value__frame {
+    --drift: 0vh;
+
     margin: 0;
     overflow: hidden;
     background: #cfcfcf;
     width: 100%;
+    will-change: transform;
+    transform: translate3d(0, var(--drift), 0);
   }
 
   .dance-value__frame--tall {
@@ -233,6 +239,10 @@ const rails = [
       left: -8%;
     }
 
+    .dance-value__rail--left .dance-value__frame:first-child {
+      margin-left: 0;
+    }
+
     .dance-value__rail--right {
       right: 20px;
     }
@@ -292,12 +302,23 @@ const rails = [
       }
     };
 
-    const flowRails = (progress: number) => {
+    const flowFrames = (progress: number) => {
+      const travel = 110;
+
       for (const rail of rails) {
         const from = Number(rail.dataset.from ?? -40);
-        const to = Number(rail.dataset.to ?? 60);
-        const shift = from + (to - from) * progress;
+        const speed = Number(rail.dataset.speed ?? 1);
+        const shift = from + travel * speed * progress;
         rail.style.setProperty("--shift", `${shift.toFixed(2)}vh`);
+
+        for (const frame of rail.querySelectorAll<HTMLElement>("[data-frame]")) {
+          const drift = Number(frame.dataset.drift ?? 0);
+          // Keep spacing close: only a modest relative drift on top of the rail.
+          frame.style.setProperty(
+            "--drift",
+            `${(drift * travel * progress).toFixed(2)}vh`,
+          );
+        }
       }
     };
 
@@ -313,7 +334,7 @@ const rails = [
             : clamp(-section.getBoundingClientRect().top / travel, 0, 1);
 
         paintWords(clamp((raw - 0.08) / 0.78, 0, 1));
-        flowRails(raw);
+        flowFrames(raw);
       };
 
       const requestUpdate = () => {

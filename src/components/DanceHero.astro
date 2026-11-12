@@ -21,11 +21,38 @@ const socials = [
   { label: "WhatsApp", href: "#" },
   { label: "Instagram", href: "#" },
 ];
+
+const tickerItems = [
+  "Ostatnie 3 miejsca w tym tygodniu!",
+  "Następny tydzień 7 wolnych",
+];
+// Enough repeats so one track always covers wide viewports
+const tickerSequence = Array.from({ length: 8 }, () => tickerItems).flat();
 ---
 
 <section class="dance-hero" aria-label="Sztuka Ruchu">
   <div class="dance-hero__media" aria-hidden="true">
     <img src="/dance.webp" alt="" width="1920" height="1080" />
+  </div>
+
+  <div class="dance-hero__ticker" aria-label="Aktualne wolne miejsca">
+    <div class="dance-hero__ticker-track">
+      {
+        [0, 1].map((copy) => (
+          <p
+            class="dance-hero__ticker-group"
+            aria-hidden={copy === 1 ? "true" : undefined}
+          >
+            {tickerSequence.map((item) => (
+              <span class="dance-hero__ticker-item">
+                <span>{item}</span>
+                <span aria-hidden="true">|</span>
+              </span>
+            ))}
+          </p>
+        ))
+      }
+    </div>
   </div>
 
   <header class="dance-hero__nav">
@@ -219,12 +246,80 @@ const socials = [
       );
   }
 
+  .dance-hero__ticker,
   .dance-hero__nav,
   .dance-hero__body,
   .dance-hero__meta,
   .dance-hero__menu {
     position: relative;
     z-index: 1;
+  }
+
+  .dance-hero__ticker {
+    flex-shrink: 0;
+    overflow: hidden;
+    background: #000000;
+    color: #ffffff;
+    border-bottom: 1px solid rgb(255 255 255 / 0.12);
+  }
+
+  .dance-hero__ticker-track {
+    display: flex;
+    width: max-content;
+    animation: dance-hero-ticker 90s linear infinite;
+  }
+
+  .dance-hero__ticker-group {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0.55rem 0;
+    font-family: var(--font-mono);
+    font-size: clamp(0.72rem, 1vh + 0.2vw, 0.82rem);
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    line-height: 1.2;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .dance-hero__ticker-item {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .dance-hero__ticker-item span[aria-hidden="true"] {
+    opacity: 0.45;
+  }
+
+  @keyframes dance-hero-ticker {
+    from {
+      transform: translateX(0);
+    }
+
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dance-hero__ticker-track {
+      animation: none;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .dance-hero__ticker-group:last-child {
+      display: none;
+    }
+
+    .dance-hero__ticker-item:nth-child(n + 3) {
+      display: none;
+    }
   }
 
   .dance-hero__nav {
@@ -487,6 +582,7 @@ const socials = [
     }
   }
 
+  .dance-hero.is-menu-open .dance-hero__ticker,
   .dance-hero.is-menu-open .dance-hero__nav {
     position: relative;
     z-index: 6;
@@ -1145,9 +1241,9 @@ const socials = [
     const MAX_PULL = 14;
     const RANGE = 320;
     const EASE = 0.14;
-    const SCROLL_TILT_X = 42;
-    const SCROLL_TILT_Y = 28;
-    const SCROLL_PULL = 28;
+    const SCROLL_TILT_X = 68;
+    const SCROLL_TILT_Y = 48;
+    const SCROLL_PULL = 44;
 
     type Tilt = { rx: number; ry: number; tx: number; ty: number };
 
@@ -1241,15 +1337,15 @@ const socials = [
     } else {
       const setTargetsFromScroll = () => {
         const rect = hero.getBoundingClientRect();
-        const travel = Math.max(rect.height * 0.45, 1);
+        const travel = Math.max(rect.height * 0.32, 1);
         const progress = Math.max(0, Math.min(1, -rect.top / travel));
 
         state.forEach((item, index) => {
           const dir = index % 2 === 0 ? -1 : 1;
           item.target.rx = progress * SCROLL_TILT_X;
           item.target.ry = progress * SCROLL_TILT_Y * dir;
-          item.target.tx = progress * SCROLL_PULL * dir * 0.45;
-          item.target.ty = progress * SCROLL_PULL * 0.7;
+          item.target.tx = progress * SCROLL_PULL * dir * 0.55;
+          item.target.ty = progress * SCROLL_PULL * 0.85;
         });
       };
 
