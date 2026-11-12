@@ -299,9 +299,15 @@ const socials = [
     line-height: var(--link-line);
   }
 
-  .dance-hero__link:hover .dance-hero__link-track,
+  .dance-hero__link:active .dance-hero__link-track,
   .dance-hero__link:focus-visible .dance-hero__link-track {
     transform: translateY(calc(var(--link-line) * -1));
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .dance-hero__link:hover .dance-hero__link-track {
+      transform: translateY(calc(var(--link-line) * -1));
+    }
   }
 
   .dance-hero__menu-toggle {
@@ -410,15 +416,15 @@ const socials = [
       padding 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .dance-hero__menu-item:hover,
+  .dance-hero__menu-item:active,
   .dance-hero__menu-item:focus-visible {
     padding-block: 1.55rem;
   }
 
-  .dance-hero__menu-list li:has(.dance-hero__menu-item:hover),
+  .dance-hero__menu-list li:has(.dance-hero__menu-item:active),
   .dance-hero__menu-list li:has(.dance-hero__menu-item:focus-visible),
   .dance-hero__menu-list
-    li:has(+ li .dance-hero__menu-item:hover)
+    li:has(+ li .dance-hero__menu-item:active)
     .dance-hero__menu-item,
   .dance-hero__menu-list
     li:has(+ li .dance-hero__menu-item:focus-visible)
@@ -426,7 +432,7 @@ const socials = [
     border-bottom-color: rgb(30 30 30 / 0.3);
   }
 
-  .dance-hero__menu-list:has(li:first-child .dance-hero__menu-item:hover),
+  .dance-hero__menu-list:has(li:first-child .dance-hero__menu-item:active),
   .dance-hero__menu-list:has(
     li:first-child .dance-hero__menu-item:focus-visible
   ) {
@@ -446,14 +452,39 @@ const socials = [
     transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .dance-hero__menu-item:hover .dance-hero__menu-item-label,
+  .dance-hero__menu-item:active .dance-hero__menu-item-label,
   .dance-hero__menu-item:focus-visible .dance-hero__menu-item-label {
     transform: translateX(10px);
   }
 
-  .dance-hero__menu-item:hover .dance-hero__menu-item-arrow,
+  .dance-hero__menu-item:active .dance-hero__menu-item-arrow,
   .dance-hero__menu-item:focus-visible .dance-hero__menu-item-arrow {
     transform: translateX(-10px) rotate(45deg);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .dance-hero__menu-item:hover {
+      padding-block: 1.55rem;
+    }
+
+    .dance-hero__menu-list li:has(.dance-hero__menu-item:hover),
+    .dance-hero__menu-list
+      li:has(+ li .dance-hero__menu-item:hover)
+      .dance-hero__menu-item {
+      border-bottom-color: rgb(30 30 30 / 0.3);
+    }
+
+    .dance-hero__menu-list:has(li:first-child .dance-hero__menu-item:hover) {
+      border-top-color: rgb(30 30 30 / 0.3);
+    }
+
+    .dance-hero__menu-item:hover .dance-hero__menu-item-label {
+      transform: translateX(10px);
+    }
+
+    .dance-hero__menu-item:hover .dance-hero__menu-item-arrow {
+      transform: translateX(-10px) rotate(45deg);
+    }
   }
 
   .dance-hero.is-menu-open .dance-hero__nav {
@@ -487,6 +518,7 @@ const socials = [
     }
 
     .dance-hero__link:hover .dance-hero__link-track,
+    .dance-hero__link:active .dance-hero__link-track,
     .dance-hero__link:focus-visible .dance-hero__link-track {
       transform: none;
     }
@@ -654,20 +686,22 @@ const socials = [
     outline-offset: 4px;
   }
 
-  .dance-hero__styles li:hover .dance-hero__style-link,
-  .dance-hero__styles li:focus-within .dance-hero__style-link {
+  .dance-hero__style-link:active,
+  .dance-hero__style-link:focus-visible {
     padding-block: 1.55rem;
   }
 
-  .dance-hero__styles li:hover,
-  .dance-hero__styles li:focus-within,
-  .dance-hero__styles li:has(+ li:hover),
-  .dance-hero__styles li:has(+ li:focus-within) {
+  .dance-hero__styles li:has(.dance-hero__style-link:active),
+  .dance-hero__styles li:has(.dance-hero__style-link:focus-visible),
+  .dance-hero__styles li:has(+ li .dance-hero__style-link:active),
+  .dance-hero__styles li:has(+ li .dance-hero__style-link:focus-visible) {
     border-bottom-color: rgb(255 255 255 / 0.3);
   }
 
-  .dance-hero__styles:has(li:first-child:hover),
-  .dance-hero__styles:has(li:first-child:focus-within) {
+  .dance-hero__styles:has(li:first-child .dance-hero__style-link:active),
+  .dance-hero__styles:has(
+    li:first-child .dance-hero__style-link:focus-visible
+  ) {
     border-top-color: rgb(255 255 255 / 0.3);
   }
 
@@ -685,14 +719,37 @@ const socials = [
     transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .dance-hero__styles li:hover .dance-hero__style-name,
-  .dance-hero__styles li:focus-within .dance-hero__style-name {
+  .dance-hero__style-link:active .dance-hero__style-name,
+  .dance-hero__style-link:focus-visible .dance-hero__style-name {
     transform: translateX(10px);
   }
 
-  .dance-hero__styles li:hover .dance-hero__style-arrow,
-  .dance-hero__styles li:focus-within .dance-hero__style-arrow {
+  .dance-hero__style-link:active .dance-hero__style-arrow,
+  .dance-hero__style-link:focus-visible .dance-hero__style-arrow {
     transform: translateX(-10px) rotate(45deg);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .dance-hero__styles li:hover .dance-hero__style-link {
+      padding-block: 1.55rem;
+    }
+
+    .dance-hero__styles li:hover,
+    .dance-hero__styles li:has(+ li:hover) {
+      border-bottom-color: rgb(255 255 255 / 0.3);
+    }
+
+    .dance-hero__styles:has(li:first-child:hover) {
+      border-top-color: rgb(255 255 255 / 0.3);
+    }
+
+    .dance-hero__styles li:hover .dance-hero__style-name {
+      transform: translateX(10px);
+    }
+
+    .dance-hero__styles li:hover .dance-hero__style-arrow {
+      transform: translateX(-10px) rotate(45deg);
+    }
   }
 
   .dance-hero__cta {
@@ -896,8 +953,9 @@ const socials = [
     }
 
     .dance-hero__body {
-      gap: 1.5rem;
-      padding: 0.35rem 1rem 0;
+      align-content: start;
+      gap: 4.25rem;
+      padding: 4.5rem 1rem 0;
       justify-items: center;
     }
 

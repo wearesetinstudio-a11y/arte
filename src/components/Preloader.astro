@@ -90,13 +90,12 @@
     display: grid;
     place-items: center;
     background: #ffffff;
-    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-      visibility 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: transform 0.85s cubic-bezier(0.76, 0, 0.24, 1);
+    will-change: transform;
   }
 
   .preloader.is-done {
-    opacity: 0;
-    visibility: hidden;
+    transform: translateY(100%);
     pointer-events: none;
   }
 
@@ -172,9 +171,12 @@
     }
   }
 
-  /* Lock scroll on body only — keep html scrollbar lane so layout doesn't jump */
+  /* Lock scroll on both html + body so mobile can't drift past the hero */
   :global(html.is-loading) {
+    overflow: hidden;
+    height: 100%;
     overscroll-behavior: none;
+    touch-action: none;
   }
 
   :global(html.is-loading body) {
@@ -210,19 +212,34 @@
 </style>
 
 <script>
-  const EXIT_MS = 700;
+  const EXIT_MS = 850;
   const ANIM_MS = 2000;
   const FAILSAFE_MS = 5000;
 
   const preloader = document.getElementById("preloader");
+
+  if ("scrollRestoration" in history) {
+    history.scrollRestoration = "manual";
+  }
+
+  const pinTop = () => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  };
+
+  pinTop();
 
   const finish = () => {
     if (!preloader || preloader.classList.contains("is-done")) return;
 
     preloader.classList.add("is-done");
     document.documentElement.classList.remove("is-loading");
+    pinTop();
+    requestAnimationFrame(pinTop);
 
     window.setTimeout(() => {
+      pinTop();
       preloader.remove();
     }, EXIT_MS);
   };

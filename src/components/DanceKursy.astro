@@ -616,10 +616,32 @@ const {
       applyHash(location.hash, true);
     });
 
-    // Hero / external deep-links arrive as #kursy-<slug>
-    applyHash(location.hash, Boolean(location.hash));
-    if (!location.hash || indexFromHash(location.hash) < 0) {
-      scheduleIdle();
+    // Apply tab from hash without scrolling while preloader locks the page
+    applyHash(location.hash, false);
+
+    const afterPreloader = () => {
+      if (location.hash) applyHash(location.hash, true);
+      if (!location.hash || indexFromHash(location.hash) < 0) {
+        scheduleIdle();
+      }
+    };
+
+    if (document.documentElement.classList.contains("is-loading")) {
+      const observer = new MutationObserver(() => {
+        if (document.documentElement.classList.contains("is-loading")) return;
+        observer.disconnect();
+        window.setTimeout(afterPreloader, 80);
+      });
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["class"],
+      });
+      window.setTimeout(() => {
+        observer.disconnect();
+        afterPreloader();
+      }, 6500);
+    } else {
+      afterPreloader();
     }
 
     document.addEventListener(

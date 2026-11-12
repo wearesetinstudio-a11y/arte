@@ -49,8 +49,16 @@ const {
     <script is:inline>
       (function () {
         try {
+          if ("scrollRestoration" in history) {
+            history.scrollRestoration = "manual";
+          }
+          window.scrollTo(0, 0);
+        } catch (_) {}
+
+        try {
           if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
             document.documentElement.classList.remove("is-loading");
+            window.scrollTo(0, 0);
             return;
           }
         } catch (_) {}
@@ -61,11 +69,13 @@ const {
           var preloader = document.getElementById("preloader");
           if (!root.classList.contains("is-loading")) return;
           root.classList.remove("is-loading");
+          window.scrollTo(0, 0);
           if (preloader) {
             preloader.classList.add("is-done");
             window.setTimeout(function () {
               preloader.remove();
-            }, 700);
+              window.scrollTo(0, 0);
+            }, 850);
           }
         }, 6000);
       })();
