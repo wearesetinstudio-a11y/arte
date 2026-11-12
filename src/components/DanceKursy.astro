@@ -630,9 +630,14 @@ const {
     // Restore tab from deep-link without scrolling the page away from hero
     applyHash(bootHash, false);
 
+    let booted = false;
+
     const afterPreloader = () => {
+      if (booted) return;
+      booted = true;
+
+      // Only pin top right after boot — never again while the user is scrolling
       window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-      // Put deep-link hash back without scrolling away from hero
       if (bootHash && indexFromHash(bootHash) >= 0) {
         history.replaceState(null, "", bootHash);
         window.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -644,19 +649,24 @@ const {
     };
 
     if (document.documentElement.classList.contains("is-loading")) {
+      let failsafe = 0;
+
       const observer = new MutationObserver(() => {
         if (document.documentElement.classList.contains("is-loading")) return;
         observer.disconnect();
+        window.clearTimeout(failsafe);
         window.setTimeout(afterPreloader, 80);
       });
+
+      failsafe = window.setTimeout(() => {
+        observer.disconnect();
+        afterPreloader();
+      }, 6500);
+
       observer.observe(document.documentElement, {
         attributes: true,
         attributeFilter: ["class"],
       });
-      window.setTimeout(() => {
-        observer.disconnect();
-        afterPreloader();
-      }, 6500);
     } else {
       afterPreloader();
     }
