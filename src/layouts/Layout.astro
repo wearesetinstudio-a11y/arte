@@ -13,6 +13,8 @@ const {
   description = "Arte — languages and dance. An artistic space for expression, movement, and connection.",
   lockScroll = false,
 } = Astro.props;
+
+const gaId = import.meta.env.PUBLIC_GA_ID;
 ---
 
 <!doctype html>
@@ -45,6 +47,25 @@ const {
     />
 
     <title>{title}</title>
+
+    {
+      gaId && (
+        <>
+          <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+          ></script>
+          <script is:inline define:vars={{ gaId }}>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+              dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+            gtag("config", gaId);
+          </script>
+        </>
+      )
+    }
 
     <script is:inline>
       (function () {

@@ -158,14 +158,24 @@ const {
     transition: background-color 0.2s ease;
   }
 
-  .dance-reviews__arrow:hover,
-  .dance-reviews__arrow:focus-visible {
+  .dance-reviews__arrow:active {
     background: rgb(0 0 0 / 0.1);
   }
 
+  .dance-reviews__arrow:focus:not(:focus-visible) {
+    outline: none;
+  }
+
   .dance-reviews__arrow:focus-visible {
+    background: rgb(0 0 0 / 0.1);
     outline: 1px solid #1e1e1e;
     outline-offset: 3px;
+  }
+
+  @media (hover: hover) {
+    .dance-reviews__arrow:hover {
+      background: rgb(0 0 0 / 0.1);
+    }
   }
 
   .dance-reviews__arrow img {
