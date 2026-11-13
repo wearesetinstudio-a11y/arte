@@ -1,6 +1,36 @@
 ---
+interface Props {
+  instagram?: string;
+  whatsappHref?: string;
+  messengerHref?: string;
+}
+
+const {
+  instagram = "artedebaile_pz",
+  whatsappHref = "https://wa.me/48606797737",
+  messengerHref = "https://m.me/artedebaile",
+} = Astro.props;
+
 const copy =
   "Nie publikujemy sztywnych grafików z szuflady – każdą współpracę i grupę formujemy wokół realnych celów uczestników. Napisz do nas, opowiedz o swoim doświadczeniu i potrzebach.";
+
+const socials = [
+  {
+    label: "Instagram",
+    href: `https://instagram.com/${instagram}`,
+    icon: "/ig.svg",
+  },
+  {
+    label: "WhatsApp",
+    href: whatsappHref,
+    icon: "/whatsapp.svg",
+  },
+  {
+    label: "Messenger",
+    href: messengerHref,
+    icon: "/messa.svg",
+  },
+];
 ---
 
 <section class="dance-contact" id="kontakt" aria-labelledby="contact-heading">
@@ -12,6 +42,25 @@ const copy =
       width="658"
       height="376"
     />
+
+    <ul class="dance-contact__socials" aria-label="Social media">
+      {
+        socials.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class="dance-contact__social"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={item.label}
+            >
+              <img src={item.icon} alt="" width="45" height="45" />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
     <p class="dance-contact__copy">{copy}</p>
 
     <form class="dance-contact__form" action="#" method="post">
@@ -72,22 +121,64 @@ const copy =
   }
 
   .dance-contact__grid {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto minmax(0, 24rem) minmax(16rem, 28rem);
+    grid-template-areas:
+      "logo copy socials"
+      ". . form";
     align-items: start;
     justify-content: space-between;
-    gap: clamp(1.75rem, 3.5vw, 3rem);
+    column-gap: clamp(1.5rem, 3.5vw, 3rem);
+    row-gap: clamp(1.5rem, 3vh, 2.25rem);
     width: min(100%, 78rem);
     margin-inline: auto;
   }
 
   .dance-contact__logo {
-    flex: 0 0 auto;
+    grid-area: logo;
     width: clamp(5.5rem, 12vw, 8.5rem);
     height: auto;
+    align-self: start;
+  }
+
+  .dance-contact__socials {
+    grid-area: socials;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    align-self: start;
+    gap: 0.2rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .dance-contact__social {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    background: #2a2a2a;
+    transition: background 0.25s ease;
+  }
+
+  .dance-contact__social img {
+    width: 2.15rem;
+    height: 2.15rem;
+  }
+
+  .dance-contact__social:hover,
+  .dance-contact__social:focus-visible {
+    background: #3a3a3a;
+  }
+
+  .dance-contact__social:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
   }
 
   .dance-contact__copy {
-    flex: 0 1 24rem;
+    grid-area: copy;
     margin: 0;
     max-width: 24rem;
     font-family: var(--font-sans);
@@ -98,12 +189,11 @@ const copy =
   }
 
   .dance-contact__form {
+    grid-area: form;
     display: flex;
-    flex: 0 1 28rem;
     flex-direction: column;
     gap: 1.65rem;
     width: 100%;
-    max-width: 28rem;
   }
 
   .dance-contact__title {
@@ -271,27 +361,37 @@ const copy =
 
   @media (max-width: 900px) {
     .dance-contact__grid {
-      flex-wrap: wrap;
+      grid-template-columns: 1fr auto;
+      grid-template-areas:
+        "logo socials"
+        "copy copy"
+        "form form";
     }
 
-    .dance-contact__form {
-      flex: 1 1 100%;
+    .dance-contact__copy {
       max-width: none;
     }
   }
 
-  @media (max-width: 560px) {
-    .dance-contact__grid {
-      flex-direction: column;
+  @media (min-width: 901px) {
+    .dance-contact__copy {
+      padding-top: 0.15rem;
     }
+  }
 
+  @media (max-width: 560px) {
     .dance-contact__logo {
       width: min(7rem, 42vw);
     }
 
-    .dance-contact__copy {
-      flex-basis: auto;
-      max-width: none;
+    .dance-contact__social {
+      width: 2.25rem;
+      height: 2.25rem;
+    }
+
+    .dance-contact__social img {
+      width: 1.85rem;
+      height: 1.85rem;
     }
   }
 </style>

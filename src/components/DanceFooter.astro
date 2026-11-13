@@ -146,6 +146,11 @@ const logoBadges = [
         ))
       }
     </ul>
+
+    <div
+      class="dance-footer__rule dance-footer__rule--stack"
+      aria-hidden="true"
+    ></div>
   </div>
 
   <div class="dance-footer__rule"></div>
@@ -369,6 +374,10 @@ const logoBadges = [
     background: rgb(255 255 255 / 0.08);
   }
 
+  .dance-footer__rule--stack {
+    display: none;
+  }
+
   .dance-footer__bar {
     display: flex;
     align-items: center;
@@ -425,12 +434,13 @@ const logoBadges = [
     .dance-footer__main {
       grid-template-columns: 1fr;
       justify-items: start;
-      row-gap: 2.75rem;
+      row-gap: 0;
     }
 
     .dance-footer__logo {
-      order: -1;
+      order: 0;
       justify-self: center;
+      margin-bottom: 2.75rem;
     }
 
     .dance-footer__logo img {
@@ -473,7 +483,21 @@ const logoBadges = [
     }
 
     .dance-footer__contacts {
+      order: 1;
       justify-self: start;
+      width: 100%;
+    }
+
+    .dance-footer__rule--stack {
+      display: block;
+      order: 2;
+      width: 100%;
+      margin: 2.75rem 0;
+    }
+
+    .dance-footer__company {
+      order: 3;
+      width: 100%;
     }
 
     .dance-footer__bar {
