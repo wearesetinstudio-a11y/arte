@@ -2,13 +2,11 @@
 interface Props {
   email?: string;
   instagram?: string;
-  logoHref?: string;
 }
 
 const {
   email = "artedebaile@gmail.com",
   instagram = "artedebaile_pz",
-  logoHref = "/",
 } = Astro.props;
 
 const year = new Date().getFullYear();
@@ -41,6 +39,30 @@ const contacts = [
     newTab: false,
   },
 ];
+
+const logoBadges = [
+  { id: "poznan", label: "#Poznań", rotate: 0 },
+  {
+    id: "broadway",
+    label: "#BroadwayJazz",
+    rotate: -18,
+    href: "#kursy-broadway-jazz",
+  },
+  {
+    id: "highheels",
+    label: "#HighHeels",
+    rotate: 14,
+    href: "#kursy-high-heels",
+  },
+  { id: "jazz", label: "#Jazz", rotate: -28, href: "#kursy-jazz" },
+  { id: "taniec", label: "#Taniec", rotate: 10, href: "#kursy" },
+  {
+    id: "performance",
+    label: "#Performance",
+    rotate: 0,
+    href: "#kursy-performance",
+  },
+];
 ---
 
 <footer class="dance-footer">
@@ -71,9 +93,33 @@ const contacts = [
       </div>
     </div>
 
-    <a href={logoHref} class="dance-footer__logo" aria-label="Arte">
-      <img src="/arte-logo-white.svg" alt="" width="658" height="376" />
-    </a>
+    <div class="dance-footer__logo" aria-label="Arte">
+      <img src="/arte-logo-white.svg" alt="Arte" width="658" height="376" />
+      {
+        logoBadges.map((badge) =>
+          badge.href ? (
+            <a
+              class={`dance-footer__badge dance-footer__badge--${badge.id}`}
+              href={badge.href}
+              data-footer-badge
+              data-base-rotate={String(badge.rotate)}
+              style={`--badge-rz: ${badge.rotate}deg`}
+            >
+              {badge.label}
+            </a>
+          ) : (
+            <span
+              class={`dance-footer__badge dance-footer__badge--${badge.id}`}
+              data-footer-badge
+              data-base-rotate={String(badge.rotate)}
+              style={`--badge-rz: ${badge.rotate}deg`}
+            >
+              {badge.label}
+            </span>
+          ),
+        )
+      }
+    </div>
 
     <ul class="dance-footer__contacts">
       {
@@ -201,13 +247,85 @@ const contacts = [
   }
 
   .dance-footer__logo {
+    position: relative;
     display: block;
     justify-self: center;
+    isolation: isolate;
+    perspective: 900px;
   }
 
   .dance-footer__logo img {
+    position: relative;
+    z-index: 0;
     width: clamp(15rem, 42vw, 34rem);
     height: auto;
+  }
+
+  .dance-footer__badge {
+    --badge-rx: 0deg;
+    --badge-ry: 0deg;
+    --badge-tx: 0px;
+    --badge-ty: 0px;
+    --badge-rz: 0deg;
+
+    position: absolute;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.28rem 0.55rem;
+    background: #ffffff;
+    color: #1e1e1e;
+    font-family: var(--font-mono);
+    font-size: clamp(0.52rem, 0.9vw, 0.7rem);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    text-transform: uppercase;
+    white-space: nowrap;
+    pointer-events: none;
+    text-decoration: none;
+    will-change: transform;
+    transform:
+      translate3d(var(--badge-tx), var(--badge-ty), 40px)
+      rotateX(var(--badge-rx))
+      rotateY(var(--badge-ry))
+      rotateZ(var(--badge-rz));
+  }
+
+  a.dance-footer__badge {
+    pointer-events: auto;
+    cursor: pointer;
+  }
+
+  .dance-footer__badge--poznan {
+    top: 10%;
+    left: 14%;
+  }
+
+  .dance-footer__badge--broadway {
+    top: 68%;
+    left: 2%;
+  }
+
+  .dance-footer__badge--highheels {
+    top: 10%;
+    left: 36%;
+  }
+
+  .dance-footer__badge--jazz {
+    top: 62%;
+    left: 42%;
+  }
+
+  .dance-footer__badge--taniec {
+    top: 4%;
+    right: 16%;
+  }
+
+  .dance-footer__badge--performance {
+    top: 72%;
+    right: 2%;
   }
 
   .dance-footer__link {
@@ -319,6 +437,41 @@ const contacts = [
       width: min(18rem, 78vw);
     }
 
+    .dance-footer__badge {
+      padding: 0.22rem 0.42rem;
+      font-size: clamp(0.42rem, 2.2vw, 0.55rem);
+    }
+
+    .dance-footer__badge--poznan {
+      top: 8%;
+      left: 12%;
+    }
+
+    .dance-footer__badge--broadway {
+      top: 70%;
+      left: 0;
+    }
+
+    .dance-footer__badge--highheels {
+      top: 8%;
+      left: 34%;
+    }
+
+    .dance-footer__badge--jazz {
+      top: 64%;
+      left: 40%;
+    }
+
+    .dance-footer__badge--taniec {
+      top: 2%;
+      right: 12%;
+    }
+
+    .dance-footer__badge--performance {
+      top: 74%;
+      right: 0;
+    }
+
     .dance-footer__contacts {
       justify-self: start;
     }
@@ -346,4 +499,162 @@ const contacts = [
       font-size: 0.68rem;
     }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dance-footer__badge {
+      will-change: auto;
+    }
+  }
 </style>
+
+<script>
+  const footer = document.querySelector<HTMLElement>(".dance-footer");
+  const badges = [
+    ...document.querySelectorAll<HTMLElement>("[data-footer-badge]"),
+  ];
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+  const finePointer = window.matchMedia("(pointer: fine)").matches;
+
+  // Re-trigger kursy scroll when the same hash is tapped again
+  for (const badge of badges) {
+    if (!(badge instanceof HTMLAnchorElement)) continue;
+    badge.addEventListener("click", (event) => {
+      const href = badge.getAttribute("href");
+      if (!href?.startsWith("#")) return;
+      if (location.hash !== href) return;
+      event.preventDefault();
+      window.dispatchEvent(new Event("hashchange"));
+    });
+  }
+
+  if (footer && badges.length && !reduceMotion) {
+    const MAX_TILT = 18;
+    const MAX_PULL = 10;
+    const RANGE = 280;
+    const EASE = 0.14;
+    const SCROLL_TILT_X = 48;
+    const SCROLL_TILT_Y = 36;
+    const SCROLL_PULL = 28;
+
+    type Tilt = { rx: number; ry: number; tx: number; ty: number };
+
+    const state = badges.map((el) => ({
+      el,
+      current: { rx: 0, ry: 0, tx: 0, ty: 0 } as Tilt,
+      target: { rx: 0, ry: 0, tx: 0, ty: 0 } as Tilt,
+    }));
+
+    let frame = 0;
+    let active = false;
+
+    const apply = (el: HTMLElement, tilt: Tilt) => {
+      el.style.setProperty("--badge-rx", `${tilt.rx.toFixed(2)}deg`);
+      el.style.setProperty("--badge-ry", `${tilt.ry.toFixed(2)}deg`);
+      el.style.setProperty("--badge-tx", `${tilt.tx.toFixed(2)}px`);
+      el.style.setProperty("--badge-ty", `${tilt.ty.toFixed(2)}px`);
+    };
+
+    const render = () => {
+      frame = 0;
+      let moving = false;
+
+      for (const item of state) {
+        item.current.rx += (item.target.rx - item.current.rx) * EASE;
+        item.current.ry += (item.target.ry - item.current.ry) * EASE;
+        item.current.tx += (item.target.tx - item.current.tx) * EASE;
+        item.current.ty += (item.target.ty - item.current.ty) * EASE;
+        apply(item.el, item.current);
+
+        if (
+          Math.abs(item.target.rx - item.current.rx) > 0.05 ||
+          Math.abs(item.target.ry - item.current.ry) > 0.05 ||
+          Math.abs(item.target.tx - item.current.tx) > 0.05 ||
+          Math.abs(item.target.ty - item.current.ty) > 0.05
+        ) {
+          moving = true;
+        }
+      }
+
+      if (moving || active) {
+        frame = window.requestAnimationFrame(render);
+      }
+    };
+
+    const requestRender = () => {
+      if (!frame) frame = window.requestAnimationFrame(render);
+    };
+
+    if (finePointer) {
+      const setTargetsFromPoint = (x: number, y: number) => {
+        for (const item of state) {
+          const rect = item.el.getBoundingClientRect();
+          const cx = rect.left + rect.width / 2;
+          const cy = rect.top + rect.height / 2;
+          const nx = Math.max(-1, Math.min(1, (x - cx) / RANGE));
+          const ny = Math.max(-1, Math.min(1, (y - cy) / RANGE));
+
+          item.target.rx = -ny * MAX_TILT;
+          item.target.ry = nx * MAX_TILT;
+          item.target.tx = nx * MAX_PULL;
+          item.target.ty = ny * MAX_PULL;
+        }
+      };
+
+      footer.addEventListener(
+        "pointermove",
+        (event) => {
+          if (event.pointerType === "touch") return;
+          active = true;
+          setTargetsFromPoint(event.clientX, event.clientY);
+          requestRender();
+        },
+        { passive: true },
+      );
+
+      footer.addEventListener(
+        "pointerleave",
+        () => {
+          active = false;
+          for (const item of state) {
+            item.target.rx = 0;
+            item.target.ry = 0;
+            item.target.tx = 0;
+            item.target.ty = 0;
+          }
+          requestRender();
+        },
+        { passive: true },
+      );
+    } else {
+      const setTargetsFromScroll = () => {
+        const rect = footer.getBoundingClientRect();
+        const travel = Math.max(rect.height * 0.45, 1);
+        const progress = Math.max(
+          0,
+          Math.min(1, (window.innerHeight - rect.top) / (window.innerHeight + travel)),
+        );
+
+        state.forEach((item, index) => {
+          const dir = index % 2 === 0 ? -1 : 1;
+          item.target.rx = progress * SCROLL_TILT_X;
+          item.target.ry = progress * SCROLL_TILT_Y * dir;
+          item.target.tx = progress * SCROLL_PULL * dir * 0.55;
+          item.target.ty = progress * SCROLL_PULL * 0.7;
+        });
+      };
+
+      const onScroll = () => {
+        active = true;
+        setTargetsFromScroll();
+        requestRender();
+      };
+
+      setTargetsFromScroll();
+      requestRender();
+      window.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("resize", onScroll, { passive: true });
+    }
+  }
+</script>
