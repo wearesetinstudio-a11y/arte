@@ -478,7 +478,7 @@ const tickerSequence = Array.from({ length: 8 }, () => tickerItems).flat();
   .dance-hero__menu {
     position: fixed;
     inset: 0;
-    z-index: 50;
+    z-index: 200;
     display: grid;
     place-items: center;
     width: 100%;
@@ -652,10 +652,13 @@ const tickerSequence = Array.from({ length: 8 }, () => tickerItems).flat();
     }
   }
 
-  .dance-hero.is-menu-open .dance-hero__ticker,
+  .dance-hero.is-menu-open {
+    z-index: 200;
+  }
+
   .dance-hero.is-menu-open .dance-hero__nav {
     position: relative;
-    z-index: 51;
+    z-index: 201;
   }
 
   .dance-hero.is-menu-open .dance-hero__logo img {
@@ -1397,9 +1400,9 @@ const tickerSequence = Array.from({ length: 8 }, () => tickerItems).flat();
         open ? "Zamknij menu" : "Otwórz menu",
       );
       menuToggleText.textContent = open ? "Zamknij" : "Menu";
-      heroEl.classList.toggle("is-menu-open", open);
 
       if (open) {
+        heroEl.classList.add("is-menu-open");
         lockPageScroll();
         menu.hidden = false;
         menu.classList.remove("is-closing", "is-open");
@@ -1416,6 +1419,7 @@ const tickerSequence = Array.from({ length: 8 }, () => tickerItems).flat();
       menuTimer = window.setTimeout(() => {
         menu.classList.remove("is-closing");
         menu.hidden = true;
+        heroEl.classList.remove("is-menu-open");
         unlockPageScroll();
         menuBusy = false;
       }, MENU_MS);

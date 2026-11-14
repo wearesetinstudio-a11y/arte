@@ -19,35 +19,35 @@ const {
       title: "Broadway Jazz",
       description:
         "Dynamiczna technika i ekspresja teatralna. Skupiamy się na czystości ruchu izolacjach oraz prezencji scenicznej która buduje pewność w każdej choreografii.",
-      image: "/value/01.png",
+      image: "/broadway_jazz.webp",
     },
     {
       slug: "jazz",
       title: "Jazz",
       description:
         "Fundament nowoczesnego tańca. Praca nad płynnością siłą mięśniową oraz precyzyjną motoryką która daje całkowitą swobodę interpretacji muzyki.",
-      image: "/value/02.png",
+      image: "/jazz.webp",
     },
     {
       slug: "high-heels",
       title: "High Heels",
       description:
         "Stabilizacja równowaga i bezkompromisowy styl. Trening uczy kontroli ciała na obcasach łącząc elegancję z motoryczną siłą i świadomą postawą.",
-      image: "/value/03.png",
+      image: "/high_heels.webp",
     },
     {
       slug: "performance",
       title: "Performance",
       description:
         "Praca nad scenicznym wyrazem i opowiadaniem historii ruchem. Format dla osób które chcą przenieść techniczną bazę na wyższy poziom artystycznej ekspresji.",
-      image: "/value/04.png",
+      image: "/performance.webp",
     },
     {
       slug: "trening-personalny",
       title: "Trening personalny",
       description:
         "Indywidualny program dopasowany do Twoich celów. Skupiamy się na korekcie techniki budowaniu siły oraz motorycznym rozwoju pod okiem praktyków.",
-      image: "/value/05.png",
+      image: "/personal_training.webp",
     },
   ],
 } = Astro.props;
@@ -120,8 +120,8 @@ const {
                   <img
                     src={dance.image}
                     alt=""
-                    width="1200"
-                    height="800"
+                    width="3036"
+                    height="2276"
                     loading={index === 0 ? "eager" : "lazy"}
                     decoding="async"
                   />
@@ -354,13 +354,14 @@ const {
     border-radius: 0;
     border: 1px solid rgb(255 255 255 / 0.08);
     background: #2a2a2a;
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 3036 / 2276;
   }
 
   .dance-kursy__media img {
+    display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     object-position: center;
     border-radius: 0;
   }
@@ -391,11 +392,9 @@ const {
 
   @keyframes kursy-media {
     from {
-      transform: scale(1.04);
       opacity: 0.7;
     }
     to {
-      transform: scale(1);
       opacity: 1;
     }
   }

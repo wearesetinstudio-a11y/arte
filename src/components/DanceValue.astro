@@ -20,8 +20,9 @@ const rails = [
     from: -56,
     speed: 1.05,
     images: [
-      { src: "/value/01.png", shape: "tall", drift: -0.18 },
-      { src: "/value/02.png", shape: "square", drift: 0.22 },
+      { src: "/value_1.webp", x: 50 },
+      { src: "/value_2.webp", x: 0 },
+      { src: "/value_3.webp", x: 28 },
     ],
   },
   {
@@ -29,8 +30,9 @@ const rails = [
     from: -42,
     speed: 1.25,
     images: [
-      { src: "/value/03.png", shape: "square", drift: -0.28 },
-      { src: "/value/05.png", shape: "tall", drift: 0.35 },
+      { src: "/value_4.webp", x: -40 },
+      { src: "/value_5.webp", x: 0 },
+      { src: "/value_6.webp", x: -130 },
     ],
   },
 ];
@@ -49,14 +51,13 @@ const rails = [
           >
             {rail.images.map((image) => (
               <figure
-                class={`dance-value__frame dance-value__frame--${image.shape}`}
-                data-frame
-                data-drift={image.drift}
+                class="dance-value__frame"
+                style={`--frame-x: ${image.x}px`}
               >
                 <img
                   src={image.src}
                   alt=""
-                  width="800"
+                  width="640"
                   height="800"
                   loading="lazy"
                   decoding="async"
@@ -88,7 +89,7 @@ const rails = [
   .dance-value {
     --value-ink: #1e1e1e;
     --value-muted: #d4d4d4;
-    --rail-gap: clamp(1.5rem, 3vw, 2.75rem);
+    --rail-gap: clamp(4.5rem, 10vh, 7rem);
 
     position: relative;
     height: 320vh;
@@ -122,7 +123,7 @@ const rails = [
     display: flex;
     flex-direction: column;
     gap: var(--rail-gap);
-    width: clamp(6.5rem, 12vw, 10.5rem);
+    width: clamp(7rem, 11vw, 9.5rem);
     will-change: transform;
     transform: translate3d(0, var(--shift), 0);
   }
@@ -132,45 +133,27 @@ const rails = [
   }
 
   .dance-value__rail--left .dance-value__frame:first-child {
-    margin-top: -80px;
-    margin-left: 50px;
+    margin-top: -5rem;
   }
 
   .dance-value__rail--right {
     right: max(0.75rem, calc(50% - 21rem - 13rem));
-    align-items: flex-end;
   }
 
   .dance-value__rail--right .dance-value__frame:last-child {
-    margin-top: 80px;
-    margin-right: 130px;
+    margin-bottom: -5rem;
   }
 
   .dance-value__frame {
-    --drift: 0vh;
+    --frame-x: 0px;
 
     margin: 0;
     overflow: hidden;
     background: #cfcfcf;
     width: 100%;
-    will-change: transform;
-    transform: translate3d(0, var(--drift), 0);
-  }
-
-  .dance-value__frame--tall {
-    aspect-ratio: 3 / 4;
-  }
-
-  .dance-value__frame--square {
-    aspect-ratio: 1;
-  }
-
-  .dance-value__rail--right .dance-value__frame--tall {
-    width: 90%;
-  }
-
-  .dance-value__rail--right .dance-value__frame--square {
-    width: 100%;
+    aspect-ratio: 4 / 5;
+    flex-shrink: 0;
+    transform: translate3d(var(--frame-x), 0, 0);
   }
 
   .dance-value__frame img {
@@ -220,10 +203,16 @@ const rails = [
   @media (max-width: 720px) {
     .dance-value {
       height: 280vh;
+      --rail-gap: clamp(5.5rem, 16vh, 9rem);
+    }
+
+    .dance-value__pin {
+      padding-inline: clamp(1.25rem, 5vw, 2rem);
     }
 
     .dance-value__inner {
-      width: 100%;
+      width: min(100%, 17.5rem);
+      z-index: 2;
     }
 
     .dance-value__statement {
@@ -232,24 +221,45 @@ const rails = [
     }
 
     .dance-value__rail {
-      width: 26vw;
+      width: min(22vw, 5.25rem);
     }
 
     .dance-value__rail--left {
-      left: -8%;
+      left: 0.35rem;
     }
 
-    .dance-value__rail--left .dance-value__frame:first-child {
-      margin-left: 0;
+    .dance-value__rail--left .dance-value__frame:nth-child(1) {
+      margin-top: -8rem;
+      --frame-x: 0px !important;
+    }
+
+    .dance-value__rail--left .dance-value__frame:nth-child(2) {
+      --frame-x: 14px !important;
+    }
+
+    .dance-value__rail--left .dance-value__frame:nth-child(3) {
+      margin-top: 1rem;
+      --frame-x: 4px !important;
     }
 
     .dance-value__rail--right {
-      right: 20px;
+      right: 0.35rem;
     }
 
-    .dance-value__rail--right .dance-value__frame:last-child {
-      margin-right: 0;
-      width: 100%;
+    .dance-value__rail--right .dance-value__frame:nth-child(1) {
+      margin-top: 4.5rem;
+      --frame-x: 0px !important;
+    }
+
+    .dance-value__rail--right .dance-value__frame:nth-child(2) {
+      margin-top: 0.75rem;
+      --frame-x: -12px !important;
+    }
+
+    .dance-value__rail--right .dance-value__frame:nth-child(3) {
+      margin-top: 1.25rem;
+      margin-bottom: -8rem;
+      --frame-x: 0px !important;
     }
   }
 
@@ -310,15 +320,6 @@ const rails = [
         const speed = Number(rail.dataset.speed ?? 1);
         const shift = from + travel * speed * progress;
         rail.style.setProperty("--shift", `${shift.toFixed(2)}vh`);
-
-        for (const frame of rail.querySelectorAll<HTMLElement>("[data-frame]")) {
-          const drift = Number(frame.dataset.drift ?? 0);
-          // Keep spacing close: only a modest relative drift on top of the rail.
-          frame.style.setProperty(
-            "--drift",
-            `${(drift * travel * progress).toFixed(2)}vh`,
-          );
-        }
       }
     };
 
