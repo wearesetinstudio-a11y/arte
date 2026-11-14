@@ -14,6 +14,15 @@ const {
 const copy = lines?.length ? lines.join(" ") : statement;
 const words = copy.split(/\s+/).filter(Boolean);
 
+const stripImages = [
+  "/value_1.webp",
+  "/value_2.webp",
+  "/value_3.webp",
+  "/value_4.webp",
+  "/value_5.webp",
+  "/value_6.webp",
+];
+
 const rails = [
   {
     id: "left",
@@ -69,6 +78,29 @@ const rails = [
       }
     </div>
 
+    <div class="dance-value__strip" data-value-strip aria-hidden="true">
+      <div class="dance-value__strip-track" data-strip-track>
+        {
+          stripImages.map((src, index) => (
+            <figure
+              class="dance-value__strip-frame"
+              data-strip-frame
+              style={`--stagger: ${index * 10}px`}
+            >
+              <img
+                src={src}
+                alt=""
+                width="640"
+                height="800"
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+
     <div class="dance-value__inner">
       <p class="dance-value__kicker">{kicker}</p>
       <h2 id="value-statement" class="dance-value__statement">
@@ -113,6 +145,10 @@ const rails = [
     inset: 0;
     pointer-events: none;
     z-index: 0;
+  }
+
+  .dance-value__strip {
+    display: none;
   }
 
   .dance-value__rail {
@@ -202,64 +238,71 @@ const rails = [
 
   @media (max-width: 720px) {
     .dance-value {
-      height: 280vh;
-      --rail-gap: clamp(5.5rem, 16vh, 9rem);
+      height: 560vh;
     }
 
     .dance-value__pin {
-      padding-inline: clamp(1.25rem, 5vw, 2rem);
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+      gap: clamp(1.75rem, 5vh, 2.75rem);
+      padding: clamp(5.5rem, 12vh, 7rem) 0 clamp(2rem, 6vh, 3.5rem);
+    }
+
+    .dance-value__frames {
+      display: none;
+    }
+
+    .dance-value__strip {
+      display: block;
+      width: 100%;
+      overflow: hidden;
+      flex-shrink: 0;
+      pointer-events: none;
+      z-index: 1;
+      padding-bottom: 50px;
+    }
+
+    .dance-value__strip-track {
+      --pan: 0px;
+
+      display: flex;
+      align-items: flex-start;
+      gap: 0.55rem;
+      width: max-content;
+      padding-inline: 0.75rem;
+      will-change: transform;
+      transform: translate3d(var(--pan), 0, 0);
+    }
+
+    .dance-value__strip-frame {
+      --stagger: 0px;
+
+      margin: 0;
+      overflow: hidden;
+      background: #cfcfcf;
+      width: 40vw;
+      aspect-ratio: 4 / 5;
+      flex-shrink: 0;
+      transform: translate3d(0, var(--stagger), 0);
+    }
+
+    .dance-value__strip-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
     }
 
     .dance-value__inner {
-      width: min(100%, 17.5rem);
+      width: min(100% - 2.5rem, 20rem);
+      margin-inline: auto;
       z-index: 2;
     }
 
     .dance-value__statement {
       font-size: clamp(1.35rem, 5.8vw, 1.75rem);
       line-height: 1.28;
-    }
-
-    .dance-value__rail {
-      width: min(22vw, 5.25rem);
-    }
-
-    .dance-value__rail--left {
-      left: 0.35rem;
-    }
-
-    .dance-value__rail--left .dance-value__frame:nth-child(1) {
-      margin-top: -8rem;
-      --frame-x: 0px !important;
-    }
-
-    .dance-value__rail--left .dance-value__frame:nth-child(2) {
-      --frame-x: 14px !important;
-    }
-
-    .dance-value__rail--left .dance-value__frame:nth-child(3) {
-      margin-top: 1rem;
-      --frame-x: 4px !important;
-    }
-
-    .dance-value__rail--right {
-      right: 0.35rem;
-    }
-
-    .dance-value__rail--right .dance-value__frame:nth-child(1) {
-      margin-top: 4.5rem;
-      --frame-x: 0px !important;
-    }
-
-    .dance-value__rail--right .dance-value__frame:nth-child(2) {
-      margin-top: 0.75rem;
-      --frame-x: -12px !important;
-    }
-
-    .dance-value__rail--right .dance-value__frame:nth-child(3) {
-      margin-top: 1.25rem;
-      margin-bottom: -8rem;
-      --frame-x: 0px !important;
     }
   }
 
@@ -275,7 +318,8 @@ const rails = [
       padding-block: clamp(5rem, 14vh, 8rem);
     }
 
-    .dance-value__frames {
+    .dance-value__frames,
+    .dance-value__strip {
       display: none;
     }
 
@@ -291,12 +335,17 @@ const rails = [
   if (section) {
     const words = [...section.querySelectorAll<HTMLElement>("[data-word]")];
     const rails = [...section.querySelectorAll<HTMLElement>("[data-rail]")];
+    const strip = section.querySelector<HTMLElement>("[data-value-strip]");
+    const track = section.querySelector<HTMLElement>("[data-strip-track]");
     const reduce = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
+    const mobile = window.matchMedia("(max-width: 720px)");
 
     const clamp = (value: number, min: number, max: number) =>
       Math.min(max, Math.max(min, value));
+
+    const ease = (t: number) => t * t * (3 - 2 * t);
 
     const paintWords = (amount: number) => {
       const count = words.length;
@@ -307,12 +356,11 @@ const rails = [
 
       for (let i = 0; i < count; i++) {
         const local = clamp((cursor - i) / blend, 0, 1);
-        const eased = local * local * (3 - 2 * local);
-        words[i].style.setProperty("--ink", eased.toFixed(3));
+        words[i].style.setProperty("--ink", ease(local).toFixed(3));
       }
     };
 
-    const flowFrames = (progress: number) => {
+    const flowRails = (progress: number) => {
       const travel = 110;
 
       for (const rail of rails) {
@@ -321,6 +369,16 @@ const rails = [
         const shift = from + travel * speed * progress;
         rail.style.setProperty("--shift", `${shift.toFixed(2)}vh`);
       }
+    };
+
+    const flowStrip = (amount: number) => {
+      if (!strip || !track) return;
+
+      const maxPan = Math.max(0, track.scrollWidth - strip.clientWidth);
+      track.style.setProperty(
+        "--pan",
+        `${(-(ease(amount) * maxPan)).toFixed(2)}px`,
+      );
     };
 
     if (!reduce) {
@@ -333,9 +391,15 @@ const rails = [
           travel <= 0
             ? 1
             : clamp(-section.getBoundingClientRect().top / travel, 0, 1);
+        const textAmount = clamp((raw - 0.08) / 0.78, 0, 1);
 
-        paintWords(clamp((raw - 0.08) / 0.78, 0, 1));
-        flowFrames(raw);
+        paintWords(textAmount);
+
+        if (mobile.matches) {
+          flowStrip(textAmount);
+        } else {
+          flowRails(raw);
+        }
       };
 
       const requestUpdate = () => {
@@ -346,6 +410,7 @@ const rails = [
       update();
       window.addEventListener("scroll", requestUpdate, { passive: true });
       window.addEventListener("resize", requestUpdate);
+      mobile.addEventListener("change", requestUpdate);
     }
   }
 </script>
