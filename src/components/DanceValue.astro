@@ -7,21 +7,41 @@ interface Props {
 
 const {
   kicker = "Ruch, który wyraża więcej.",
-  statement = "Taniec to nie powtarzalność układu lecz mechanika i świadomość ciała. W Arte de Baile pracujemy u podstaw ponieważ technika daje precyzję i swobodę ruchu a motoryka przygotowuje ciało na pełną kontrolę",
+  statement = "Taniec to nie powtarzalność układu lecz mechanika i świadomość ciała. W Arte de Baile w Poznaniu pracujemy u podstaw ponieważ technika daje precyzję i swobodę ruchu a motoryka przygotowuje ciało na pełną kontrolę",
   lines,
 } = Astro.props;
 
 const copy = lines?.length ? lines.join(" ") : statement;
 const words = copy.split(/\s+/).filter(Boolean);
 
-const stripImages = [
-  "/value_1.webp",
-  "/value_2.webp",
-  "/value_3.webp",
-  "/value_4.webp",
-  "/value_5.webp",
-  "/value_6.webp",
+const valueImages = [
+  {
+    src: "/value_1.webp",
+    alt: "Zajęcia Broadway Jazz w Poznaniu – tancerka w czarnym topie, spodniach garniturowych i meloniku pozująca z krzesłem, studio Arte de Baile",
+  },
+  {
+    src: "/value_2.webp",
+    alt: "Teatralny taneczek estradowy Poznań – tancerka opierająca nogę na czarnym krzesle w minimalistycznym studiu Arte de Baile",
+  },
+  {
+    src: "/value_3.webp",
+    alt: "Stylizacja i technika tańca w Poznaniu – profesjonalna tancerka w czarnym sportowym topie i spodniach, szkoła Arte de Baile",
+  },
+  {
+    src: "/value_4.webp",
+    alt: "Performance dance Poznań – dynamiczny wyskok współczesny tancerki w czarnym bodzie i rajstopach, studio Arte de Baile",
+  },
+  {
+    src: "/value_5.webp",
+    alt: "Broadway Jazz Poznań – tancerka wykonująca układ estradowy w kapeluszu i czarnym kombinezonie tanecznym, Arte de Baile",
+  },
+  {
+    src: "/value_6.webp",
+    alt: "Technika jazzowa i równowaga Poznań – tancerka w pozycji równoważnej (passé) w butikowym studiu Arte de Baile",
+  },
 ];
+
+const stripImages = valueImages;
 
 const rails = [
   {
@@ -29,9 +49,9 @@ const rails = [
     from: -56,
     speed: 1.05,
     images: [
-      { src: "/value_1.webp", x: 50 },
-      { src: "/value_2.webp", x: 0 },
-      { src: "/value_3.webp", x: 28 },
+      { ...valueImages[0], x: 50 },
+      { ...valueImages[1], x: 0 },
+      { ...valueImages[2], x: 28 },
     ],
   },
   {
@@ -39,9 +59,9 @@ const rails = [
     from: -42,
     speed: 1.25,
     images: [
-      { src: "/value_4.webp", x: -40 },
-      { src: "/value_5.webp", x: 0 },
-      { src: "/value_6.webp", x: -130 },
+      { ...valueImages[3], x: -40 },
+      { ...valueImages[4], x: 0 },
+      { ...valueImages[5], x: -130 },
     ],
   },
 ];
@@ -65,7 +85,7 @@ const rails = [
               >
                 <img
                   src={image.src}
-                  alt=""
+                  alt={image.alt}
                   width="640"
                   height="800"
                   loading="lazy"
@@ -81,15 +101,15 @@ const rails = [
     <div class="dance-value__strip" data-value-strip aria-hidden="true">
       <div class="dance-value__strip-track" data-strip-track>
         {
-          stripImages.map((src, index) => (
+          stripImages.map((image, index) => (
             <figure
               class="dance-value__strip-frame"
               data-strip-frame
               style={`--stagger: ${index * 2}px`}
             >
               <img
-                src={src}
-                alt=""
+                src={image.src}
+                alt={image.alt}
                 width="640"
                 height="800"
                 loading="lazy"

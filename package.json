@@ -12,6 +12,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.5",
     "@lottiefiles/dotlottie-web": "^0.82.1",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.4.5",

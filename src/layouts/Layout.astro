@@ -47,6 +47,7 @@ const ogImageUrl = new URL("/og.jpg", siteOrigin).href;
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="pl_PL" />
+    <meta property="og:site_name" content="Arte de Baile" />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -73,12 +74,10 @@ const ogImageUrl = new URL("/og.jpg", siteOrigin).href;
     <title>{title}</title>
 
     {
-      jsonLd && (
-        <script
-          type="application/ld+json"
-          set:html={JSON.stringify(jsonLd)}
-        />
-      )
+      jsonLd &&
+        (Array.isArray(jsonLd) ? jsonLd : [jsonLd]).map((item) => (
+          <script type="application/ld+json" set:html={JSON.stringify(item)} />
+        ))
     }
 
     {

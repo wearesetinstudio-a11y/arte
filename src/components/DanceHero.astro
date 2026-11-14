@@ -17,7 +17,7 @@ const navLinks = [
 ];
 
 const socials = [
-  { label: "G-mail", href: "mailto:hello@arte.pl" },
+  { label: "G-mail", href: "mailto:v.oskaldowicz@gmail.com" },
   { label: "WhatsApp", href: "#" },
   { label: "Instagram", href: "#" },
 ];
@@ -50,7 +50,14 @@ const tickerSequence = Array.from({ length: 8 }, () => tickerItems).flat();
 
 <section class="dance-hero" aria-label="Sztuka Ruchu">
   <div class="dance-hero__media" aria-hidden="true">
-    <img src="/bg-dance.webp" alt="" width="1920" height="1080" />
+    <img
+      src="/bg-dance.webp"
+      alt="Profesjonalna tancerka wykonująca element akrobatyczny w szpagacie podczas sesji studyjnej Arte de Baile w Poznaniu"
+      width="1920"
+      height="1080"
+      fetchpriority="high"
+      decoding="async"
+    />
   </div>
 
   <div class="dance-hero__ticker" aria-label="Aktualne wolne miejsca">

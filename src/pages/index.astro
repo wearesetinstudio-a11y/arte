@@ -9,15 +9,46 @@ import DanceContact from "../components/DanceContact.astro";
 import DanceFastContact from "../components/DanceFastContact.astro";
 import DanceFooter from "../components/DanceFooter.astro";
 
+const faqItems = [
+  {
+    question: "Jak wygląda pierwsza lekcja?",
+    answer:
+      "Zaczynamy od krótkiej rozmowy o Twoich celach i doświadczeniu, potem pracujemy nad podstawami techniki i świadomości ciała — w tempie dopasowanym do Ciebie.",
+  },
+  {
+    question: "Czy muszę mieć doświadczenie taneczne?",
+    answer:
+      "Nie. Przyjmujemy zarówno osoby początkujące, jak i zaawansowane. Program budujemy wokół Twojego poziomu i realnych potrzeb.",
+  },
+  {
+    question: "Jakie style tańca oferujecie?",
+    answer:
+      "Broadway Jazz, Jazz, High Heels, Performance oraz trening personalny. Każdą grupę i współpracę formujemy indywidualnie.",
+  },
+  {
+    question: "Jak zapisać się na zajęcia?",
+    answer:
+      "Napisz do nas przez formularz kontaktowy lub wiadomość prywatną. Opisz cele i doświadczenie — odezwiemy się z propozycją terminu.",
+  },
+  {
+    question: "Gdzie znajduje się studio?",
+    answer:
+      "Arte de Baile to butikowe studio tańca w Poznaniu (os. Piastowskie 62 lok. 85, 61-156). Dokładny dojazd potwierdzamy przy umawianiu pierwszej lekcji.",
+  },
+];
+
 const danceSchoolSchema = {
   "@context": "https://schema.org",
   "@type": "DanceSchool",
   name: "Arte de Baile",
   description:
     "Boutique studio tańca w Poznaniu oferujące zajęcia High Heels, Broadway Jazz, Jazz, Performance oraz treningi personalne.",
+  image: "https://wearearte.pl/og.jpg",
   address: {
     "@type": "PostalAddress",
+    streetAddress: "os. Piastowskie 62 lok. 85",
     addressLocality: "Poznań",
+    postalCode: "61-156",
     addressCountry: "PL",
   },
   areaServed: {
@@ -25,7 +56,14 @@ const danceSchoolSchema = {
     name: "Poznań",
   },
   url: "https://wearearte.pl",
+  telephone: "+48-606-797-737",
+  email: "v.oskaldowicz@gmail.com",
   priceRange: "$$",
+  sameAs: [
+    "https://instagram.com/artedebaile_pz",
+    "https://wa.me/48606797737",
+    "https://m.me/artedebaile",
+  ],
   makesOffer: [
     {
       "@type": "Offer",
@@ -45,24 +83,51 @@ const danceSchoolSchema = {
       "@type": "Offer",
       itemOffered: {
         "@type": "Service",
+        name: "Jazz Dance Kursy Poznań",
+      },
+    },
+    {
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "Service",
+        name: "Performance Dance Poznań",
+      },
+    },
+    {
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "Service",
         name: "Trening Personalny Taniec Poznań",
       },
     },
   ],
 };
+
+const faqPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqItems.map((item) => ({
+    "@type": "Question",
+    name: item.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: item.answer,
+    },
+  })),
+};
 ---
 
 <Layout
-  title="Szkoła Tańca Poznań | Broadway Jazz, High Heels, Performance i Treningi | Arte de Baile"
+  title="Szkoła Tańca Poznań | High Heels, Broadway Jazz | Arte de Baile"
   description="Odkryj Arte de Baile w Poznaniu. Profesjonalne kursy tańca: High Heels, Broadway Jazz, Jazz, Performance i treningi personalne dla początkujących i zaawansowanych. Zapisz się!"
-  jsonLd={danceSchoolSchema}
+  jsonLd={[danceSchoolSchema, faqPageSchema]}
 >
   <main>
     <DanceHero />
     <DanceValue />
     <DanceKursy />
     <DanceReviews />
-    <DanceFaq />
+    <DanceFaq items={faqItems} />
     <DanceContact />
   </main>
   <DanceFastContact />

@@ -4,6 +4,7 @@ interface Dance {
   title: string;
   description: string;
   image: string;
+  imageAlt?: string;
 }
 
 interface Props {
@@ -12,7 +13,7 @@ interface Props {
 }
 
 const {
-  label = "Kursy",
+  label = "Kursy tańca w Poznaniu",
   dances = [
     {
       slug: "broadway-jazz",
@@ -20,6 +21,8 @@ const {
       description:
         "Dynamiczna technika i ekspresja teatralna. Skupiamy się na czystości ruchu izolacjach oraz prezencji scenicznej która buduje pewność w każdej choreografii.",
       image: "/broadway_jazz.webp",
+      imageAlt:
+        "Kurs Broadway Jazz w Poznaniu – tancerka w czarnym garniturze i kapeluszu wykonująca układ estradowy w studiu Arte de Baile",
     },
     {
       slug: "jazz",
@@ -27,6 +30,8 @@ const {
       description:
         "Fundament nowoczesnego tańca. Praca nad płynnością siłą mięśniową oraz precyzyjną motoryką która daje całkowitą swobodę interpretacji muzyki.",
       image: "/jazz.webp",
+      imageAlt:
+        "Jazz Dance Poznań – techniczna lekcja tańca jazzowego w minimalistycznym studiu butikowym Arte de Baile",
     },
     {
       slug: "high-heels",
@@ -34,6 +39,8 @@ const {
       description:
         "Stabilizacja równowaga i bezkompromisowy styl. Trening uczy kontroli ciała na obcasach łącząc elegancję z motoryczną siłą i świadomą postawą.",
       image: "/high_heels.webp",
+      imageAlt:
+        "Zajęcia High Heels w Poznaniu – edytorialowa sesja taneczna w obcasach i skórzanej kurtce, szkoła tańca Arte de Baile",
     },
     {
       slug: "performance",
@@ -41,6 +48,8 @@ const {
       description:
         "Praca nad scenicznym wyrazem i opowiadaniem historii ruchem. Format dla osób które chcą przenieść techniczną bazę na wyższy poziom artystycznej ekspresji.",
       image: "/performance.webp",
+      imageAlt:
+        "Performance dance Poznań – nowoczesna ekspresja sceniczna i współczesny taniec w profesjonalnym studiu Arte de Baile",
     },
     {
       slug: "trening-personalny",
@@ -48,6 +57,8 @@ const {
       description:
         "Indywidualny program dopasowany do Twoich celów. Skupiamy się na korekcie techniki budowaniu siły oraz motorycznym rozwoju pod okiem praktyków.",
       image: "/personal_training.webp",
+      imageAlt:
+        "Trening personalny i coaching taneczny w Poznaniu – instruktorka prowadząca zajęcia indywidualne w studiu Arte de Baile",
     },
   ],
 } = Astro.props;
@@ -154,7 +165,7 @@ const descriptionLines = (text: string) => {
               >
                 <img
                   src={dance.image}
-                  alt=""
+                  alt={dance.imageAlt ?? `${dance.title} — Arte de Baile Poznań`}
                   width="3036"
                   height="2276"
                   loading={index === 0 ? "eager" : "lazy"}
