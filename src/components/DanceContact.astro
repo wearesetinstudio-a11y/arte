@@ -14,6 +14,8 @@ const {
 const copy =
   "Nie publikujemy sztywnych grafików z szuflady – każdą współpracę i grupę formujemy wokół realnych celów uczestników. Napisz do nas, opowiedz o swoim doświadczeniu i potrzebach.";
 
+const accessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY;
+
 const socials = [
   {
     label: "Instagram",
@@ -63,8 +65,25 @@ const socials = [
 
     <p class="dance-contact__copy">{copy}</p>
 
-    <form class="dance-contact__form" action="#" method="post">
+    <form
+      class="dance-contact__form"
+      action="https://api.web3forms.com/submit"
+      method="POST"
+      data-contact-form
+    >
       <h2 id="contact-heading" class="dance-contact__title">Napisz do nas</h2>
+
+      <input type="hidden" name="access_key" value={accessKey} />
+      <input type="hidden" name="subject" value="Arte — wiadomość z formularza" />
+      <input type="hidden" name="from_name" value="Arte de Baile" />
+      <input
+        type="checkbox"
+        name="botcheck"
+        class="dance-contact__honeypot"
+        tabindex="-1"
+        autocomplete="off"
+        aria-hidden="true"
+      />
 
       <label class="dance-contact__field">
         <input
@@ -100,9 +119,11 @@ const socials = [
         <span class="dance-contact__label">Opisz swoje cele i doświadczenie</span>
       </label>
 
-      <button type="submit" class="dance-contact__submit">
+      <p class="dance-contact__status" data-contact-status hidden></p>
+
+      <button type="submit" class="dance-contact__submit" data-contact-submit>
         <span class="dance-contact__btn-cover" aria-hidden="true"></span>
-        <span class="dance-contact__btn-label">Wyślij wiadomość</span>
+        <span class="dance-contact__btn-label" data-contact-label>Wyślij wiadomość</span>
         <img src="/arrow.svg" alt="" width="26" height="26" />
       </button>
     </form>
@@ -289,6 +310,33 @@ const socials = [
     }
   }
 
+  .dance-contact__honeypot {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .dance-contact__status {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: var(--text-label);
+    font-weight: 400;
+    line-height: 1.4;
+    color: rgb(255 255 255 / 0.72);
+  }
+
+  .dance-contact__status.is-error {
+    color: #ff8f8f;
+  }
+
   .dance-contact__submit {
     position: relative;
     isolation: isolate;
@@ -310,6 +358,11 @@ const socials = [
     text-transform: uppercase;
     cursor: pointer;
     transition: color 0.35s ease;
+  }
+
+  .dance-contact__submit:disabled {
+    cursor: wait;
+    opacity: 0.72;
   }
 
   .dance-contact__btn-cover {
@@ -405,3 +458,60 @@ const socials = [
     }
   }
 </style>
+
+<script>
+  function initContactForm() {
+    const form = document.querySelector<HTMLFormElement>("[data-contact-form]");
+    if (!form || form.dataset.bound === "true") return;
+    form.dataset.bound = "true";
+
+    const status = form.querySelector<HTMLElement>("[data-contact-status]");
+    const submit = form.querySelector<HTMLButtonElement>("[data-contact-submit]");
+    const label = form.querySelector<HTMLElement>("[data-contact-label]");
+    if (!status || !submit || !label) return;
+
+    const idleLabel = label.textContent?.trim() || "Wyślij wiadomość";
+
+    const setStatus = (message: string, isError = false) => {
+      status.hidden = !message;
+      status.textContent = message;
+      status.classList.toggle("is-error", isError);
+    };
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (submit.disabled) return;
+
+      setStatus("");
+      submit.disabled = true;
+      label.textContent = "Wysyłanie…";
+
+      try {
+        const response = await fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+          headers: { Accept: "application/json" },
+        });
+        const result = (await response.json()) as {
+          success?: boolean;
+          message?: string;
+        };
+
+        if (!response.ok || !result.success) {
+          throw new Error(result.message || "Nie udało się wysłać wiadomości.");
+        }
+
+        form.reset();
+        label.textContent = "Wysłano";
+        setStatus("Dziękujemy — wiadomość została wysłana.");
+      } catch {
+        label.textContent = idleLabel;
+        setStatus("Coś poszło nie tak. Spróbuj ponownie lub napisz bezpośrednio.", true);
+        submit.disabled = false;
+      }
+    });
+  }
+
+  initContactForm();
+  document.addEventListener("astro:page-load", initContactForm);
+</script>
