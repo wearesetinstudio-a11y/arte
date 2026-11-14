@@ -8,11 +8,54 @@ import DanceFaq from "../components/DanceFaq.astro";
 import DanceContact from "../components/DanceContact.astro";
 import DanceFastContact from "../components/DanceFastContact.astro";
 import DanceFooter from "../components/DanceFooter.astro";
+
+const danceSchoolSchema = {
+  "@context": "https://schema.org",
+  "@type": "DanceSchool",
+  name: "Arte de Baile",
+  description:
+    "Boutique studio tańca w Poznaniu oferujące zajęcia High Heels, Broadway Jazz, Jazz, Performance oraz treningi personalne.",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Poznań",
+    addressCountry: "PL",
+  },
+  areaServed: {
+    "@type": "City",
+    name: "Poznań",
+  },
+  url: "https://wearearte.pl",
+  priceRange: "$$",
+  makesOffer: [
+    {
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "Service",
+        name: "High Heels Dance Classes Poznań",
+      },
+    },
+    {
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "Service",
+        name: "Broadway Jazz Kursy Poznań",
+      },
+    },
+    {
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "Service",
+        name: "Trening Personalny Taniec Poznań",
+      },
+    },
+  ],
+};
 ---
 
 <Layout
-  title="Arte — Sztuka Ruchu"
-  description="Butikowe studio tańca w Poznaniu. Broadway Jazz, Jazz, High Heels, Performance i trening personalny."
+  title="Szkoła Tańca Poznań | Broadway Jazz, High Heels, Performance i Treningi | Arte de Baile"
+  description="Odkryj Arte de Baile w Poznaniu. Profesjonalne kursy tańca: High Heels, Broadway Jazz, Jazz, Performance i treningi personalne dla początkujących i zaawansowanych. Zapisz się!"
+  jsonLd={danceSchoolSchema}
 >
   <main>
     <DanceHero />
