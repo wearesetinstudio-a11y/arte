@@ -661,13 +661,11 @@ const tickerSequence = Array.from({ length: 8 }, () => tickerItems).flat();
     z-index: 201;
   }
 
-  .dance-hero.is-menu-open .dance-hero__logo img {
-    filter: invert(1);
-  }
-
+  /* Contrast follows the white overlay — no discrete invert flash */
+  .dance-hero.is-menu-open .dance-hero__logo img,
   .dance-hero.is-menu-open .dance-hero__byline,
   .dance-hero.is-menu-open .dance-hero__menu-toggle {
-    color: #1e1e1e;
+    mix-blend-mode: difference;
   }
 
   @media (prefers-reduced-motion: reduce) {

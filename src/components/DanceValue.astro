@@ -85,7 +85,7 @@ const rails = [
             <figure
               class="dance-value__strip-frame"
               data-strip-frame
-              style={`--stagger: ${index * 10}px`}
+              style={`--stagger: ${index * 2}px`}
             >
               <img
                 src={src}
@@ -242,11 +242,12 @@ const rails = [
     }
 
     .dance-value__pin {
+      top: 0;
       flex-direction: column;
       justify-content: flex-start;
       align-items: stretch;
-      gap: clamp(1.75rem, 5vh, 2.75rem);
-      padding: clamp(5.5rem, 12vh, 7rem) 0 clamp(2rem, 6vh, 3.5rem);
+      gap: clamp(1.25rem, 3.5vh, 2rem);
+      padding: clamp(2.75rem, 6vh, 4rem) 0 calc(5.5rem + env(safe-area-inset-bottom, 0px));
     }
 
     .dance-value__frames {
@@ -260,7 +261,7 @@ const rails = [
       flex-shrink: 0;
       pointer-events: none;
       z-index: 1;
-      padding-bottom: 50px;
+      padding-bottom: 10px;
     }
 
     .dance-value__strip-track {
