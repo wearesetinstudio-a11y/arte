@@ -115,6 +115,30 @@ const tickerSequence = Array.from({ length: 8 }, () => tickerItems).flat();
     class="dance-hero__menu"
     hidden
   >
+    <div class="dance-hero__menu-chrome">
+      <div class="dance-hero__menu-chrome-ticker" aria-hidden="true">
+        <div class="dance-hero__ticker-track">
+          <p class="dance-hero__ticker-group">
+            <span class="dance-hero__ticker-item"><span>&nbsp;</span></span>
+          </p>
+        </div>
+      </div>
+      <div class="dance-hero__menu-chrome-nav">
+        <div class="dance-hero__brand">
+          <a href="/" class="dance-hero__logo" aria-label="Arte — strona główna">
+            <img
+              src="/arte-logo-white.svg"
+              alt=""
+              width="658"
+              height="376"
+            />
+          </a>
+          <p class="dance-hero__byline">By Viktoria Oskaldowicz</p>
+        </div>
+        <button type="button" class="dance-hero__menu-close">Zamknij</button>
+      </div>
+    </div>
+
     <nav class="dance-hero__menu-panel" aria-label="Menu mobilne">
       <ul class="dance-hero__menu-list">
         {
@@ -521,6 +545,55 @@ const tickerSequence = Array.from({ length: 8 }, () => tickerItems).flat();
       visibility 0s linear 0.55s;
   }
 
+  .dance-hero__menu-chrome {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    color: #1e1e1e;
+    pointer-events: none;
+  }
+
+  .dance-hero__menu-chrome-ticker {
+    overflow: hidden;
+    visibility: hidden;
+    border-bottom: 1px solid transparent;
+  }
+
+  .dance-hero__menu-chrome-ticker .dance-hero__ticker-track {
+    animation: none;
+    width: 100%;
+  }
+
+  .dance-hero__menu-chrome-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: clamp(1.15rem, 2.8vh, 1.85rem) var(--pad-x);
+    pointer-events: auto;
+  }
+
+  .dance-hero__menu-chrome .dance-hero__logo img {
+    filter: invert(1);
+  }
+
+  .dance-hero__menu-close {
+    display: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: 400;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
   .dance-hero__menu[hidden] {
     display: none;
   }
@@ -654,18 +727,6 @@ const tickerSequence = Array.from({ length: 8 }, () => tickerItems).flat();
 
   .dance-hero.is-menu-open {
     z-index: 200;
-  }
-
-  .dance-hero.is-menu-open .dance-hero__nav {
-    position: relative;
-    z-index: 201;
-  }
-
-  /* Contrast follows the white overlay — no discrete invert flash */
-  .dance-hero.is-menu-open .dance-hero__logo img,
-  .dance-hero.is-menu-open .dance-hero__byline,
-  .dance-hero.is-menu-open .dance-hero__menu-toggle {
-    mix-blend-mode: difference;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -1244,6 +1305,15 @@ const tickerSequence = Array.from({ length: 8 }, () => tickerItems).flat();
       align-items: center;
     }
 
+    .dance-hero__menu-close {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .dance-hero__menu-chrome-nav {
+      padding: 1.15rem 1.25rem 0.4rem;
+    }
+
     .dance-hero__body {
       align-content: start;
       gap: 2.5rem;
@@ -1358,11 +1428,8 @@ const tickerSequence = Array.from({ length: 8 }, () => tickerItems).flat();
     ".dance-hero__menu-toggle",
   );
   const menu = document.querySelector<HTMLElement>("#dance-hero-menu");
-  const menuToggleText = menuToggle?.querySelector<HTMLElement>(
-    ".dance-hero__menu-toggle-text",
-  );
 
-  if (heroEl && menuToggle && menu && menuToggleText) {
+  if (heroEl && menuToggle && menu) {
     const MENU_MS = 550;
     let menuBusy = false;
     let menuTimer = 0;
@@ -1397,7 +1464,6 @@ const tickerSequence = Array.from({ length: 8 }, () => tickerItems).flat();
         "aria-label",
         open ? "Zamknij menu" : "Otwórz menu",
       );
-      menuToggleText.textContent = open ? "Zamknij" : "Menu";
 
       if (open) {
         heroEl.classList.add("is-menu-open");
@@ -1427,6 +1493,10 @@ const tickerSequence = Array.from({ length: 8 }, () => tickerItems).flat();
       const open = menuToggle.getAttribute("aria-expanded") !== "true";
       setMenuOpen(open);
     });
+
+    menu
+      .querySelector<HTMLButtonElement>(".dance-hero__menu-close")
+      ?.addEventListener("click", () => setMenuOpen(false));
 
     menu.addEventListener("click", (event) => {
       const target = event.target as HTMLElement | null;

@@ -159,13 +159,13 @@ const rails = [
     display: flex;
     flex-direction: column;
     gap: var(--rail-gap);
-    width: clamp(7rem, 11vw, 9.5rem);
+    width: clamp(9rem, 15vw, 13rem);
     will-change: transform;
     transform: translate3d(0, var(--shift), 0);
   }
 
   .dance-value__rail--left {
-    left: max(0.75rem, calc(50% - 21rem - 13rem));
+    left: max(0.75rem, calc(50% - 21rem - 15rem));
   }
 
   .dance-value__rail--left .dance-value__frame:first-child {
@@ -173,7 +173,7 @@ const rails = [
   }
 
   .dance-value__rail--right {
-    right: max(0.75rem, calc(50% - 21rem - 13rem));
+    right: max(0.75rem, calc(50% - 21rem - 15rem));
   }
 
   .dance-value__rail--right .dance-value__frame:last-child {
@@ -282,7 +282,7 @@ const rails = [
       margin: 0;
       overflow: hidden;
       background: #cfcfcf;
-      width: 40vw;
+      width: 46vw;
       aspect-ratio: 4 / 5;
       flex-shrink: 0;
       transform: translate3d(0, var(--stagger), 0);

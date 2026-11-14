@@ -51,6 +51,17 @@ const {
     },
   ],
 } = Astro.props;
+
+const descriptionLines = (text: string) => {
+  const sentences = text.split(/(?<=\.)\s+/).filter(Boolean);
+  if (sentences.length > 1) return sentences;
+
+  const words = text.split(/\s+/).filter(Boolean);
+  if (words.length < 8) return [text];
+
+  const mid = Math.ceil(words.length / 2);
+  return [words.slice(0, mid).join(" "), words.slice(mid).join(" ")];
+};
 ---
 
 <section
@@ -115,21 +126,44 @@ const {
                 data-slug={dance.slug}
                 {...(active ? {} : { hidden: true })}
               >
-                <p class="dance-kursy__desc">{dance.description}</p>
-                <figure class="dance-kursy__media">
-                  <img
-                    src={dance.image}
-                    alt=""
-                    width="3036"
-                    height="2276"
-                    loading={index === 0 ? "eager" : "lazy"}
-                    decoding="async"
-                  />
-                </figure>
+                <p class="dance-kursy__desc">
+                  {descriptionLines(dance.description).map((line, lineIndex) => (
+                    <span
+                      class="dance-kursy__desc-line"
+                      style={`--i: ${lineIndex}`}
+                    >
+                      {line}
+                    </span>
+                  ))}
+                </p>
               </div>
             );
           })
         }
+
+        <div class="dance-kursy__media" data-kursy-media aria-hidden="true">
+          {
+            dances.map((dance, index) => (
+              <figure
+                class:list={[
+                  "dance-kursy__slide",
+                  index === 0 && "is-active",
+                ]}
+                data-kursy-slide
+                data-index={index}
+              >
+                <img
+                  src={dance.image}
+                  alt=""
+                  width="3036"
+                  height="2276"
+                  loading={index === 0 ? "eager" : "lazy"}
+                  decoding="async"
+                />
+              </figure>
+            ))
+          }
+        </div>
       </div>
     </div>
   </div>
@@ -144,6 +178,7 @@ const {
     --kursy-line-active: rgb(255 255 255 / 0.2);
     --kursy-line-fill: rgb(255 255 255 / 0.55);
     --kursy-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --kursy-slide-ease: cubic-bezier(0.33, 1, 0.68, 1);
     --kursy-idle: 3s;
     --kursy-progress: 2.4s;
 
@@ -321,20 +356,17 @@ const {
 
   .dance-kursy__panel {
     position: relative;
+    display: grid;
+    gap: clamp(1.5rem, 4vh, 2.5rem);
     min-height: 0;
   }
 
   .dance-kursy__content {
-    display: grid;
-    gap: clamp(1.5rem, 4vh, 2.5rem);
+    display: block;
   }
 
   .dance-kursy__content[hidden] {
     display: none;
-  }
-
-  .dance-kursy__content.is-active {
-    animation: kursy-in 0.45s var(--kursy-ease) both;
   }
 
   .dance-kursy__desc {
@@ -348,7 +380,19 @@ const {
     text-wrap: pretty;
   }
 
+  .dance-kursy__desc-line {
+    display: block;
+    opacity: 0;
+    transform: translate3d(0, 0.55rem, 0);
+  }
+
+  .dance-kursy__content.is-active .dance-kursy__desc-line {
+    animation: kursy-line 0.55s var(--kursy-slide-ease) both;
+    animation-delay: calc(var(--i) * 90ms);
+  }
+
   .dance-kursy__media {
+    position: relative;
     margin: 0;
     overflow: hidden;
     border-radius: 0;
@@ -357,17 +401,29 @@ const {
     aspect-ratio: 3036 / 2276;
   }
 
-  .dance-kursy__media img {
+  .dance-kursy__slide {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+    transition: opacity 0.45s var(--kursy-ease);
+  }
+
+  .dance-kursy__slide.is-active {
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 1;
+  }
+
+  .dance-kursy__slide img {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: contain;
     object-position: center;
     border-radius: 0;
-  }
-
-  .dance-kursy__content.is-active .dance-kursy__media img {
-    animation: kursy-media 0.7s var(--kursy-ease) both;
   }
 
   @keyframes kursy-progress {
@@ -379,23 +435,14 @@ const {
     }
   }
 
-  @keyframes kursy-in {
+  @keyframes kursy-line {
     from {
       opacity: 0;
-      transform: translateY(0.6rem);
+      transform: translate3d(0, 0.55rem, 0);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes kursy-media {
-    from {
-      opacity: 0.7;
-    }
-    to {
-      opacity: 1;
+      transform: translate3d(0, 0, 0);
     }
   }
 
@@ -406,9 +453,17 @@ const {
     }
 
     .dance-kursy__tab.is-loading .dance-kursy__line-fill,
-    .dance-kursy__content.is-active,
-    .dance-kursy__content.is-active .dance-kursy__media img {
+    .dance-kursy__content.is-active .dance-kursy__desc-line {
       animation: none;
+    }
+
+    .dance-kursy__desc-line {
+      opacity: 1;
+      transform: none;
+    }
+
+    .dance-kursy__slide {
+      transition: none;
     }
 
     .dance-kursy__tab.is-loading .dance-kursy__line-fill {
@@ -427,13 +482,15 @@ const {
     const panels = [
       ...section.querySelectorAll<HTMLElement>("[data-kursy-panel]"),
     ];
+    const slides = [
+      ...section.querySelectorAll<HTMLElement>("[data-kursy-slide]"),
+    ];
     const reduce = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
     const IDLE_MS = 3000;
     const PROGRESS_MS = reduce ? 0 : 2400;
-
     let activeIndex = 0;
     let idleTimer = 0;
     let progressTimer = 0;
@@ -485,6 +542,12 @@ const {
       });
     };
 
+    const setSlide = (index: number) => {
+      slides.forEach((slide, i) => {
+        slide.classList.toggle("is-active", i === index);
+      });
+    };
+
     const activate = (next: number, options: { syncHash?: boolean } = {}) => {
       const index = ((next % tabs.length) + tabs.length) % tabs.length;
       activeIndex = index;
@@ -506,8 +569,18 @@ const {
           panel.classList.remove("is-active");
           void panel.offsetWidth;
           panel.classList.add("is-active");
+
+          panel
+            .querySelectorAll<HTMLElement>(".dance-kursy__desc-line")
+            .forEach((line) => {
+              line.style.animation = "none";
+              void line.offsetWidth;
+              line.style.animation = "";
+            });
         }
       });
+
+      setSlide(index);
 
       scrollActiveIntoView(index);
 
