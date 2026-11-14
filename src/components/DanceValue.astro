@@ -259,9 +259,11 @@ const rails = [
       width: 100%;
       overflow: hidden;
       flex-shrink: 0;
-      pointer-events: none;
+      pointer-events: auto;
+      touch-action: none;
       z-index: 1;
       padding-bottom: 10px;
+      cursor: grab;
     }
 
     .dance-value__strip-track {
@@ -374,7 +376,6 @@ const rails = [
 
     const flowStrip = (amount: number) => {
       if (!strip || !track) return;
-
       const maxPan = Math.max(0, track.scrollWidth - strip.clientWidth);
       track.style.setProperty(
         "--pan",
@@ -382,17 +383,33 @@ const rails = [
       );
     };
 
+    const progressFromWindow = () => {
+      const travel = section.offsetHeight - window.innerHeight;
+      if (travel <= 0) return 1;
+      return clamp(-section.getBoundingClientRect().top / travel, 0, 1);
+    };
+
+    const textFromProgress = (raw: number) =>
+      clamp((raw - 0.08) / 0.78, 0, 1);
+
+    const scrollWindowToProgress = (raw: number) => {
+      const travel = section.offsetHeight - window.innerHeight;
+      if (travel <= 0) return;
+      const sectionTop =
+        window.scrollY + section.getBoundingClientRect().top;
+      window.scrollTo({ top: sectionTop + clamp(raw, 0, 1) * travel });
+    };
+
     if (!reduce) {
       let frame = 0;
+      let dragging = false;
+      let startX = 0;
+      let startRaw = 0;
 
       const update = () => {
         frame = 0;
-        const travel = section.offsetHeight - window.innerHeight;
-        const raw =
-          travel <= 0
-            ? 1
-            : clamp(-section.getBoundingClientRect().top / travel, 0, 1);
-        const textAmount = clamp((raw - 0.08) / 0.78, 0, 1);
+        const raw = progressFromWindow();
+        const textAmount = textFromProgress(raw);
 
         paintWords(textAmount);
 
@@ -408,10 +425,47 @@ const rails = [
         frame = requestAnimationFrame(update);
       };
 
+      const panWidth = () => {
+        if (!strip || !track) return 1;
+        return Math.max(1, track.scrollWidth - strip.clientWidth);
+      };
+
+      const onPointerDown = (event: PointerEvent) => {
+        if (!mobile.matches || !strip) return;
+        dragging = true;
+        startX = event.clientX;
+        startRaw = progressFromWindow();
+        strip.setPointerCapture(event.pointerId);
+        strip.style.cursor = "grabbing";
+      };
+
+      const onPointerMove = (event: PointerEvent) => {
+        if (!dragging || !mobile.matches) return;
+        const dx = event.clientX - startX;
+        // Swipe left → progress forward (same as scrolling down)
+        const delta = (-dx / panWidth()) * 0.78;
+        scrollWindowToProgress(startRaw + delta);
+        requestUpdate();
+      };
+
+      const onPointerUp = (event: PointerEvent) => {
+        if (!dragging) return;
+        dragging = false;
+        if (strip?.hasPointerCapture(event.pointerId)) {
+          strip.releasePointerCapture(event.pointerId);
+        }
+        if (strip) strip.style.cursor = "grab";
+      };
+
       update();
       window.addEventListener("scroll", requestUpdate, { passive: true });
       window.addEventListener("resize", requestUpdate);
       mobile.addEventListener("change", requestUpdate);
+
+      strip?.addEventListener("pointerdown", onPointerDown);
+      strip?.addEventListener("pointermove", onPointerMove);
+      strip?.addEventListener("pointerup", onPointerUp);
+      strip?.addEventListener("pointercancel", onPointerUp);
     }
   }
 </script>
