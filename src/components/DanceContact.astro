@@ -487,6 +487,13 @@ const socials = [
       label.textContent = "Wysyłanie…";
 
       try {
+        const accessKey = (
+          form.querySelector<HTMLInputElement>('[name="access_key"]')?.value || ""
+        ).trim();
+        if (!accessKey) {
+          throw new Error("Brak klucza Web3Forms. Zrestartuj serwer deweloperski.");
+        }
+
         const response = await fetch(form.action, {
           method: "POST",
           body: new FormData(form),
@@ -504,9 +511,13 @@ const socials = [
         form.reset();
         label.textContent = "Wysłano";
         setStatus("Dziękujemy — wiadomość została wysłana.");
-      } catch {
+      } catch (error) {
         label.textContent = idleLabel;
-        setStatus("Coś poszło nie tak. Spróbuj ponownie lub napisz bezpośrednio.", true);
+        const detail =
+          error instanceof Error && error.message
+            ? error.message
+            : "Coś poszło nie tak. Spróbuj ponownie lub napisz bezpośrednio.";
+        setStatus(detail, true);
         submit.disabled = false;
       }
     });
