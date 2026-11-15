@@ -18,8 +18,8 @@ const navLinks = [
 
 const socials = [
   { label: "G-mail", href: "mailto:v.oskaldowicz@gmail.com" },
-  { label: "WhatsApp", href: "#" },
-  { label: "Instagram", href: "#" },
+  { label: "WhatsApp", href: "https://wa.me/48606797737" },
+  { label: "Instagram", href: "https://instagram.com/artedebaile_pz" },
 ];
 
 const menuSocials = [
@@ -274,7 +274,13 @@ const tickerSequence = Array.from({ length: 8 }, () => tickerItems).flat();
       {
         socials.map((item) => (
           <li>
-            <a href={item.href} class="dance-hero__link">
+            <a
+              href={item.href}
+              class="dance-hero__link"
+              {...(item.href.startsWith("http")
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : {})}
+            >
               <span class="dance-hero__link-track">
                 <span>{item.label}</span>
                 <span aria-hidden="true">{item.label}</span>

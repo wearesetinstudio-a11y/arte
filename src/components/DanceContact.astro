@@ -70,6 +70,7 @@ const socials = [
       action="https://api.web3forms.com/submit"
       method="POST"
       data-contact-form
+      data-whatsapp={whatsappHref}
     >
       <h2 id="contact-heading" class="dance-contact__title">Napisz do nas</h2>
 
@@ -124,7 +125,28 @@ const socials = [
       <button type="submit" class="dance-contact__submit" data-contact-submit>
         <span class="dance-contact__btn-cover" aria-hidden="true"></span>
         <span class="dance-contact__btn-label" data-contact-label>Wyślij wiadomość</span>
-        <img src="/arrow.svg" alt="" width="26" height="26" />
+        <img
+          class="dance-contact__btn-arrow"
+          src="/arrow.svg"
+          alt=""
+          width="26"
+          height="26"
+        />
+        <svg
+          class="dance-contact__btn-check"
+          width="22"
+          height="16"
+          viewBox="0 0 22 16"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M1.5 8.5L7.5 14.5L20.5 1.5"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
       </button>
     </form>
   </div>
@@ -274,6 +296,24 @@ const socials = [
     transition: border-color 0.22s ease;
   }
 
+  .dance-contact__input:-webkit-autofill,
+  .dance-contact__input:-webkit-autofill:hover,
+  .dance-contact__input:-webkit-autofill:focus,
+  .dance-contact__input:-webkit-autofill:active {
+    -webkit-text-fill-color: #ffffff;
+    caret-color: #ffffff;
+    border-bottom-color: rgb(255 255 255 / 0.28);
+    box-shadow: 0 0 0 1000px #1e1e1e inset;
+    transition: background-color 99999s ease-out 0s;
+    animation: dance-contact-autofill 0.01s forwards;
+  }
+
+  @keyframes dance-contact-autofill {
+    to {
+      opacity: 1;
+    }
+  }
+
   .dance-contact__input--area {
     min-height: calc(1.15rem + 1.4em + 0.7rem);
     field-sizing: content;
@@ -290,6 +330,8 @@ const socials = [
 
   .dance-contact__field:has(input:not(:placeholder-shown)) .dance-contact__label,
   .dance-contact__field:has(textarea:not(:placeholder-shown))
+    .dance-contact__label,
+  .dance-contact__field:has(.dance-contact__input.is-autofilled)
     .dance-contact__label {
     top: 0;
     font-size: var(--text-label);
@@ -327,17 +369,36 @@ const socials = [
   .dance-contact__status {
     margin: 0;
     font-family: var(--font-sans);
-    font-size: var(--text-label);
+    font-size: var(--text-body);
     font-weight: 400;
     line-height: 1.4;
     color: rgb(255 255 255 / 0.72);
   }
 
+  .dance-contact__status.is-success {
+    color: #82b445;
+  }
+
   .dance-contact__status.is-error {
-    color: #ff8f8f;
+    color: #e07a6a;
+  }
+
+  .dance-contact__status.is-error a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+
+  .dance-contact__status.is-error a:hover,
+  .dance-contact__status.is-error a:focus-visible {
+    opacity: 0.8;
   }
 
   .dance-contact__submit {
+    --contact-success-bg: #262d1c;
+    --contact-success-border: #41621b;
+    --contact-success-fg: #82b445;
+
     position: relative;
     isolation: isolate;
     display: inline-flex;
@@ -348,7 +409,7 @@ const socials = [
     margin-top: 0.55rem;
     padding: 1rem 0.95rem;
     overflow: hidden;
-    border: 0;
+    border: 1px solid transparent;
     background: #ffffff;
     color: #1e1e1e;
     font-family: var(--font-mono);
@@ -357,10 +418,13 @@ const socials = [
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
     cursor: pointer;
-    transition: color 0.35s ease;
+    transition:
+      color 0.35s ease,
+      background 0.35s ease,
+      border-color 0.35s ease;
   }
 
-  .dance-contact__submit:disabled {
+  .dance-contact__submit:disabled:not(.is-success) {
     cursor: wait;
     opacity: 0.72;
   }
@@ -379,7 +443,7 @@ const socials = [
     position: relative;
   }
 
-  .dance-contact__submit img {
+  .dance-contact__btn-arrow {
     position: relative;
     width: var(--size-arrow);
     height: auto;
@@ -387,31 +451,59 @@ const socials = [
     transition: filter 0.35s ease;
   }
 
-  .dance-contact__submit:active .dance-contact__btn-cover,
-  .dance-contact__submit:focus-visible .dance-contact__btn-cover {
+  .dance-contact__btn-check {
+    position: relative;
+    display: none;
+    width: 1.25rem;
+    height: auto;
+    flex-shrink: 0;
+  }
+
+  .dance-contact__submit.is-success {
+    background: var(--contact-success-bg);
+    border-color: var(--contact-success-border);
+    color: var(--contact-success-fg);
+    cursor: default;
+    opacity: 1;
+  }
+
+  .dance-contact__submit.is-success .dance-contact__btn-cover {
+    display: none;
+  }
+
+  .dance-contact__submit.is-success .dance-contact__btn-arrow {
+    display: none;
+  }
+
+  .dance-contact__submit.is-success .dance-contact__btn-check {
+    display: block;
+  }
+
+  .dance-contact__submit:not(.is-success):active .dance-contact__btn-cover,
+  .dance-contact__submit:not(.is-success):focus-visible .dance-contact__btn-cover {
     transform: scaleY(1);
   }
 
-  .dance-contact__submit:active,
-  .dance-contact__submit:focus-visible {
+  .dance-contact__submit:not(.is-success):active,
+  .dance-contact__submit:not(.is-success):focus-visible {
     color: #ffffff;
   }
 
-  .dance-contact__submit:active img,
-  .dance-contact__submit:focus-visible img {
+  .dance-contact__submit:not(.is-success):active .dance-contact__btn-arrow,
+  .dance-contact__submit:not(.is-success):focus-visible .dance-contact__btn-arrow {
     filter: brightness(0) invert(1);
   }
 
   @media (hover: hover) and (pointer: fine) {
-    .dance-contact__submit:hover .dance-contact__btn-cover {
+    .dance-contact__submit:not(.is-success):hover .dance-contact__btn-cover {
       transform: scaleY(1);
     }
 
-    .dance-contact__submit:hover {
+    .dance-contact__submit:not(.is-success):hover {
       color: #ffffff;
     }
 
-    .dance-contact__submit:hover img {
+    .dance-contact__submit:not(.is-success):hover .dance-contact__btn-arrow {
       filter: brightness(0) invert(1);
     }
   }
@@ -471,28 +563,65 @@ const socials = [
     if (!status || !submit || !label) return;
 
     const idleLabel = label.textContent?.trim() || "Wyślij wiadomość";
+    const whatsappHref =
+      form.dataset.whatsapp || "https://wa.me/48606797737";
 
-    const setStatus = (message: string, isError = false) => {
-      status.hidden = !message;
-      status.textContent = message;
-      status.classList.toggle("is-error", isError);
+    const syncAutofill = (input: HTMLInputElement | HTMLTextAreaElement) => {
+      if (input.matches(":-webkit-autofill")) {
+        input.classList.add("is-autofilled");
+        return;
+      }
+      if (!input.value) input.classList.remove("is-autofilled");
+    };
+
+    form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>(
+      ".dance-contact__input",
+    ).forEach((input) => {
+      input.addEventListener("animationstart", (event) => {
+        if (event.animationName === "dance-contact-autofill") {
+          input.classList.add("is-autofilled");
+        }
+      });
+      input.addEventListener("input", () => syncAutofill(input));
+      input.addEventListener("change", () => syncAutofill(input));
+      input.addEventListener("blur", () => syncAutofill(input));
+      syncAutofill(input);
+    });
+
+    const setStatus = (
+      content: string,
+      tone: "idle" | "success" | "error" = "idle",
+      asHtml = false,
+    ) => {
+      status.hidden = !content;
+      if (asHtml) status.innerHTML = content;
+      else status.textContent = content;
+      status.classList.toggle("is-success", tone === "success");
+      status.classList.toggle("is-error", tone === "error");
+    };
+
+    const showError = () => {
+      setStatus(
+        `Nie dostałam maila:( spróbuj ponownie lub napisz na <a href="${whatsappHref}" target="_blank" rel="noopener noreferrer">whatsapp</a>`,
+        "error",
+        true,
+      );
     };
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
-      if (submit.disabled) return;
+      if (submit.disabled || submit.classList.contains("is-success")) return;
 
       setStatus("");
       submit.disabled = true;
+      submit.classList.remove("is-success");
       label.textContent = "Wysyłanie…";
 
       try {
         const accessKey = (
           form.querySelector<HTMLInputElement>('[name="access_key"]')?.value || ""
         ).trim();
-        if (!accessKey) {
-          throw new Error("Brak klucza Web3Forms. Zrestartuj serwer deweloperski.");
-        }
+        if (!accessKey) throw new Error("missing-key");
 
         const response = await fetch(form.action, {
           method: "POST",
@@ -504,20 +633,21 @@ const socials = [
           message?: string;
         };
 
-        if (!response.ok || !result.success) {
-          throw new Error(result.message || "Nie udało się wysłać wiadomości.");
-        }
+        if (!response.ok || !result.success) throw new Error("submit-failed");
 
         form.reset();
-        label.textContent = "Wysłano";
-        setStatus("Dziękujemy — wiadomość została wysłana.");
-      } catch (error) {
+        form
+          .querySelectorAll<HTMLInputElement | HTMLTextAreaElement>(
+            ".dance-contact__input.is-autofilled",
+          )
+          .forEach((input) => input.classList.remove("is-autofilled"));
+        submit.classList.add("is-success");
+        label.textContent = "Wysłano!";
+        setStatus("Dzięki za wiadomość! Odezwę się na podany e-mail", "success");
+      } catch {
         label.textContent = idleLabel;
-        const detail =
-          error instanceof Error && error.message
-            ? error.message
-            : "Coś poszło nie tak. Spróbuj ponownie lub napisz bezpośrednio.";
-        setStatus(detail, true);
+        submit.classList.remove("is-success");
+        showError();
         submit.disabled = false;
       }
     });
