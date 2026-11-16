@@ -12,8 +12,26 @@ import Layout from "../layouts/Layout.astro";
     <div class="error-page__inner">
       <div class="error-page__headline">
         <h1 class="error-page__title">UPSSS...</h1>
-        <span class="error-page__badge error-page__badge--poznan">#Poznań</span>
-        <span class="error-page__badge error-page__badge--taniec">#Taniec</span>
+        <span class="error-page__badge error-page__badge--poznan" data-badge>
+          <span class="error-page__badge-flip">
+            <span class="error-page__badge-face error-page__badge-face--front">
+              #Poznań
+            </span>
+            <span class="error-page__badge-face error-page__badge-face--back">
+              #Nauka
+            </span>
+          </span>
+        </span>
+        <span class="error-page__badge error-page__badge--taniec" data-badge>
+          <span class="error-page__badge-flip">
+            <span class="error-page__badge-face error-page__badge-face--front">
+              #Taniec
+            </span>
+            <span class="error-page__badge-face error-page__badge-face--back">
+              #Pasja
+            </span>
+          </span>
+        </span>
       </div>
 
       <div class="error-page__footer">
@@ -55,7 +73,9 @@ import Layout from "../layouts/Layout.astro";
     position: relative;
     display: grid;
     place-items: center;
-    width: 100%;
+    width: max-content;
+    max-width: 100%;
+    padding: 1.1rem 1.25rem;
   }
 
   .error-page__title {
@@ -71,35 +91,80 @@ import Layout from "../layouts/Layout.astro";
   }
 
   .error-page__badge {
+    --badge-rx: 0deg;
+    --badge-ry: 0deg;
+    --badge-tx: 0px;
+    --badge-ty: 0px;
+    --badge-rz: 0deg;
+
     position: absolute;
     z-index: 2;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.55rem 1.05rem;
-    background: #ffffff;
+    display: block;
     color: #1e1e1e;
     font-family: var(--font-mono);
-    font-size: clamp(0.78rem, 1.2vw, 1rem);
+    font-size: clamp(0.68rem, 2.8vw, 0.82rem);
     font-weight: 500;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     white-space: nowrap;
-    animation: error-badge-in 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+    opacity: 0;
+    filter: blur(12px);
+    perspective: 600px;
+    transform-style: preserve-3d;
+    will-change: transform;
+    transform:
+      translate3d(var(--badge-tx), var(--badge-ty), 0)
+      rotateX(var(--badge-rx))
+      rotateY(var(--badge-ry))
+      rotateZ(var(--badge-rz));
+    transition:
+      opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.35s,
+      filter 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.35s;
+  }
+
+  .error-page__badge-flip {
+    position: relative;
+    display: grid;
+    transform-style: preserve-3d;
+    animation: error-badge-flip-x 10s ease-in-out infinite;
+  }
+
+  .error-page__badge-face {
+    grid-area: 1 / 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.34rem 0.65rem;
+    background: #ffffff;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .error-page__badge-face--back {
+    transform: rotateX(180deg);
   }
 
   .error-page__badge--poznan {
-    top: -0.35em;
-    left: 4%;
-    transform: rotate(-8deg);
-    animation-delay: 0.18s;
+    top: -0.45em;
+    left: -0.2rem;
+    --badge-rz: -7deg;
   }
 
   .error-page__badge--taniec {
-    right: 8%;
-    bottom: -0.15em;
-    transform: rotate(7deg);
-    animation-delay: 0.32s;
+    top: auto;
+    right: -0.15rem;
+    bottom: -0.45em;
+    --badge-rz: 7deg;
+    transition-delay: 0.5s, 0.5s;
+  }
+
+  .error-page__badge--taniec .error-page__badge-flip {
+    animation-delay: 1s;
+  }
+
+  .error-page__badge.is-ready {
+    opacity: 1;
+    filter: blur(0);
   }
 
   .error-page__footer {
@@ -215,14 +280,23 @@ import Layout from "../layouts/Layout.astro";
   }
 
   @media (min-width: 768px) {
+    .error-page__badge {
+      font-size: clamp(0.92rem, 1.35vw, 1.2rem);
+    }
+
+    .error-page__badge-face {
+      padding: 0.62rem 1.2rem;
+    }
+
     .error-page__badge--poznan {
-      left: 8%;
-      top: -0.2em;
+      top: -0.55em;
+      left: -0.5rem;
     }
 
     .error-page__badge--taniec {
-      right: 14%;
-      bottom: 0.05em;
+      top: auto;
+      right: -0.35rem;
+      bottom: -0.55em;
     }
 
     .error-page__footer {
@@ -256,22 +330,151 @@ import Layout from "../layouts/Layout.astro";
     }
   }
 
-  @keyframes error-badge-in {
-    from {
-      opacity: 0;
-      filter: blur(10px);
+  @keyframes error-badge-flip-x {
+    0%,
+    42% {
+      transform: rotateX(0deg);
     }
-    to {
-      opacity: 1;
-      filter: blur(0);
+    50%,
+    92% {
+      transform: rotateX(180deg);
+    }
+    100% {
+      transform: rotateX(360deg);
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .error-page__title,
-    .error-page__badge,
     .error-page__footer {
       animation: none;
     }
+
+    .error-page__badge {
+      opacity: 1;
+      filter: none;
+      transition: none;
+    }
+
+    .error-page__badge-flip {
+      animation: none;
+    }
+
+    .error-page__badge-face--back {
+      display: none;
+    }
   }
 </style>
+
+<script>
+  const page = document.querySelector<HTMLElement>(".error-page");
+  const badges = [
+    ...document.querySelectorAll<HTMLElement>(".error-page [data-badge]"),
+  ];
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+  const finePointer = window.matchMedia("(pointer: fine)").matches;
+
+  for (const badge of badges) {
+    requestAnimationFrame(() => badge.classList.add("is-ready"));
+  }
+
+  if (page && badges.length && !reduceMotion) {
+    const MAX_TILT = 18;
+    const MAX_PULL = 14;
+    const RANGE = 320;
+    const EASE = 0.14;
+
+    type Tilt = { rx: number; ry: number; tx: number; ty: number };
+
+    const state = badges.map((el) => ({
+      el,
+      current: { rx: 0, ry: 0, tx: 0, ty: 0 } as Tilt,
+      target: { rx: 0, ry: 0, tx: 0, ty: 0 } as Tilt,
+    }));
+
+    let frame = 0;
+    let active = false;
+
+    const apply = (el: HTMLElement, tilt: Tilt) => {
+      el.style.setProperty("--badge-rx", `${tilt.rx.toFixed(2)}deg`);
+      el.style.setProperty("--badge-ry", `${tilt.ry.toFixed(2)}deg`);
+      el.style.setProperty("--badge-tx", `${tilt.tx.toFixed(2)}px`);
+      el.style.setProperty("--badge-ty", `${tilt.ty.toFixed(2)}px`);
+    };
+
+    const render = () => {
+      frame = 0;
+      let moving = false;
+
+      for (const item of state) {
+        item.current.rx += (item.target.rx - item.current.rx) * EASE;
+        item.current.ry += (item.target.ry - item.current.ry) * EASE;
+        item.current.tx += (item.target.tx - item.current.tx) * EASE;
+        item.current.ty += (item.target.ty - item.current.ty) * EASE;
+        apply(item.el, item.current);
+
+        if (
+          Math.abs(item.target.rx - item.current.rx) > 0.05 ||
+          Math.abs(item.target.ry - item.current.ry) > 0.05 ||
+          Math.abs(item.target.tx - item.current.tx) > 0.05 ||
+          Math.abs(item.target.ty - item.current.ty) > 0.05
+        ) {
+          moving = true;
+        }
+      }
+
+      if (moving || active) {
+        frame = window.requestAnimationFrame(render);
+      }
+    };
+
+    const requestRender = () => {
+      if (!frame) frame = window.requestAnimationFrame(render);
+    };
+
+    if (finePointer) {
+      const setTargetsFromPoint = (x: number, y: number) => {
+        for (const item of state) {
+          const rect = item.el.getBoundingClientRect();
+          const cx = rect.left + rect.width / 2;
+          const cy = rect.top + rect.height / 2;
+          const nx = Math.max(-1, Math.min(1, (x - cx) / RANGE));
+          const ny = Math.max(-1, Math.min(1, (y - cy) / RANGE));
+
+          item.target.rx = -ny * MAX_TILT;
+          item.target.ry = nx * MAX_TILT;
+          item.target.tx = nx * MAX_PULL;
+          item.target.ty = ny * MAX_PULL;
+        }
+      };
+
+      page.addEventListener(
+        "pointermove",
+        (event) => {
+          if (event.pointerType === "touch") return;
+          active = true;
+          setTargetsFromPoint(event.clientX, event.clientY);
+          requestRender();
+        },
+        { passive: true },
+      );
+
+      page.addEventListener(
+        "pointerleave",
+        () => {
+          active = false;
+          for (const item of state) {
+            item.target.rx = 0;
+            item.target.ry = 0;
+            item.target.tx = 0;
+            item.target.ty = 0;
+          }
+          requestRender();
+        },
+        { passive: true },
+      );
+    }
+  }
+</script>
