@@ -6,7 +6,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://wearearte.pl',
+  site: 'https://www.arte-viktoriaoskaldowicz.pl',
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()]

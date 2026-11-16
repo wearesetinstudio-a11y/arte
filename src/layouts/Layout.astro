@@ -6,6 +6,8 @@ interface Props {
   title?: string;
   description?: string;
   lockScroll?: boolean;
+  preloader?: boolean;
+  robots?: string;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
@@ -13,6 +15,8 @@ const {
   title = "Arte — Languages & Dance",
   description = "Arte — languages and dance. An artistic space for expression, movement, and connection.",
   lockScroll = false,
+  preloader = true,
+  robots,
   jsonLd,
 } = Astro.props;
 
@@ -23,11 +27,15 @@ const ogImageUrl = new URL("/og.jpg", siteOrigin).href;
 ---
 
 <!doctype html>
-<html lang="pl" class:list={["is-loading", { "is-locked": lockScroll }]}>
+<html
+  lang="pl"
+  class:list={[{ "is-loading": preloader, "is-locked": lockScroll }]}
+>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    {robots && <meta name="robots" content={robots} />}
     <meta name="generator" content={Astro.generator} />
     <link rel="canonical" href={canonicalUrl} />
     <link
@@ -149,7 +157,7 @@ const ogImageUrl = new URL("/og.jpg", siteOrigin).href;
       lockScroll ? "is-dark-surface" : "bg-void text-ink",
     ]}
   >
-    <Preloader />
+    {preloader && <Preloader />}
     <slot />
 
     <script is:inline>

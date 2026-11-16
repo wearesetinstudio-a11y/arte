@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://wearearte.pl/sitemap-index.xml
+Sitemap: https://www.arte-viktoriaoskaldowicz.pl/sitemap-index.xml

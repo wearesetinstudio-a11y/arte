@@ -1066,10 +1066,12 @@ const tickerSequence = Array.from({ length: 8 }, () => tickerItems).flat();
     position: absolute;
     inset: 0;
     z-index: -1;
-    background: #000000;
+    background: #e7e7e7;
     transform: scaleY(0);
     transform-origin: bottom center;
-    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    transition:
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      background 0.2s ease;
   }
 
   .dance-hero__btn-label {
@@ -1094,20 +1096,14 @@ const tickerSequence = Array.from({ length: 8 }, () => tickerItems).flat();
     transform: scaleY(1);
   }
 
-  .dance-hero__cta:active,
-  .dance-hero__cta:focus-visible {
-    color: #ffffff;
-  }
-
   .dance-hero__cta:active .dance-hero__btn-label,
   .dance-hero__cta:focus-visible .dance-hero__btn-label {
-    transform: translateX(10px);
+    transform: translateX(4px);
   }
 
   .dance-hero__cta:active img,
   .dance-hero__cta:focus-visible img {
-    filter: brightness(0) invert(1);
-    transform: translateX(-10px) rotate(45deg);
+    transform: rotate(45deg);
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -1115,17 +1111,21 @@ const tickerSequence = Array.from({ length: 8 }, () => tickerItems).flat();
       transform: scaleY(1);
     }
 
-    .dance-hero__cta:hover {
-      color: #ffffff;
-    }
-
     .dance-hero__cta:hover .dance-hero__btn-label {
-      transform: translateX(10px);
+      transform: translateX(4px);
     }
 
     .dance-hero__cta:hover img {
-      filter: brightness(0) invert(1);
-      transform: translateX(-10px) rotate(45deg);
+      transform: rotate(45deg);
+    }
+
+    .dance-hero__cta:active:not(.dance-hero__cta--menu) .dance-hero__btn-cover {
+      background: #cfcfcf;
+    }
+
+    .dance-hero__cta:active img,
+    .dance-hero__cta:hover:active img {
+      transform: translateX(2.5rem) rotate(45deg);
     }
 
     .dance-hero__cta--menu:hover {
@@ -1134,7 +1134,13 @@ const tickerSequence = Array.from({ length: 8 }, () => tickerItems).flat();
 
     .dance-hero__cta--menu:hover img {
       filter: none;
-      transform: translateX(-10px) rotate(45deg);
+      transform: rotate(45deg);
+    }
+
+    .dance-hero__cta--menu:active img,
+    .dance-hero__cta--menu:hover:active img {
+      filter: none;
+      transform: translateX(2.5rem) rotate(45deg);
     }
   }
 

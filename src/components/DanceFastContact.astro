@@ -43,7 +43,8 @@ const socials = [
   aria-hidden="true"
 >
   <a href="#kontakt" class="fast-contact__cta" data-fast-cta>
-    <span>Umów się</span>
+    <span class="fast-contact__btn-cover" aria-hidden="true"></span>
+    <span class="fast-contact__btn-label">Umów się</span>
     <img src="/arrow.svg" alt="" width="26" height="26" />
   </a>
 
@@ -102,10 +103,13 @@ const socials = [
   }
 
   .fast-contact__cta {
+    position: relative;
+    isolation: isolate;
     display: inline-flex;
     align-items: center;
     justify-content: space-between;
     gap: 0.85rem;
+    overflow: hidden;
     min-height: var(--fast-size);
     padding: 0 1rem 0 1.1rem;
     background: #ffffff;
@@ -116,19 +120,71 @@ const socials = [
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
     white-space: nowrap;
-    transition: background 0.25s ease, color 0.25s ease;
   }
 
-  .fast-contact__cta img {
-    width: var(--size-arrow);
-    height: auto;
-    flex-shrink: 0;
+  .fast-contact__btn-cover {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: #e7e7e7;
+    transform: scaleY(0);
+    transform-origin: bottom center;
+    transition:
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      background 0.2s ease;
+  }
+
+  .fast-contact__btn-label {
+    position: relative;
+    min-width: 0;
     transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .fast-contact__cta:hover img,
+  .fast-contact__cta img {
+    position: relative;
+    width: var(--size-arrow);
+    height: auto;
+    flex-shrink: 0;
+    transform-origin: center;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .fast-contact__cta:active .fast-contact__btn-cover,
+  .fast-contact__cta:focus-visible .fast-contact__btn-cover {
+    transform: scaleY(1);
+  }
+
+  .fast-contact__cta:active .fast-contact__btn-label,
+  .fast-contact__cta:focus-visible .fast-contact__btn-label {
+    transform: translateX(4px);
+  }
+
+  .fast-contact__cta:active img,
   .fast-contact__cta:focus-visible img {
     transform: rotate(45deg);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .fast-contact__cta:hover .fast-contact__btn-cover {
+      transform: scaleY(1);
+    }
+
+    .fast-contact__cta:hover .fast-contact__btn-label {
+      transform: translateX(4px);
+    }
+
+    .fast-contact__cta:hover img {
+      transform: rotate(45deg);
+    }
+
+    .fast-contact__cta:active .fast-contact__btn-cover {
+      background: #cfcfcf;
+    }
+
+    .fast-contact__cta:active img,
+    .fast-contact__cta:hover:active img {
+      transform: translateX(2.5rem) rotate(45deg);
+    }
   }
 
   .fast-contact__cta:focus-visible {
@@ -192,6 +248,8 @@ const socials = [
       transform: translateX(-50%) translateY(0);
     }
 
+    .fast-contact__btn-cover,
+    .fast-contact__btn-label,
     .fast-contact__cta img {
       transition: none;
     }

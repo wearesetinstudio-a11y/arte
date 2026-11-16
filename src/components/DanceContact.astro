@@ -433,14 +433,17 @@ const socials = [
     position: absolute;
     inset: 0;
     z-index: -1;
-    background: #000000;
+    background: #e7e7e7;
     transform: scaleY(0);
     transform-origin: bottom center;
-    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    transition:
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      background 0.2s ease;
   }
 
   .dance-contact__btn-label {
     position: relative;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .dance-contact__btn-arrow {
@@ -448,7 +451,8 @@ const socials = [
     width: var(--size-arrow);
     height: auto;
     flex-shrink: 0;
-    transition: filter 0.35s ease;
+    transform-origin: center;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .dance-contact__btn-check {
@@ -484,14 +488,14 @@ const socials = [
     transform: scaleY(1);
   }
 
-  .dance-contact__submit:not(.is-success):active,
-  .dance-contact__submit:not(.is-success):focus-visible {
-    color: #ffffff;
+  .dance-contact__submit:not(.is-success):active .dance-contact__btn-label,
+  .dance-contact__submit:not(.is-success):focus-visible .dance-contact__btn-label {
+    transform: translateX(4px);
   }
 
   .dance-contact__submit:not(.is-success):active .dance-contact__btn-arrow,
   .dance-contact__submit:not(.is-success):focus-visible .dance-contact__btn-arrow {
-    filter: brightness(0) invert(1);
+    transform: rotate(45deg);
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -499,12 +503,21 @@ const socials = [
       transform: scaleY(1);
     }
 
-    .dance-contact__submit:not(.is-success):hover {
-      color: #ffffff;
+    .dance-contact__submit:not(.is-success):hover .dance-contact__btn-label {
+      transform: translateX(4px);
     }
 
     .dance-contact__submit:not(.is-success):hover .dance-contact__btn-arrow {
-      filter: brightness(0) invert(1);
+      transform: rotate(45deg);
+    }
+
+    .dance-contact__submit:not(.is-success):active .dance-contact__btn-cover {
+      background: #cfcfcf;
+    }
+
+    .dance-contact__submit:not(.is-success):active .dance-contact__btn-arrow,
+    .dance-contact__submit:not(.is-success):hover:active .dance-contact__btn-arrow {
+      transform: translateX(2.5rem) rotate(45deg);
     }
   }
 
