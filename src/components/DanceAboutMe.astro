@@ -169,9 +169,9 @@ const ribbonPathId = "dance-about-ribbon-path";
   .dance-about__ribbon {
     position: absolute;
     z-index: 3;
-    left: -14%;
-    bottom: -9%;
-    width: min(70%, 18.5rem);
+    left: -16%;
+    bottom: -10%;
+    width: min(88.5%, 23.4rem);
     pointer-events: auto;
     transform: rotate(-4deg);
   }
@@ -270,9 +270,9 @@ const ribbonPathId = "dance-about-ribbon-path";
     }
 
     .dance-about__ribbon {
-      left: -12%;
-      bottom: -7%;
-      width: min(60%, 15.5rem);
+      left: -14%;
+      bottom: -8%;
+      width: min(76%, 19.6rem);
     }
 
     .dance-about__copy {
@@ -329,6 +329,7 @@ const ribbonPathId = "dance-about-ribbon-path";
 
   if (section) {
     const words = [...section.querySelectorAll<HTMLElement>("[data-word]")];
+    const copy = section.querySelector<HTMLElement>(".dance-about__copy");
     const ribbon = section.querySelector<HTMLElement>("[data-about-ribbon]");
     const textPath = section.querySelector<SVGTextPathElement>(
       "[data-ribbon-textpath]",
@@ -339,6 +340,7 @@ const ribbonPathId = "dance-about-ribbon-path";
     const reduce = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
+    const mobile = window.matchMedia("(max-width: 900px)");
 
     const clamp = (value: number, min: number, max: number) =>
       Math.min(max, Math.max(min, value));
@@ -359,20 +361,23 @@ const ribbonPathId = "dance-about-ribbon-path";
     };
 
     const progressFromWindow = () => {
-      const travel = section.offsetHeight - window.innerHeight;
-      if (travel > 0) {
-        return clamp(-section.getBoundingClientRect().top / travel, 0, 1);
+      // Mobile: start darkening only once copy sits ~40% from the bottom
+      if (mobile.matches) {
+        const rect = (copy ?? section).getBoundingClientRect();
+        const start = window.innerHeight * 0.6;
+        const end = window.innerHeight * 0.22;
+        return clamp((start - rect.top) / (start - end), 0, 1);
       }
 
-      // Mobile (auto-height): reveal as the section moves through the viewport
-      const rect = section.getBoundingClientRect();
-      const start = window.innerHeight * 0.85;
-      const end = window.innerHeight * 0.12;
-      return clamp((start - rect.top) / (start - end), 0, 1);
+      const travel = section.offsetHeight - window.innerHeight;
+      if (travel <= 0) return 1;
+      return clamp(-section.getBoundingClientRect().top / travel, 0, 1);
     };
 
-    const textFromProgress = (raw: number) =>
-      clamp((raw - 0.08) / 0.78, 0, 1);
+    const textFromProgress = (raw: number) => {
+      if (mobile.matches) return raw;
+      return clamp((raw - 0.08) / 0.78, 0, 1);
+    };
 
     if (!reduce) {
       let frame = 0;
@@ -390,6 +395,7 @@ const ribbonPathId = "dance-about-ribbon-path";
       update();
       window.addEventListener("scroll", requestUpdate, { passive: true });
       window.addEventListener("resize", requestUpdate);
+      mobile.addEventListener("change", requestUpdate);
     }
 
     if (ribbon && textPath && path && !reduce) {
