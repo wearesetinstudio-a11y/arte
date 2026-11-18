@@ -13,6 +13,8 @@ const styles = [
 const navLinks = [
   { href: "#faq", label: "FAQ" },
   { href: "#kursy", label: "Kursy" },
+  { href: "#o-mnie", label: "O mnie" },
+  { href: "#opinie", label: "Opinie" },
   { href: "#kontakt", label: "Kontakt" },
 ];
 
@@ -80,42 +82,44 @@ const tickerSequence = Array.from({ length: 8 }, () => tickerItems).flat();
     </div>
   </div>
 
-  <header class="dance-hero__nav">
-    <div class="dance-hero__brand">
-      <a href="/" class="dance-hero__logo" aria-label="Arte — strona główna">
-        <img
-          src="/arte-logo-white.svg"
-          alt="Arte"
-          width="658"
-          height="376"
-        />
-      </a>
-      <p class="dance-hero__byline">By Viktoria Oskaldowicz</p>
-    </div>
+  <div class="dance-hero__nav-slot">
+    <header class="dance-hero__nav" data-hero-nav>
+      <div class="dance-hero__brand">
+        <a href="/" class="dance-hero__logo" aria-label="Arte — strona główna">
+          <img
+            src="/arte-logo-white.svg"
+            alt="Arte"
+            width="658"
+            height="376"
+          />
+        </a>
+        <p class="dance-hero__byline">By Viktoria Oskaldowicz</p>
+      </div>
 
-    <nav class="dance-hero__links dance-hero__links--desktop" aria-label="Główne">
-      {
-        navLinks.map((link) => (
-          <a href={link.href} class="dance-hero__link">
-            <span class="dance-hero__link-track">
-              <span>{link.label}</span>
-              <span aria-hidden="true">{link.label}</span>
-            </span>
-          </a>
-        ))
-      }
-    </nav>
+      <nav class="dance-hero__links dance-hero__links--desktop" aria-label="Główne">
+        {
+          navLinks.map((link) => (
+            <a href={link.href} class="dance-hero__link">
+              <span class="dance-hero__link-track">
+                <span>{link.label}</span>
+                <span aria-hidden="true">{link.label}</span>
+              </span>
+            </a>
+          ))
+        }
+      </nav>
 
-    <button
-      type="button"
-      class="dance-hero__menu-toggle"
-      aria-expanded="false"
-      aria-controls="dance-hero-menu"
-      aria-label="Otwórz menu"
-    >
-      <span class="dance-hero__menu-toggle-text">Menu</span>
-    </button>
-  </header>
+      <button
+        type="button"
+        class="dance-hero__menu-toggle"
+        aria-expanded="false"
+        aria-controls="dance-hero-menu"
+        aria-label="Otwórz menu"
+      >
+        <span class="dance-hero__menu-toggle-text">Menu</span>
+      </button>
+    </header>
+  </div>
 
   <div
     id="dance-hero-menu"
@@ -414,13 +418,47 @@ const tickerSequence = Array.from({ length: 8 }, () => tickerItems).flat();
     }
   }
 
+  .dance-hero__nav-slot {
+    flex-shrink: 0;
+  }
+
   .dance-hero__nav {
     display: flex;
-    flex-shrink: 0;
     align-items: center;
     justify-content: space-between;
     gap: 1.5rem;
     padding: clamp(1.15rem, 2.8vh, 1.85rem) var(--pad-x);
+    transition:
+      transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 0.35s ease;
+  }
+
+  /* Lift hero stacking context so fixed nav paints above page sections */
+  .dance-hero:has([data-hero-nav].is-pinned) {
+    z-index: 60;
+  }
+
+  .dance-hero__nav.is-pinned {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 60;
+    background-color: #000000;
+    background-image: none;
+    color: #ffffff;
+    box-shadow: 0 1px 0 rgb(255 255 255 / 0.08);
+    transform: translateY(-100%);
+    pointer-events: none;
+  }
+
+  .dance-hero__nav.is-pinned.is-nav-visible {
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .dance-hero__nav.is-nav-no-transition {
+    transition: none !important;
   }
 
   .dance-hero__brand {
@@ -743,6 +781,10 @@ const tickerSequence = Array.from({ length: 8 }, () => tickerItems).flat();
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .dance-hero__nav {
+      transition: none;
+    }
+
     .dance-hero__menu,
     .dance-hero__menu.is-open,
     .dance-hero__menu.is-closing,
@@ -1443,6 +1485,75 @@ const tickerSequence = Array.from({ length: 8 }, () => tickerItems).flat();
   }
 
   const heroEl = document.querySelector<HTMLElement>(".dance-hero");
+  const navEl = document.querySelector<HTMLElement>("[data-hero-nav]");
+  const navSlot = document.querySelector<HTMLElement>(".dance-hero__nav-slot");
+
+  if (heroEl && navEl && navSlot) {
+    let lastScrollY = window.scrollY;
+    let pinned = false;
+    let frame = 0;
+
+    const unpinNav = () => {
+      pinned = false;
+      navEl.classList.add("is-nav-no-transition");
+      navSlot.style.height = "";
+      navEl.classList.remove("is-pinned", "is-nav-visible");
+      void navEl.offsetWidth;
+      navEl.classList.remove("is-nav-no-transition");
+    };
+
+    const updatePinnedNav = () => {
+      frame = 0;
+      if (document.documentElement.classList.contains("is-dance-menu-open")) {
+        return;
+      }
+
+      const y = Math.max(0, window.scrollY);
+      const delta = y - lastScrollY;
+      // Only after the whole hero has left the viewport
+      const pastHero = heroEl.getBoundingClientRect().bottom <= 0;
+
+      if (!pastHero) {
+        if (pinned) unpinNav();
+        lastScrollY = y;
+        return;
+      }
+
+      if (!pinned) {
+        // Pin already hidden — no enter animation on scroll-down
+        navSlot.style.height = `${navEl.offsetHeight}px`;
+        navEl.classList.add("is-nav-no-transition");
+        navEl.classList.add("is-pinned");
+        navEl.classList.remove("is-nav-visible");
+        void navEl.offsetWidth;
+        navEl.classList.remove("is-nav-no-transition");
+        pinned = true;
+        lastScrollY = y;
+        return;
+      }
+
+      if (delta < -6) {
+        navEl.classList.add("is-nav-visible");
+      } else if (delta > 6) {
+        navEl.classList.remove("is-nav-visible");
+      }
+
+      lastScrollY = y;
+    };
+
+    const onNavScroll = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(updatePinnedNav);
+    };
+
+    updatePinnedNav();
+    window.addEventListener("scroll", onNavScroll, { passive: true });
+    window.addEventListener("resize", () => {
+      if (!pinned) return;
+      navSlot.style.height = `${navEl.offsetHeight}px`;
+    }, { passive: true });
+  }
+
   const menuToggle = document.querySelector<HTMLButtonElement>(
     ".dance-hero__menu-toggle",
   );

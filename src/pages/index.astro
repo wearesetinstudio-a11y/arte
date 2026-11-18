@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import DanceHero from "../components/DanceHero.astro";
 import DanceValue from "../components/DanceValue.astro";
 import DanceKursy from "../components/DanceKursy.astro";
+import DanceAboutMe from "../components/DanceAboutMe.astro";
 import DanceReviews from "../components/DanceReviews.astro";
 import DanceFaq from "../components/DanceFaq.astro";
 import DanceContact from "../components/DanceContact.astro";
@@ -118,14 +119,15 @@ const faqPageSchema = {
 ---
 
 <Layout
-  title="Szkoła Tańca Poznań | High Heels, Broadway Jazz | Arte de Baile"
-  description="Odkryj Arte de Baile w Poznaniu. Profesjonalne kursy tańca: High Heels, Broadway Jazz, Jazz, Performance i treningi personalne dla początkujących i zaawansowanych. Zapisz się!"
+  title="Arte de Baile — Studio Tańca w Poznaniu"
+  description="Odkryj profesjonalne kursy tańca w Poznaniu. High Heels, Broadway Jazz, Performance i trening personalny w kameralnej atmosferze. Zapisz się na zajęcia."
   jsonLd={[danceSchoolSchema, faqPageSchema]}
 >
   <main>
     <DanceHero />
     <DanceValue />
     <DanceKursy />
+    <DanceAboutMe />
     <DanceReviews />
     <DanceFaq items={faqItems} />
     <DanceContact />

@@ -38,6 +38,7 @@ const ogImageUrl = new URL("/og.jpg", siteOrigin).href;
     {robots && <meta name="robots" content={robots} />}
     <meta name="generator" content={Astro.generator} />
     <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link
       rel="icon"
       type="image/svg+xml"
@@ -50,7 +51,11 @@ const ogImageUrl = new URL("/og.jpg", siteOrigin).href;
       href="/favicon-white.svg"
       media="(prefers-color-scheme: dark)"
     />
-    <link rel="icon" href="/favicon.ico" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/apple-touch-icon.png"
+    />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />

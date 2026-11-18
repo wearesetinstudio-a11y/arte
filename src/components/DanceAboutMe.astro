@@ -1,0 +1,425 @@
+---
+interface Props {
+  kicker?: string;
+  paragraphs?: string[];
+  image?: string;
+  imageAlt?: string;
+}
+
+const {
+  kicker = "Trochę o mnie",
+  paragraphs = [
+    "Nazywam się Viktoria Oskaldowicz. Jestem certyfikowaną trenerką personalną, tancerką z wieloletnim doświadczeniem dydaktycznym i scenicznym.",
+    "Przez kilka ostatnich lat wcielałam się w wiele postaci na deskach teatrów w Polsce i za granicą. Taniec jest w moim życiu od najmłodszych lat i mam nadzieję, że zostanie w nim na zawsze, bo jest moją największą miłością i pasją. Postanowiłam dzielić się nią nie tylko ze sceny, ale również na sali treningowej.",
+    "Specjalizuję się z jazzie, broadway jazzie i high heels. Gdybym miała opisać swoje zajęcia w kilku słowach, powiedziałabym: przygotowanie motoryczne, technika, różnorodność i dobra zabawa!",
+  ],
+  image = "/about-me.webp",
+  imageAlt = "Viktoria Oskaldowicz – certyfikowana trenerka personalna i tancerka w studiu Arte de Baile w Poznaniu",
+} = Astro.props;
+
+const blocks = paragraphs.map((paragraph) =>
+  paragraph.split(/\s+/).filter(Boolean),
+);
+
+const ribbonPhrase =
+  "#MERYTORYKA   •   #TECHNIKA   •   #RÓŻNORODNOŚĆ   •   #ZABAWA   •   ";
+const ribbonCopy = Array.from({ length: 8 }, () => ribbonPhrase).join("");
+const ribbonPathId = "dance-about-ribbon-path";
+---
+
+<section
+  class="dance-about"
+  id="o-mnie"
+  data-about
+  aria-labelledby="about-heading"
+>
+  <div class="dance-about__pin">
+    <div class="dance-about__inner">
+      <div class="dance-about__visual">
+        <figure class="dance-about__media">
+          <img
+            src={image}
+            alt={imageAlt}
+            width="960"
+            height="1200"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+
+        <!-- Ribbon lives on the section layer (not clipped by the photo) -->
+        <div class="dance-about__ribbon" data-about-ribbon aria-hidden="true">
+          <svg
+            class="dance-about__ribbon-svg"
+            viewBox="0 0 420 360"
+            xmlns="http://www.w3.org/2000/svg"
+            overflow="visible"
+          >
+            <defs>
+              <!-- Path starts/ends past the section edges for flat clipped tips -->
+              <path
+                id={ribbonPathId}
+                d="M-220 230 C-60 230 36 188 68 132 C92 62 148 28 214 36 C286 46 338 104 328 168 C318 230 248 262 178 248 C128 238 98 252 104 298 C112 370 180 460 280 580"
+              ></path>
+            </defs>
+            <use
+              href={`#${ribbonPathId}`}
+              fill="none"
+              stroke="#000000"
+              stroke-width="48"
+              stroke-linecap="butt"
+              stroke-linejoin="round"
+            ></use>
+            <text
+              class="dance-about__ribbon-text"
+              fill="#FFFFFF"
+              font-size="15"
+              letter-spacing="1.2"
+            >
+              <textPath
+                href={`#${ribbonPathId}`}
+                data-ribbon-textpath
+                startOffset="0"
+                dominant-baseline="central"
+                method="align"
+                spacing="auto"
+              >
+                {ribbonCopy}
+              </textPath>
+            </text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="dance-about__copy">
+        <p class="dance-about__kicker" id="about-heading">{kicker}</p>
+        <div class="dance-about__body">
+          {
+            blocks.map((words) => (
+              <p class="dance-about__paragraph">
+                {words.map((word, index) => (
+                  <span class="dance-about__word" data-word>
+                    {word}
+                    {index < words.length - 1 ? " " : ""}
+                  </span>
+                ))}
+              </p>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .dance-about {
+    --about-ink: #1e1e1e;
+    --about-muted: #d4d4d4;
+
+    position: relative;
+    height: 280vh;
+    overflow-x: clip;
+    background: #ffffff;
+    color: var(--about-ink);
+  }
+
+  .dance-about__pin {
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    height: 100svh;
+    overflow: hidden;
+    padding: clamp(4.5rem, 12vh, 7.5rem) 0;
+  }
+
+  .dance-about__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    align-items: center;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    width: min(100%, 78rem);
+    margin-inline: auto;
+    padding-inline: clamp(1.5rem, 4vw, 3.25rem);
+  }
+
+  .dance-about__visual {
+    position: relative;
+    z-index: 1;
+  }
+
+  .dance-about__media {
+    margin: 0;
+    overflow: hidden;
+    background: #cfcfcf;
+    aspect-ratio: 4 / 5;
+    width: 100%;
+    max-height: min(78svh, 42rem);
+  }
+
+  .dance-about__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 18%;
+  }
+
+  .dance-about__ribbon {
+    position: absolute;
+    z-index: 3;
+    left: -14%;
+    bottom: -9%;
+    width: min(70%, 18.5rem);
+    pointer-events: auto;
+    transform: rotate(-4deg);
+  }
+
+  .dance-about__ribbon-svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .dance-about__ribbon-text {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  .dance-about__copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  .dance-about__kicker {
+    margin: 0 0 1.35rem;
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  .dance-about__body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15em;
+  }
+
+  .dance-about__paragraph {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 0.95rem + 0.75vw, 1.65rem);
+    font-weight: 500;
+    letter-spacing: -0.028em;
+    line-height: 1.28;
+    text-wrap: pretty;
+  }
+
+  .dance-about__word {
+    --ink: 0;
+    color: color-mix(
+      in srgb,
+      var(--about-ink) calc(var(--ink) * 100%),
+      var(--about-muted)
+    );
+  }
+
+  @media (max-width: 900px) {
+    .dance-about {
+      height: auto;
+      overflow: clip;
+    }
+
+    .dance-about__pin {
+      position: relative;
+      align-items: stretch;
+      height: auto;
+      overflow: clip;
+      padding: clamp(2.75rem, 6vh, 4rem) 0 0;
+    }
+
+    .dance-about__inner {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto;
+      gap: clamp(1.5rem, 4vh, 2.25rem);
+      width: 100%;
+      height: auto;
+      padding-inline: 0;
+    }
+
+    .dance-about__visual {
+      order: 2;
+      overflow: clip;
+    }
+
+    .dance-about__media {
+      width: 100%;
+      max-height: none;
+      aspect-ratio: 2224 / 2776;
+    }
+
+    .dance-about__media img {
+      object-position: center;
+    }
+
+    .dance-about__ribbon {
+      left: -12%;
+      bottom: -7%;
+      width: min(60%, 15.5rem);
+    }
+
+    .dance-about__copy {
+      order: 1;
+      padding-inline: clamp(1.25rem, 5vw, 1.75rem);
+    }
+
+    .dance-about__paragraph {
+      font-size: clamp(1.15rem, 4.6vw, 1.45rem);
+      line-height: 1.3;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dance-about {
+      height: auto;
+    }
+
+    .dance-about__pin {
+      position: relative;
+      height: auto;
+      overflow: visible;
+      padding-block: clamp(5rem, 14vh, 8rem);
+    }
+
+    .dance-about__inner {
+      height: auto;
+    }
+
+    .dance-about__media {
+      aspect-ratio: 4 / 5;
+      max-height: 32rem;
+    }
+
+    .dance-about__word {
+      --ink: 1;
+    }
+
+    .dance-about__ribbon {
+      pointer-events: none;
+    }
+
+    @media (max-width: 900px) {
+      .dance-about__media {
+        aspect-ratio: 2224 / 2776;
+        max-height: none;
+      }
+    }
+  }
+</style>
+
+<script>
+  const section = document.querySelector<HTMLElement>("[data-about]");
+
+  if (section) {
+    const words = [...section.querySelectorAll<HTMLElement>("[data-word]")];
+    const ribbon = section.querySelector<HTMLElement>("[data-about-ribbon]");
+    const textPath = section.querySelector<SVGTextPathElement>(
+      "[data-ribbon-textpath]",
+    );
+    const path = section.querySelector<SVGPathElement>(
+      "#dance-about-ribbon-path",
+    );
+    const reduce = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    const clamp = (value: number, min: number, max: number) =>
+      Math.min(max, Math.max(min, value));
+
+    const ease = (t: number) => t * t * (3 - 2 * t);
+
+    const paintWords = (amount: number) => {
+      const count = words.length;
+      if (!count) return;
+
+      const blend = 1.65;
+      const cursor = amount * (count - 1 + blend);
+
+      for (let i = 0; i < count; i++) {
+        const local = clamp((cursor - i) / blend, 0, 1);
+        words[i].style.setProperty("--ink", ease(local).toFixed(3));
+      }
+    };
+
+    const progressFromWindow = () => {
+      const travel = section.offsetHeight - window.innerHeight;
+      if (travel > 0) {
+        return clamp(-section.getBoundingClientRect().top / travel, 0, 1);
+      }
+
+      // Mobile (auto-height): reveal as the section moves through the viewport
+      const rect = section.getBoundingClientRect();
+      const start = window.innerHeight * 0.85;
+      const end = window.innerHeight * 0.12;
+      return clamp((start - rect.top) / (start - end), 0, 1);
+    };
+
+    const textFromProgress = (raw: number) =>
+      clamp((raw - 0.08) / 0.78, 0, 1);
+
+    if (!reduce) {
+      let frame = 0;
+
+      const update = () => {
+        frame = 0;
+        paintWords(textFromProgress(progressFromWindow()));
+      };
+
+      const requestUpdate = () => {
+        if (frame) return;
+        frame = requestAnimationFrame(update);
+      };
+
+      update();
+      window.addEventListener("scroll", requestUpdate, { passive: true });
+      window.addEventListener("resize", requestUpdate);
+    }
+
+    if (ribbon && textPath && path && !reduce) {
+      const pathLength = path.getTotalLength();
+      const textLength = textPath.getComputedTextLength();
+      const copies = 8;
+      const cycle = textLength > 0 ? textLength / copies : pathLength * 0.4;
+      const duration = 23;
+      let offset = 0;
+      const speed = cycle / duration;
+      let hovering = false;
+      let last = performance.now();
+
+      const tick = (now: number) => {
+        requestAnimationFrame(tick);
+        const dt = Math.min(0.05, (now - last) / 1000);
+        last = now;
+        const currentSpeed = hovering ? speed * 0.45 : speed;
+        offset = (offset + currentSpeed * dt) % cycle;
+        textPath.setAttribute("startOffset", `${-offset}`);
+      };
+
+      ribbon.addEventListener("pointerenter", () => {
+        hovering = true;
+      });
+      ribbon.addEventListener("pointerleave", () => {
+        hovering = false;
+      });
+
+      requestAnimationFrame(tick);
+    }
+  }
+</script>
