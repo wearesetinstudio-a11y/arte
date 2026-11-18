@@ -209,6 +209,8 @@ const rails = [
     width: 100%;
     aspect-ratio: 4 / 5;
     flex-shrink: 0;
+    pointer-events: auto;
+    cursor: pointer;
     transform: translate3d(var(--frame-x), 0, 0);
   }
 
@@ -225,6 +227,7 @@ const rails = [
     width: min(100%, 42rem);
     margin-inline: auto;
     text-align: center;
+    cursor: pointer;
   }
 
   .dance-value__kicker {
@@ -412,12 +415,32 @@ const rails = [
     const textFromProgress = (raw: number) =>
       clamp((raw - 0.08) / 0.78, 0, 1);
 
-    const scrollWindowToProgress = (raw: number) => {
+    const scrollWindowToProgress = (
+      raw: number,
+      behavior: ScrollBehavior = "auto",
+    ) => {
       const travel = section.offsetHeight - window.innerHeight;
       if (travel <= 0) return;
       const sectionTop =
         window.scrollY + section.getBoundingClientRect().top;
-      window.scrollTo({ top: sectionTop + clamp(raw, 0, 1) * travel });
+      window.scrollTo({
+        top: sectionTop + clamp(raw, 0, 1) * travel,
+        behavior,
+      });
+    };
+
+    const skipToSectionEnd = () => {
+      scrollWindowToProgress(1, "smooth");
+      requestUpdate();
+    };
+
+    const isSkipTarget = (target: EventTarget | null) => {
+      if (!(target instanceof Element)) return false;
+      return Boolean(
+        target.closest(
+          ".dance-value__inner, .dance-value__frame, .dance-value__strip, .dance-value__strip-frame",
+        ),
+      );
     };
 
     if (!reduce) {
@@ -425,6 +448,16 @@ const rails = [
       let dragging = false;
       let startX = 0;
       let startRaw = 0;
+      let tap:
+        | {
+            id: number;
+            x: number;
+            y: number;
+            moved: boolean;
+          }
+        | null = null;
+
+      const TAP_MOVE = 12;
 
       const update = () => {
         frame = 0;
@@ -462,6 +495,9 @@ const rails = [
       const onPointerMove = (event: PointerEvent) => {
         if (!dragging || !mobile.matches) return;
         const dx = event.clientX - startX;
+        if (Math.abs(dx) > TAP_MOVE && tap?.id === event.pointerId) {
+          tap.moved = true;
+        }
         // Swipe left → progress forward (same as scrolling down)
         const delta = (-dx / panWidth()) * 0.78;
         scrollWindowToProgress(startRaw + delta);
@@ -477,6 +513,41 @@ const rails = [
         if (strip) strip.style.cursor = "grab";
       };
 
+      const onTapPointerDown = (event: PointerEvent) => {
+        if (event.pointerType === "mouse" && event.button !== 0) return;
+        if (!isSkipTarget(event.target)) return;
+        if (progressFromWindow() >= 0.97) return;
+
+        tap = {
+          id: event.pointerId,
+          x: event.clientX,
+          y: event.clientY,
+          moved: false,
+        };
+      };
+
+      const onTapPointerMove = (event: PointerEvent) => {
+        if (!tap || tap.id !== event.pointerId || tap.moved) return;
+        const dx = event.clientX - tap.x;
+        const dy = event.clientY - tap.y;
+        if (Math.hypot(dx, dy) > TAP_MOVE) tap.moved = true;
+      };
+
+      const onTapPointerUp = (event: PointerEvent) => {
+        if (!tap || tap.id !== event.pointerId) return;
+        const wasTap = !tap.moved && isSkipTarget(event.target);
+        const canSkip = progressFromWindow() < 0.97;
+        tap = null;
+        if (!wasTap || !canSkip) return;
+
+        // Let strip drag finish first, then skip if it was a true tap.
+        skipToSectionEnd();
+      };
+
+      const onTapPointerCancel = (event: PointerEvent) => {
+        if (tap?.id === event.pointerId) tap = null;
+      };
+
       update();
       window.addEventListener("scroll", requestUpdate, { passive: true });
       window.addEventListener("resize", requestUpdate);
@@ -486,6 +557,18 @@ const rails = [
       strip?.addEventListener("pointermove", onPointerMove);
       strip?.addEventListener("pointerup", onPointerUp);
       strip?.addEventListener("pointercancel", onPointerUp);
+
+      const pin = section.querySelector<HTMLElement>(".dance-value__pin");
+      pin?.addEventListener("pointerdown", onTapPointerDown, {
+        passive: true,
+      });
+      pin?.addEventListener("pointermove", onTapPointerMove, {
+        passive: true,
+      });
+      pin?.addEventListener("pointerup", onTapPointerUp, { passive: true });
+      pin?.addEventListener("pointercancel", onTapPointerCancel, {
+        passive: true,
+      });
     }
   }
 </script>

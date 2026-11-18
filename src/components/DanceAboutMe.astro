@@ -361,11 +361,11 @@ const ribbonPathId = "dance-about-ribbon-path";
     };
 
     const progressFromWindow = () => {
-      // Mobile: start darkening only once copy sits ~40% from the bottom
+      // Mobile: start darkening only once copy sits ~55% from the bottom
       if (mobile.matches) {
         const rect = (copy ?? section).getBoundingClientRect();
-        const start = window.innerHeight * 0.6;
-        const end = window.innerHeight * 0.22;
+        const start = window.innerHeight * 0.45;
+        const end = window.innerHeight * 0.12;
         return clamp((start - rect.top) / (start - end), 0, 1);
       }
 
